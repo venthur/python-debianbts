@@ -1,0 +1,26 @@
+python-debianbts (0.3) unstable; urgency=low
+
+  * Added support for Tags
+
+ -- Bastian Venthur <venthur@debian.org>  Sat, 11 Oct 2008 17:16:38 +0200
+
+python-debianbts (0.2.1) unstable; urgency=low
+
+  * Corrected priority from extra to optional
+  * Fixed short and long package description to make lintian happy
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 11 Jul 2008 14:38:17 +0200
+
+python-debianbts (0.2) unstable; urgency=low
+
+  * Changed SOAP namespace to Debbugs/SOAP/V1, thanks Don for the hint!
+  * Added values for Bugreports to compare their severities
+  * Added HTML Parser and get_html_fulltext(bugnr)
+
+ -- Bastian Venthur <venthur@debian.org>  Mon, 07 Jul 2008 23:26:58 +0200
+
+python-debianbts (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 06 Jul 2008 19:40:04 +0200
