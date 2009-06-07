@@ -3,8 +3,8 @@ Section: python
 Priority: optional
 Maintainer: Bastian Venthur <venthur@debian.org>
 Build-Depends: dpatch, debhelper (>= 7), python-support (>= 0.6)
-Standards-Version: 3.8.0
-Homepage: http://reportbug-ng.alioth.debian.org
+Standards-Version: 3.8.1
+VCS-git: http://git.venthur.de/python-debianbts.git
 
 Package: python-debianbts
 Architecture: all

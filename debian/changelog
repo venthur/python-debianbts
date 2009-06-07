@@ -1,3 +1,16 @@
+python-debianbts (0.4) unstable; urgency=low
+
+  * Fix "incomplete documentation for debianbts.get_bugs()", added
+    "correspondent" to docstring (Closes: #529588)
+  * Fix "timestamps represented as strings", first- and lastaction are now
+    datetimeobjects, thanks Jakub (Closes: #529488)
+  * Added VCS-git field to debian/control 
+  * Bumped standards version 
+  * Replaced dh_clean -k with dh_prep in debian/rules 
+  * Replaced Author(s) with Author in debian/copyright 
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 07 Jun 2009 15:03:52 +0200
+
 python-debianbts (0.3) unstable; urgency=low
 
   * Added support for Tags
