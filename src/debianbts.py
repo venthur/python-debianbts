@@ -23,6 +23,7 @@ import os
 import time
 from HTMLParser import HTMLParser
 import urllib
+from datetime import datetime
 
 # Setup the soap server
 # TODO: recognize HTTP proxy environment variable    # Default values
@@ -151,8 +152,8 @@ def _parse_status(status):
     tmp = status['value']
     bug.summary = unicode(tmp['subject'], 'utf-8')
     bug.package =  unicode(tmp['package'], 'utf-8')
-    bug.firstaction = time.strftime('%Y-%m-%d',time.gmtime(tmp['date']))
-    bug.lastaction = time.strftime('%Y-%m-%d',time.gmtime(tmp['log_modified']))
+    bug.firstaction = datetime.utcfromtimestamp(tmp['date'])
+    bug.lastaction = datetime.utcfromtimestamp(tmp['log_modified'])
     bug.severity = unicode(tmp['severity'], 'utf-8')
     if tmp['done']:
         bug.status = u"Resolved"
