@@ -139,7 +139,7 @@ def get_bugs(*key_value):
     key-value pair(s).
     
     Possible keys are: package, submitter, maint, src, severity, status, tag, 
-    owner, bugs.
+    owner, bugs, correspondent.
     
     Example: get_bugs('package', 'gtk-qt-engine','severity', 'normal')
     """
