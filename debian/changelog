@@ -1,3 +1,12 @@
+python-debianbts (0.5) unstable; urgency=low
+
+  The "greetings from Graz" release
+  * Fix "python-glpk and python-debianbts: error when trying to install
+    together" Removed __init__.py (Closes: #546561)
+  * Fix "submitter field is always None" (Closes: #542651)
+
+ -- Bastian Venthur <venthur@debian.org>  Mon, 14 Sep 2009 10:59:30 +0200
+
 python-debianbts (0.4) unstable; urgency=low
 
   * Fix "incomplete documentation for debianbts.get_bugs()", added

@@ -152,6 +152,7 @@ def _parse_status(status):
     tmp = status['value']
     bug.summary = unicode(tmp['subject'], 'utf-8')
     bug.package =  unicode(tmp['package'], 'utf-8')
+    bug.submitter = unicode(tmp['originator'], 'utf-8')
     bug.firstaction = datetime.utcfromtimestamp(tmp['date'])
     bug.lastaction = datetime.utcfromtimestamp(tmp['log_modified'])
     bug.severity = unicode(tmp['severity'], 'utf-8')
