@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Bastian Venthur <venthur@debian.org>
 Build-Depends: dpatch, debhelper (>= 7), python-support (>= 0.6)
 Standards-Version: 3.8.1
-VCS-git: http://git.venthur.de/python-debianbts.git
+VCS-git: git://github.com/venthur/python-debianbts.git
 
 Package: python-debianbts
 Architecture: all
