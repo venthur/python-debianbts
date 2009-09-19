@@ -1,8 +1,9 @@
 python-debianbts (0.6) unstable; urgency=low
 
   * Updated VCS-git field in debian/control, we moved to github
+  * Bumped standards version (no changes)
 
- -- Bastian Venthur <venthur@debian.org>  Sat, 19 Sep 2009 12:19:19 +0200
+ -- Bastian Venthur <venthur@debian.org>  Sat, 19 Sep 2009 16:29:45 +0200
 
 python-debianbts (0.5) unstable; urgency=low
 
