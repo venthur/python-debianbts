@@ -52,27 +52,11 @@ class Bugreport(object):
     
     def __init__(self, nr):
         self.nr = unicode(nr)
-        self.summary = None
-        self.submitter = None
-        self.status = None
-        self.severity = None
-        self.fulltext = None
-        self.package = None
-        self.firstaction = None
-        self.lastaction = None
-        self.tags = None
     
     def __str__(self):
-        s  = "Bug: %s\n" % self.nr
-        s += "Package: %s\n" % self.package
-        s += "Summary: %s\n" % self.summary
-        s += "Submitter: %s\n" % self.submitter
-        s += "Status: %s\n" % self.status
-        s += "Severity: %s\n" % self.severity
-        s += "Tags: %s\n" % self.tags
-        s += "Firstaction: %s\n" % self.firstaction
-        s += "Lastaction: %s\n" % self.lastaction
-        s += "Fulltext: %s\n" % self.fulltext
+        s = ""
+        for key, value in self.__dict__.iteritems():
+            s += "%s: %s\n" % (key, str(value))
         return s
 
     def value(self):
@@ -150,18 +134,43 @@ def _parse_status(status):
     """Return a bugreport from a given status."""
     bug = Bugreport(status['key'])
     tmp = status['value']
-    bug.summary = unicode(tmp['subject'], 'utf-8')
-    bug.package =  unicode(tmp['package'], 'utf-8')
-    bug.submitter = unicode(tmp['originator'], 'utf-8')
-    bug.firstaction = datetime.utcfromtimestamp(tmp['date'])
-    bug.lastaction = datetime.utcfromtimestamp(tmp['log_modified'])
+    
+    bug.originator = unicode(tmp['originator'], 'utf-8')
+    bug.date = datetime.utcfromtimestamp(tmp['date'])
+    bug.subject = unicode(tmp['subject'], 'utf-8')
+    bug.msgid = unicode(tmp['msgid'], 'utf-8')
+    bug.package = unicode(tmp['package'], 'utf-8')
+    bug.tags = unicode(tmp['tags'])
+    bug.done = bool(tmp['done'])
+    bug.forwarded = unicode(tmp['forwarded'], 'utf-8')
+    # Should be a list but does not appear to be one
+    print tmp
+    print tmp['mergedwith']
+    print type(tmp['mergedwith'])
+    bug.mergedwith = int(tmp['mergedwith'])
     bug.severity = unicode(tmp['severity'], 'utf-8')
-    if tmp['done']:
-        bug.status = u"Resolved"
-    else:
-        bug.status = u"Outstanding"
-    if tmp['tags']:
-        bug.tags = unicode(tmp['tags'])
+    bug.ownwer = unicode(tmp['owner'], 'utf-8')
+    bug.found_versions = [unicode(i, 'utf-8') for i in tmp['found_versions']]
+    bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
+    bug.fixed_versions = [unicode(i, 'utf-8') for i in tmp['fixed_versions']]
+    bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
+    bug.blocks = unicode(tmp['blocks'])
+    bug.blockedby = unicode(tmp['blockedby'], 'utf-8')
+    bug.unarchived = bool(tmp["unarchived"])
+    bug.summary = unicode(tmp['summary'], 'utf-8')
+    bug.affects = unicode(tmp['affects'], 'utf-8')
+    bug.log_modified = datetime.utcfromtimestamp(tmp['log_modified'])
+    bug.location = unicode(tmp['location'], 'utf-8')
+    bug.archived = bool(tmp["archived"])
+    bug.bug_num = int(tmp['bug_num'])
+    bug.source = unicode(tmp['source'], 'utf-8')
+    bug.fixed = [i[0] for i in tmp['fixed']]
+    bug.found = [i[0] for i in tmp['found']]
+    # Space separated list
+    bug.keywords = unicode(tmp['keywords'], 'utf-8').split()
+    bug.id = int(tmp['id'])
+    bug.pending = unicode(tmp['pending'], 'utf-8')
+    
     return bug
 
 
@@ -221,7 +230,7 @@ class HTMLStripper(HTMLParser):
 
 if __name__ == '__main__':
     pass
-    buglist = [11111, 22222, 496544, 393837]
+    buglist = [11111, 22222, 496544, 393837, 547498]
     bugs = get_status(buglist)
     for i in bugs:
         print i
