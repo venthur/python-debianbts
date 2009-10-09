@@ -1,3 +1,9 @@
+python-debianbts (0.7) unstable; urgency=low
+
+  * Added support for usertags
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 09 Oct 2009 18:30:38 +0200
+
 python-debianbts (0.6) unstable; urgency=low
 
   * Updated VCS-git field in debian/control, we moved to github

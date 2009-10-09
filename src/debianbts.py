@@ -103,6 +103,7 @@ def get_usertag(email, *tags):
     are given all available tags are returned.
     """
     reply = server.get_usertag(email, *tags)
+    # reply is an empty string if no bugs match the query
     return dict() if reply == "" else reply._asdict()
 
 
