@@ -95,8 +95,15 @@ def get_status(*nr):
         bugs.append(_parse_status(reply[0]))
     return bugs
 
-def get_usertag(email, *tag):
-    pass
+
+def get_usertag(email, *tags):
+    """Return a dictionary of (usertag, buglist) mappings.
+    
+    If tags are given the dictionary is limited to the matching tags, if no tags
+    are given all available tags are returned.
+    """
+    reply = server.get_usertag(email, *tags)
+    return dict() if reply == "" else reply._asdict()
 
 
 def get_bug_log(nr):
@@ -144,10 +151,7 @@ def _parse_status(status):
     bug.done = bool(tmp['done'])
     bug.forwarded = unicode(tmp['forwarded'], 'utf-8')
     # Should be a list but does not appear to be one
-    print tmp
-    print tmp['mergedwith']
-    print type(tmp['mergedwith'])
-    bug.mergedwith = int(tmp['mergedwith'])
+    bug.mergedwith = tmp['mergedwith']
     bug.severity = unicode(tmp['severity'], 'utf-8')
     bug.ownwer = unicode(tmp['owner'], 'utf-8')
     bug.found_versions = [unicode(i, 'utf-8') for i in tmp['found_versions']]
