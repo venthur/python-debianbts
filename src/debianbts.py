@@ -18,8 +18,10 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import SOAPpy
 from datetime import datetime
+
+import SOAPpy
+
 
 # Setup the soap server
 # TODO: recognize HTTP proxy environment variable    # Default values
