@@ -7,6 +7,8 @@ install:
 	mkdir -p $(TARGET)
 	cp *.py $(TARGET)
 	rm $(TARGET)__init__.py
+	mkdir -p $(DOCDIR)
+	mv $(TARGET)test_debianbts.py $(DOCDIR)
 
 
 clean:

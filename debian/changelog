@@ -3,7 +3,7 @@ python-debianbts (1.0) unstable; urgency=low
   * Major version number jump breaks backwards compatibility
 
   * Added support for usertags
-  * Bugreport class provides exactly the members, provided by soap even if
+  * Bugreport class provides exactly the members, provided by SOAP even if
     they don't make sense:
     - id and bug_nr seem to be identical all the time
     - found and found_versions as well
@@ -17,7 +17,7 @@ python-debianbts (1.0) unstable; urgency=low
   * Major refactings
   * Added unittests
 
- -- Bastian Venthur <venthur@debian.org>  Sat, 10 Oct 2009 19:49:20 +0200
+ -- Bastian Venthur <venthur@debian.org>  Sat, 10 Oct 2009 20:20:31 +0200
 
 python-debianbts (0.6) unstable; urgency=low
 
