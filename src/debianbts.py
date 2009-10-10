@@ -111,24 +111,27 @@ def get_bug_log(nr):
 
 def newest_bugs(amount):
     """Returns a list of bugnumbers of the newest bugs."""
-    return _make_list(server.newest_bugs(amount))
+    reply = server.newest_bugs(amount)
+    return reply._aslist()
 
 
 def get_bugs(*key_value):
     """
-    Returns a list of bugnumbers, that match the conditions given bey the
+    Returns a list of bugnumbers, that match the conditions given by the
     key-value pair(s).
     
     Possible keys are: package, submitter, maint, src, severity, status, tag, 
     owner, bugs, correspondent.
     
-    Example: get_bugs('package', 'gtk-qt-engine','severity', 'normal')
+    Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
-    return _make_list(server.get_bugs(*key_value))
+    reply = server.get_bugs(*key_value)
+    return reply._aslist()
 
 
 def _parse_status(status):
     """Return a bugreport from a given status."""
+    status = status._asdict()
     bug = Bugreport(status['key'])
     tmp = status['value']
     
@@ -167,20 +170,6 @@ def _parse_status(status):
     
     return bug
 
-
-def _make_list(listlike):
-    """Converts a convert a SOAPpy array to a python list."""
-    l = []
-    for i in listlike:
-        l.append(i)
-    return l
-
-def _make_dict(dictlike):
-    """Converts a SOAPpy record into a python dict."""
-    d = dict()
-    for i in dictlike._keys():
-        d[i] = dictlike[i]
-    return d
 
 if __name__ == '__main__':
     pass
