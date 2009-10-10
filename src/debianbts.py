@@ -66,19 +66,6 @@ class Bugreport(object):
         return STATUS_VALUE.get(self.status.lower(), 200) + SEVERITY_VALUE.get(self.severity.lower(), 20)
 
     
-class Buglog(object):
-    """Represents a single message of a bugreport."""
-    
-    def __init__(self, header, body):
-        self.header = unicode(header)
-        self.body = unicode(body)
-        
-    def __str__(self):
-        s  = "Header: \n%s\n" % self.header
-        s += "Body: \n%s\n" % self.body
-        return s
-
-
 def get_status(*nr):
     """Returns a list of Bugreports."""
     reply = server.get_status(*nr)
@@ -108,16 +95,22 @@ def get_usertag(email, *tags):
 
 
 def get_bug_log(nr):
-    """Returns a list of Buglogs."""
-    reply = _make_list(server.get_bug_log(nr))
-    l = []
-    for i in reply:
-        l.append(_make_dict(i))
-    bl = []
-    for i in l:
-        log = Buglog(i['header'], i['body'])
-        bl.append(log)
-    return bl
+    """Return a list of Buglogs.
+    
+    A buglog is a dictionary with the following mappings:
+        "header" => string
+        "body" => string
+        "attachments" => list
+        "msg_num" => int
+    """
+    reply = server.get_bug_log(nr)
+    buglog = [i._asdict() for i in reply._aslist()]
+    for b in buglog:
+        b["header"] = unicode(b["header"])
+        b["body"] = unicode(b["body"])
+        b["msg_num"] = int(b["msg_num"])
+        b["attachments"] = b["attachments"]._aslist()
+    return buglog
 
 
 def newest_bugs(amount):
