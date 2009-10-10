@@ -19,10 +19,6 @@
 
 
 import SOAPpy
-import os
-import time
-from HTMLParser import HTMLParser
-import urllib
 from datetime import datetime
 
 # Setup the soap server
@@ -185,46 +181,6 @@ def _make_dict(dictlike):
     for i in dictlike._keys():
         d[i] = dictlike[i]
     return d
-
-def get_html_fulltext(bugnr):
-    """Returns the full bugreport"""
-    report = urllib.urlopen(str(BTS_URL) + str(bugnr))
-
-    parser = HTMLStripper()
-    parser.feed(unicode(report.read(), "utf-8", 'replace'))
-    parser.close()
-    return parser.result
-
-class HTMLStripper(HTMLParser):
-    """Strips all unwanted tags from given HTML/XML String"""
-    
-    invalid_tags = ('img')
-   
-    def __init__(self):
-        HTMLParser.__init__(self)
-        self.result = ""
-  
-    def handle_data(self, data):
-        self.result += data
-
-    def handle_entityref(self, name):
-        self.result += "&"+name+";"
-
-    def handle_charref(self, name):
-        self.result += "&#"+name+";"
-    
-    def handle_starttag(self, tag, attrs):
-        if not tag in self.invalid_tags:       
-            self.result += '<' + tag
-            for k, v in attrs:
-                self.result += ' %s="%s"' % (k, v)
-            self.result += '>'
-        else:
-            self.result += "<p>[ %s-tag removed by reportbug-ng ]</p>" % tag
-            
-    def handle_endtag(self, tag):
-        if not tag in self.invalid_tags:
-            self.result = "%s</%s>" % (self.result, tag)
 
 if __name__ == '__main__':
     pass
