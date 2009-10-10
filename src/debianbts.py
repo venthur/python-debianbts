@@ -28,40 +28,92 @@ import SOAPpy
 URL = 'http://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
 server = SOAPpy.SOAPProxy(URL, NS)
-
-# for ordinary html
-BTS_URL = "http://bugs.debian.org/"
-
-# helpers to calculate the 'value' of a bug
-STATUS_VALUE = {u'outstanding' : 90,
-                u'resolved' : 50,
-                u'archived' : 10}
-SEVERITY_VALUE = {u"critical" : 7,
-                  u"grave" : 6,
-                  u"serious" : 5,
-                  u"important" : 4,
-                  u"normal" : 3,
-                  u"minor" : 2,
-                  u"wishlist" : 1}
-
+BTS_URL = 'http://bugs.debian.org/'
 
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System."""
     
     def __init__(self, nr):
-        self.nr = unicode(nr)
+        self.nr = nr
+        self.originator = None
+        self.date = None
+        self.subject = None
+        self.msgid = None
+        self.package = None
+        self.tags = None
+        self.done = None
+        self.forwarded = None
+        self.mergedwith = None
+        self.severity = None
+        self.ownwer = None
+        self.found_versions = None
+        self.found_date = None
+        self.fixed_versions = None
+        self.fixed_date = None
+        self.blocks = None
+        self.blockedby = None
+        self.unarchived = None
+        self.summary = None
+        self.affects = None
+        self.log_modified = None
+        self.location = None
+        self.archived = None
+        self.bug_num = None
+        self.source = None
+        self.fixed = None
+        self.found = None
+        self.keywords = None
+        self.id = None
+        self.pending = None
+
     
     def __str__(self):
         s = ""
         for key, value in self.__dict__.iteritems():
             s += "%s: %s\n" % (key, str(value))
         return s
+    
+    def __cmp__(self, other):
+        """Compare a bugreport with another.
+        
+        The more open and and urgent a bug is, the greater the bug is:
+            outstanding > resolved > archived
+            critical > grave > serious > important > normal > minor > wishlist.
+        Openness always beats urgency, eg an archived bug is *always* smaller
+        than an outstanding bug.
+        
+        This sorting is useful for displaying bugreports in a list and sorting
+        them in a useful way.
+        """ 
+        
+        myval = self._get_value()
+        otherval = other._get_value()
+        if myval < otherval: 
+            return -1
+        elif myval == otherval: 
+            return 0
+        else: 
+            return 1 
+        
 
-    def value(self):
-        """Returns an 'urgency value', the higher the number, the more urgent
-        the bug is. Open bugs generally have higher urgencies than closed ones.
-        """
-        return STATUS_VALUE.get(self.status.lower(), 200) + SEVERITY_VALUE.get(self.severity.lower(), 20)
+    def _get_value(self):
+        if self.archived:
+            # archived and done
+            val = 0
+        elif self.done:
+            # not archived and done
+            val = 10
+        else:
+            # not done
+            val = 20
+        val += {u"critical" : 7, 
+                u"grave" : 6,
+                u"serious" : 5,
+                u"important" : 4,
+                u"normal" : 3,
+                u"minor" : 2,
+                u"wishlist" : 1}[self.severity]
+        return val
 
     
 def get_status(*nr):
@@ -132,7 +184,7 @@ def get_bugs(*key_value):
 
 
 def _parse_status(status):
-    """Return a bugreport from a given status."""
+    """Return a bugreport object from a given status."""
     status = status._asdict()
     bug = Bugreport(status['key'])
     tmp = status['value']
@@ -142,19 +194,21 @@ def _parse_status(status):
     bug.subject = unicode(tmp['subject'], 'utf-8')
     bug.msgid = unicode(tmp['msgid'], 'utf-8')
     bug.package = unicode(tmp['package'], 'utf-8')
-    bug.tags = unicode(tmp['tags'])
+    bug.tags = unicode(tmp['tags'], 'utf-8').split()
     bug.done = bool(tmp['done'])
     bug.forwarded = unicode(tmp['forwarded'], 'utf-8')
     # Should be a list but does not appear to be one
     bug.mergedwith = tmp['mergedwith']
     bug.severity = unicode(tmp['severity'], 'utf-8')
     bug.ownwer = unicode(tmp['owner'], 'utf-8')
-    bug.found_versions = [unicode(i, 'utf-8') for i in tmp['found_versions']]
+    # sometimes it is a float, sometimes it is "$packagename/$version"
+    bug.found_versions = [unicode(str(i), 'utf-8') for i in tmp['found_versions']]
     bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
-    bug.fixed_versions = [unicode(i, 'utf-8') for i in tmp['fixed_versions']]
+    bug.fixed_versions = [unicode(str(i), 'utf-8') for i in tmp['fixed_versions']]
     bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
     bug.blocks = unicode(tmp['blocks'])
-    bug.blockedby = unicode(tmp['blockedby'], 'utf-8')
+    # here too: sometimes float sometimes string
+    bug.blockedby = unicode(str(tmp['blockedby']), 'utf-8')
     bug.unarchived = bool(tmp["unarchived"])
     bug.summary = unicode(tmp['summary'], 'utf-8')
     bug.affects = unicode(tmp['affects'], 'utf-8')
@@ -163,38 +217,36 @@ def _parse_status(status):
     bug.archived = bool(tmp["archived"])
     bug.bug_num = int(tmp['bug_num'])
     bug.source = unicode(tmp['source'], 'utf-8')
-    bug.fixed = [i[0] for i in tmp['fixed']]
-    bug.found = [i[0] for i in tmp['found']]
+    bug.fixed = _parse_crappy_soap(tmp, "fixed")
+    bug.found = _parse_crappy_soap(tmp, "found")
     # Space separated list
     bug.keywords = unicode(tmp['keywords'], 'utf-8').split()
     bug.id = int(tmp['id'])
     bug.pending = unicode(tmp['pending'], 'utf-8')
-    
     return bug
 
 
+def _parse_crappy_soap(crap, key):
+    """Parses 'interesting' SOAP structure.
+    
+    Crap should be a list, but can be an empty string or a nested dict where 
+    the actual list is hidden behind various keys.
+    """ 
+    tmp = [] if crap[key] == '' else crap[key]._asdict()['item']
+    if type(tmp) != type(list()):
+        tmp = [tmp]
+    l = list()
+    for i in tmp:
+        l.append(unicode(str(i._asdict()['key']), "utf-8"))
+    return l
+    
+
 if __name__ == '__main__':
     pass
-    buglist = [11111, 22222, 496544, 393837, 547498]
+    #buglist = [11111, 22222, 496544, 393837, 547498]
+    buglist = get_bugs("package", "reportbug")
     bugs = get_status(buglist)
+    bugs.sort()
+    print bugs
     for i in bugs:
-        print i
-
-
-#    # an array of bugnumbers
-#    print get_bugs('package', 'gtk-qt-engine','severity', 'normal')
-    
-    # something strange
-    #bugs = server.get_usertag("debian-qa@lists.debian.org")
-    
-#    # an array of bugnumbers
-#    print newest_bugs(20)
-
-#    #l = get_bug_log('11111')
-#    l = get_bug_log('66666')
-#    print l
-#    for i in l:
-#        print i
-    
-#    for b in bugs:
-#        print b
+        print i.done, i.archived, i.severity

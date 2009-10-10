@@ -22,6 +22,7 @@ import unittest
 
 import debianbts as bts
 
+
 class DebianBtsTestCase(unittest.TestCase):
     
     def testGetUsertagEmpty(self):
