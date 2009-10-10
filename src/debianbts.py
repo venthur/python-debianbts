@@ -33,8 +33,7 @@ BTS_URL = 'http://bugs.debian.org/'
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System."""
     
-    def __init__(self, nr):
-        self.nr = nr
+    def __init__(self):
         self.originator = None
         self.date = None
         self.subject = None
@@ -186,7 +185,7 @@ def get_bugs(*key_value):
 def _parse_status(status):
     """Return a bugreport object from a given status."""
     status = status._asdict()
-    bug = Bugreport(status['key'])
+    bug = Bugreport()
     tmp = status['value']
     
     bug.originator = unicode(tmp['originator'], 'utf-8')
@@ -249,4 +248,4 @@ if __name__ == '__main__':
     bugs.sort()
     print bugs
     for i in bugs:
-        print i.done, i.archived, i.severity
+        print str(i)
