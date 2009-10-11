@@ -1,3 +1,13 @@
+python-debianbts (1.1) unstable; urgency=low
+
+  * Make python-debianbts depend on python >= 2.5
+    - (Closes: #550569) python-debianbts: fails to
+      compile with Python 2.4!!
+    - (Closes: #550571) python-debianbts: Incompatible
+      with python2.4!!
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 11 Oct 2009 12:34:03 +0200
+
 python-debianbts (1.0) unstable; urgency=low
 
   * Major version number jump breaks backwards compatibility
