@@ -1,3 +1,9 @@
+python-debianbts (1.2) unstable; urgency=low
+
+  * Fixed typo in debian/pyversions 
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 11 Oct 2009 13:14:57 +0200
+
 python-debianbts (1.1) unstable; urgency=low
 
   * Make python-debianbts depend on python >= 2.5
