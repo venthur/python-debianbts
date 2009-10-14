@@ -59,9 +59,12 @@ class Bugreport(object):
         self.archived = None
         self.bug_num = None
         self.source = None
+        # Buggy implemented in debbugs, ignoring it
         self.fixed = None
+        # Buggy implemented in debbugs, ignoring it
         self.found = None
         self.keywords = None
+        # Will vanish in debbugs, use bug_num
         self.id = None
         self.pending = None
 
@@ -216,11 +219,13 @@ def _parse_status(status):
     bug.archived = bool(tmp["archived"])
     bug.bug_num = int(tmp['bug_num'])
     bug.source = unicode(tmp['source'], 'utf-8')
-    bug.fixed = _parse_crappy_soap(tmp, "fixed")
-    bug.found = _parse_crappy_soap(tmp, "found")
+    # Not fully implemented in debbugs, use fixed_versions and found_versions
+    #bug.fixed = _parse_crappy_soap(tmp, "fixed")
+    #bug.found = _parse_crappy_soap(tmp, "found")
     # Space separated list
     bug.keywords = unicode(tmp['keywords'], 'utf-8').split()
-    bug.id = int(tmp['id'])
+    # Will vanish in future versions of debbugs, use bug_num
+    #bug.id = int(tmp['id'])
     bug.pending = unicode(tmp['pending'], 'utf-8')
     return bug
 
