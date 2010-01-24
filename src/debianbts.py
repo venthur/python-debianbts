@@ -44,7 +44,7 @@ class Bugreport(object):
         self.forwarded = None
         self.mergedwith = None
         self.severity = None
-        self.ownwer = None
+        self.owner = None
         self.found_versions = None
         self.found_date = None
         self.fixed_versions = None
@@ -202,7 +202,7 @@ def _parse_status(status):
     # Should be a list but does not appear to be one
     bug.mergedwith = tmp['mergedwith']
     bug.severity = unicode(tmp['severity'], 'utf-8')
-    bug.ownwer = unicode(tmp['owner'], 'utf-8')
+    bug.owner = unicode(tmp['owner'], 'utf-8')
     # sometimes it is a float, sometimes it is "$packagename/$version"
     bug.found_versions = [unicode(str(i), 'utf-8') for i in tmp['found_versions']]
     bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
