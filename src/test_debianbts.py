@@ -24,6 +24,12 @@ import debianbts as bts
 
 
 class DebianBtsTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.b1 = bts.Bugreport()
+        self.b1.severity = 'normal'
+        self.b2 = bts.Bugreport()
+        self.b2.severity = 'normal'
     
     def testGetUsertagEmpty(self):
         """get_usertag should return empty dict if no bugs are found."""
@@ -77,13 +83,15 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertEqual(type(i["header"]), type(unicode()))
             self.assertTrue(i.has_key("msg_num"))
             self.assertEqual(type(i["msg_num"]), type(int()))
+
+    def testComparison(self):
+        self.b1.archived = True
+        self.b2.done = True
+        self.assertTrue(self.b2 > self.b1)
+
             
 
 
-suite = unittest.TestLoader().loadTestsFromTestCase(DebianBtsTestCase)
-
-def main():
+if __name__ == "__main__":
     unittest.main()
 
-if __name__ == "__main__":
-    main()
