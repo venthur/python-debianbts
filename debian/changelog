@@ -1,3 +1,9 @@
+python-debianbts (1.4~bpo50+1) lenny-backports; urgency=low
+
+  * Rebuild for lenny-backports.
+
+ -- Bastian Venthur <venthur@debian.org>  Tue, 22 Jun 2010 23:00:05 +0200
+
 python-debianbts (1.4) unstable; urgency=low
 
   * Fix "[python-debianbts] Typo that generates incorrect output"
