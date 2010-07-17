@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # debianbts.py - Methods to query Debian's BTS.
-# Copyright (C) 2007-2009  Bastian Venthur <venthur@debian.org>
+# Copyright (C) 2007-2010  Bastian Venthur <venthur@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
