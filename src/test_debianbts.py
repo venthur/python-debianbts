@@ -89,7 +89,13 @@ class DebianBtsTestCase(unittest.TestCase):
         self.b2.done = True
         self.assertTrue(self.b2 > self.b1)
 
-            
+    def test_regresseion_588954(self):
+        """Get_bug_log must convert the body correctly to unicode."""
+        try:
+            bts.get_bug_log(582010)
+        except UnicodeDecodeError:
+            self.fail()
+
 
 
 if __name__ == "__main__":
