@@ -1,3 +1,10 @@
+python-debianbts (1.5) lenny-backports; urgency=low
+
+  * Fix "UnicodeDecodeError on get_bug_log() and other methods", added
+    regression test for this bug. (Closes: #588954)
+
+ -- Bastian Venthur <venthur@debian.org>  Sat, 17 Jul 2010 14:59:17 +0200
+
 python-debianbts (1.4~bpo50+1) lenny-backports; urgency=low
 
   * Rebuild for lenny-backports.
