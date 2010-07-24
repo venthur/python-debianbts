@@ -89,12 +89,21 @@ class DebianBtsTestCase(unittest.TestCase):
         self.b2.done = True
         self.assertTrue(self.b2 > self.b1)
 
-    def test_regresseion_588954(self):
+    def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
         try:
             bts.get_bug_log(582010)
         except UnicodeDecodeError:
             self.fail()
+
+    def test_regression_590073(self):
+        """bug.blocks is sometimes a str sometimes an int."""
+        try:
+            # test the int case
+            bts.get_status(568657)
+        except TypeError:
+            self.fail()
+
 
 
 

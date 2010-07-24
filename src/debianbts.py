@@ -208,7 +208,8 @@ def _parse_status(status):
     bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
     bug.fixed_versions = [unicode(str(i), 'utf-8') for i in tmp['fixed_versions']]
     bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
-    bug.blocks = unicode(tmp['blocks'], 'utf-8')
+    # sometimes int sometimes str
+    bug.blocks = unicode(str(tmp['blocks']), 'utf-8')
     # here too: sometimes float sometimes string
     bug.blockedby = unicode(str(tmp['blockedby']), 'utf-8')
     bug.unarchived = bool(tmp["unarchived"])
