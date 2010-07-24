@@ -1,3 +1,11 @@
+python-debianbts (1.6) unstable; urgency=low
+
+  * Fix "reportbug-ng: coercing to Unicode: need string or buffer, int found",
+    apparently "blocks" is sometimes a string and sometimes an int.
+    (Closes: #590073)
+
+ -- Bastian Venthur <venthur@debian.org>  Sat, 24 Jul 2010 15:01:00 +0200
+
 python-debianbts (1.5) unstable; urgency=low
 
   * Fix "UnicodeDecodeError on get_bug_log() and other methods", added

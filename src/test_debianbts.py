@@ -100,6 +100,7 @@ class DebianBtsTestCase(unittest.TestCase):
         """bug.blocks is sometimes a str sometimes an int."""
         try:
             # test the int case
+            # TODO: test the string case
             bts.get_status(568657)
         except TypeError:
             self.fail()
