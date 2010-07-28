@@ -32,7 +32,7 @@ BTS_URL = 'http://bugs.debian.org/'
 
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System."""
-    
+
     def __init__(self):
         self.originator = None
         self.date = None
@@ -68,35 +68,35 @@ class Bugreport(object):
         self.id = None
         self.pending = None
 
-    
+
     def __str__(self):
         s = ""
         for key, value in self.__dict__.iteritems():
             s += "%s: %s\n" % (key, str(value))
         return s
-    
+
     def __cmp__(self, other):
         """Compare a bugreport with another.
-        
+
         The more open and and urgent a bug is, the greater the bug is:
             outstanding > resolved > archived
             critical > grave > serious > important > normal > minor > wishlist.
         Openness always beats urgency, eg an archived bug is *always* smaller
         than an outstanding bug.
-        
+
         This sorting is useful for displaying bugreports in a list and sorting
         them in a useful way.
-        """ 
-        
+        """
+
         myval = self._get_value()
         otherval = other._get_value()
-        if myval < otherval: 
+        if myval < otherval:
             return -1
-        elif myval == otherval: 
+        elif myval == otherval:
             return 0
-        else: 
-            return 1 
-        
+        else:
+            return 1
+
 
     def _get_value(self):
         if self.archived:
@@ -108,7 +108,7 @@ class Bugreport(object):
         else:
             # not done
             val = 20
-        val += {u"critical" : 7, 
+        val += {u"critical" : 7,
                 u"grave" : 6,
                 u"serious" : 5,
                 u"important" : 4,
@@ -117,7 +117,7 @@ class Bugreport(object):
                 u"wishlist" : 1}[self.severity]
         return val
 
-    
+
 def get_status(*nr):
     """Returns a list of Bugreports."""
     reply = server.get_status(*nr)
@@ -137,7 +137,7 @@ def get_status(*nr):
 
 def get_usertag(email, *tags):
     """Return a dictionary of (usertag, buglist) mappings.
-    
+
     If tags are given the dictionary is limited to the matching tags, if no tags
     are given all available tags are returned.
     """
@@ -148,7 +148,7 @@ def get_usertag(email, *tags):
 
 def get_bug_log(nr):
     """Return a list of Buglogs.
-    
+
     A buglog is a dictionary with the following mappings:
         "header" => string
         "body" => string
@@ -175,10 +175,10 @@ def get_bugs(*key_value):
     """
     Returns a list of bugnumbers, that match the conditions given by the
     key-value pair(s).
-    
-    Possible keys are: package, submitter, maint, src, severity, status, tag, 
+
+    Possible keys are: package, submitter, maint, src, severity, status, tag,
     owner, bugs, correspondent.
-    
+
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
     reply = server.get_bugs(*key_value)
@@ -190,7 +190,7 @@ def _parse_status(status):
     status = status._asdict()
     bug = Bugreport()
     tmp = status['value']
-    
+
     bug.originator = unicode(tmp['originator'], 'utf-8')
     bug.date = datetime.utcfromtimestamp(tmp['date'])
     bug.subject = unicode(tmp['subject'], 'utf-8')
@@ -233,10 +233,10 @@ def _parse_status(status):
 
 def _parse_crappy_soap(crap, key):
     """Parses 'interesting' SOAP structure.
-    
-    Crap should be a list, but can be an empty string or a nested dict where 
+
+    Crap should be a list, but can be an empty string or a nested dict where
     the actual list is hidden behind various keys.
-    """ 
+    """
     tmp = [] if crap[key] == '' else crap[key]._asdict()['item']
     if type(tmp) != type(list()):
         tmp = [tmp]
@@ -244,7 +244,7 @@ def _parse_crappy_soap(crap, key):
     for i in tmp:
         l.append(unicode(str(i._asdict()['key']), "utf-8"))
     return l
-    
+
 
 if __name__ == '__main__':
     pass
@@ -255,3 +255,4 @@ if __name__ == '__main__':
     print bugs
     for i in bugs:
         print str(i)
+
