@@ -8,4 +8,5 @@ install:
 	rm $(TARGET)__init__.py
 
 clean:
+	rm *.pyc
 
