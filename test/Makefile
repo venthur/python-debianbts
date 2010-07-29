@@ -7,5 +7,5 @@ install:
 	mv *.py $(DOCDIR)
 
 clean:
-	rm *.pyc
+	rm -f *.pyc
 
