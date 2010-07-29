@@ -18,6 +18,14 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+"""Query Debian's Bug Tracking System (BTS).
+
+This module provides a layer between Python and Debian's BTS. It provides
+methods to query the BTS using the BTS' SOAP interface, and the Bugreport class
+which represents a bugreport from the BTS.
+"""
+
+
 from datetime import datetime
 
 import SOAPpy
