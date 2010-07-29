@@ -1,3 +1,13 @@
+python-debianbts (1.7) unstable; urgency=low
+
+  * Fix "remove *.pyc from source package" Added rm *.pyc rule in clean
+    targets. (Closes: #590722)
+  * Fix "UnicodeDecodeError: 'utf8' codec can't decode byte 0xe4 in
+    position 44: invalid continuation byte" We replace invalid unicode
+    characters now (Closes: #590725)
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 29 Jul 2010 22:21:01 +0200
+
 python-debianbts (1.6) unstable; urgency=low
 
   * Fix "reportbug-ng: coercing to Unicode: need string or buffer, int found",
