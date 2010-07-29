@@ -105,6 +105,14 @@ class DebianBtsTestCase(unittest.TestCase):
         except TypeError:
             self.fail()
 
+    def test_regression_590725(self):
+        """bug.body utf sometimes contains invalid continuation bytes."""
+        try:
+            bts.get_bug_log(578363)
+            bts.get_bug_log(570825)
+        except UnicodeDecodeError:
+            self.fail()
+
 
 
 

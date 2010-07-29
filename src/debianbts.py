@@ -166,8 +166,8 @@ def get_bug_log(nr):
     reply = server.get_bug_log(nr)
     buglog = [i._asdict() for i in reply._aslist()]
     for b in buglog:
-        b["header"] = unicode(b["header"], 'utf-8')
-        b["body"] = unicode(b["body"], 'utf-8')
+        b["header"] = _uc(b["header"])
+        b["body"] = _uc(b["body"])
         b["msg_num"] = int(b["msg_num"])
         b["attachments"] = b["attachments"]._aslist()
     return buglog
@@ -199,43 +199,43 @@ def _parse_status(status):
     bug = Bugreport()
     tmp = status['value']
 
-    bug.originator = unicode(tmp['originator'], 'utf-8')
+    bug.originator = _uc(tmp['originator'])
     bug.date = datetime.utcfromtimestamp(tmp['date'])
-    bug.subject = unicode(tmp['subject'], 'utf-8')
-    bug.msgid = unicode(tmp['msgid'], 'utf-8')
-    bug.package = unicode(tmp['package'], 'utf-8')
-    bug.tags = unicode(tmp['tags'], 'utf-8').split()
+    bug.subject = _uc(tmp['subject'])
+    bug.msgid = _uc(tmp['msgid'])
+    bug.package = _uc(tmp['package'])
+    bug.tags = _uc(tmp['tags']).split()
     bug.done = bool(tmp['done'])
-    bug.forwarded = unicode(tmp['forwarded'], 'utf-8')
+    bug.forwarded = _uc(tmp['forwarded'])
     # Should be a list but does not appear to be one
     bug.mergedwith = tmp['mergedwith']
-    bug.severity = unicode(tmp['severity'], 'utf-8')
-    bug.owner = unicode(tmp['owner'], 'utf-8')
+    bug.severity = _uc(tmp['severity'])
+    bug.owner = _uc(tmp['owner'])
     # sometimes it is a float, sometimes it is "$packagename/$version"
-    bug.found_versions = [unicode(str(i), 'utf-8') for i in tmp['found_versions']]
+    bug.found_versions = [_uc(str(i)) for i in tmp['found_versions']]
     bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
-    bug.fixed_versions = [unicode(str(i), 'utf-8') for i in tmp['fixed_versions']]
+    bug.fixed_versions = [_uc(str(i)) for i in tmp['fixed_versions']]
     bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
     # sometimes int sometimes str
-    bug.blocks = unicode(str(tmp['blocks']), 'utf-8')
+    bug.blocks = _uc(str(tmp['blocks']))
     # here too: sometimes float sometimes string
-    bug.blockedby = unicode(str(tmp['blockedby']), 'utf-8')
+    bug.blockedby = _uc(str(tmp['blockedby']))
     bug.unarchived = bool(tmp["unarchived"])
-    bug.summary = unicode(tmp['summary'], 'utf-8')
-    bug.affects = unicode(tmp['affects'], 'utf-8')
+    bug.summary = _uc(tmp['summary'])
+    bug.affects = _uc(tmp['affects'])
     bug.log_modified = datetime.utcfromtimestamp(tmp['log_modified'])
-    bug.location = unicode(tmp['location'], 'utf-8')
+    bug.location = _uc(tmp['location'])
     bug.archived = bool(tmp["archived"])
     bug.bug_num = int(tmp['bug_num'])
-    bug.source = unicode(tmp['source'], 'utf-8')
+    bug.source = _uc(tmp['source'])
     # Not fully implemented in debbugs, use fixed_versions and found_versions
     #bug.fixed = _parse_crappy_soap(tmp, "fixed")
     #bug.found = _parse_crappy_soap(tmp, "found")
     # Space separated list
-    bug.keywords = unicode(tmp['keywords'], 'utf-8').split()
+    bug.keywords = _uc(tmp['keywords']).split()
     # Will vanish in future versions of debbugs, use bug_num
     #bug.id = int(tmp['id'])
-    bug.pending = unicode(tmp['pending'], 'utf-8')
+    bug.pending = _uc(tmp['pending'])
     return bug
 
 
@@ -250,17 +250,14 @@ def _parse_crappy_soap(crap, key):
         tmp = [tmp]
     l = list()
     for i in tmp:
-        l.append(unicode(str(i._asdict()['key']), "utf-8"))
+        l.append(_uc(str(i._asdict()['key']), "utf-8"))
     return l
 
 
-if __name__ == '__main__':
-    pass
-    #buglist = [11111, 22222, 496544, 393837, 547498]
-    buglist = get_bugs("package", "reportbug")
-    bugs = get_status(buglist)
-    bugs.sort()
-    print bugs
-    for i in bugs:
-        print str(i)
+def _uc(string):
+    """Convert string to unicode.
+
+    This method only exists to unify the unicode conversion in this module.
+    """
+    return unicode(string, 'utf-8', 'replace')
 
