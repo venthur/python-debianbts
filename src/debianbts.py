@@ -234,20 +234,16 @@ def _parse_status(status):
     bug.tags = _uc(tmp['tags']).split()
     bug.done = bool(tmp['done'])
     bug.forwarded = _uc(tmp['forwarded'])
-    # Should be a list but does not appear to be one
-    bug.mergedwith = tmp['mergedwith']
+    bug.mergedwith = [int(i) for i in str(tmp['mergedwith']).split()]
     bug.severity = _uc(tmp['severity'])
     bug.owner = _uc(tmp['owner'])
-    # sometimes it is a float, sometimes it is "$packagename/$version"
     bug.found_versions = [_uc(str(i)) for i in tmp['found_versions']]
     bug.fixed_versions = [_uc(str(i)) for i in tmp['fixed_versions']]
-    # sometimes int sometimes str
-    bug.blocks = _uc(str(tmp['blocks']))
-    # here too: sometimes float sometimes string
-    bug.blockedby = _uc(str(tmp['blockedby']))
+    bug.blocks = [int(i) for i in str(tmp['blocks']).split()]
+    bug.blockedby = [int(i) for i in str(tmp['blockedby']).split()]
     bug.unarchived = bool(tmp["unarchived"])
     bug.summary = _uc(tmp['summary'])
-    bug.affects = _uc(tmp['affects'])
+    bug.affects = [_uc(i) for i in tmp['affects']]
     bug.log_modified = datetime.utcfromtimestamp(tmp['log_modified'])
     bug.location = _uc(tmp['location'])
     bug.archived = bool(tmp["archived"])
@@ -262,21 +258,6 @@ def _parse_status(status):
     #bug.keywords = _uc(tmp['keywords']).split()
     #bug.id = int(tmp['id'])
     return bug
-
-
-def _parse_crappy_soap(crap, key):
-    """Parses 'interesting' SOAP structure.
-
-    Crap should be a list, but can be an empty string or a nested dict where
-    the actual list is hidden behind various keys.
-    """
-    tmp = [] if crap[key] == '' else crap[key]._asdict()['item']
-    if type(tmp) != type(list()):
-        tmp = [tmp]
-    l = list()
-    for i in tmp:
-        l.append(_uc(str(i._asdict()['key']), "utf-8"))
-    return l
 
 
 def _uc(string):
