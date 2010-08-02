@@ -43,30 +43,31 @@ class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
 
     A bugreport object provides all attributes provided by the SOAP interface.
+    Most of the attributs are strings, the others are marked.
 
-    * bug_num: The bugnumber
+    * bug_num: The bugnumber (int)
     * severity: Severity of the bugreport
-    * tags: List of tags of the bugreport
+    * tags: List of tags of the bugreport (list of strings)
     * subject:  The subject/title of the bugreport
     * originator: Submitter of the bugreport
-    * mergedwith: List of bugnumbers this bug was merged with
+    * mergedwith: List of bugnumbers this bug was merged with (list of ints)
     * package: Package of the bugreport
     * source: Source package of the bugreport
-    * date: Date of bug creation
-    * log_modified: Date of update of the bugreport
-    * done: Is the bug fixed or not
-    * archived: Is the bug archived or not
-    * unarchived: Was the bug unarchived or not
-    * fixed_versions: List of versions, can be empty even if bug is fixed
-    * found_versions: List of version numbers where bug was found
+    * date: Date of bug creation (datetime)
+    * log_modified: Date of update of the bugreport (datetime)
+    * done: Is the bug fixed or not (bool)
+    * archived: Is the bug archived or not (bool)
+    * unarchived: Was the bug unarchived or not (bool)
+    * fixed_versions: List of versions, can be empty even if bug is fixed (list of strings)
+    * found_versions: List of version numbers where bug was found (list of strings)
     * forwarded: A URL or email address
-    * blocks: List of bugnumbers this bug blocks
-    * blockedby: List of bugnumbers which block this bug
+    * blocks: List of bugnumbers this bug blocks (list of ints)
+    * blockedby: List of bugnumbers which block this bug (list of ints)
     * pending: Either 'pending' or 'done'
     * msgid: Message ID of the bugreport
     * owner: Who took responsibility for fixing this bug
     * location: Either 'db-h' or 'archive'
-    * affects: List of Packagenames
+    * affects: List of Packagenames (list of strings)
     * summary: Arbitrary text
     """
 
@@ -154,7 +155,7 @@ class Bugreport(object):
 
 
 def get_status(*nr):
-    """Returns a list of Bugreports."""
+    """Returns a list of Bugreport objects."""
     reply = server.get_status(*nr)
     # If we called get_status with one single bug, we get a single bug,
     # if we called it with a list of bugs, we get a list,
@@ -171,10 +172,10 @@ def get_status(*nr):
 
 
 def get_usertag(email, *tags):
-    """Return a dictionary of (usertag, buglist) mappings.
+    """Return a dictionary of "usertag" => buglist mappings.
 
-    If tags are given the dictionary is limited to the matching tags, if no tags
-    are given all available tags are returned.
+    If tags are given the dictionary is limited to the matching tags, if no
+    tags are given all available tags are returned.
     """
     reply = server.get_usertag(email, *tags)
     # reply is an empty string if no bugs match the query
@@ -201,18 +202,26 @@ def get_bug_log(nr):
 
 
 def newest_bugs(amount):
-    """Returns a list of bugnumbers of the newest bugs."""
+    """Returns a list of bugnumbers of the `amount` newest bugs."""
     reply = server.newest_bugs(amount)
     return reply._aslist()
 
 
 def get_bugs(*key_value):
-    """
-    Returns a list of bugnumbers, that match the conditions given by the
+    """Returns a list of bugnumbers, that match the conditions given by the
     key-value pair(s).
 
-    Possible keys are: package, submitter, maint, src, severity, status (which
-    can be 'done', 'forwarded', or 'open'), tag, owner, bugs, correspondent.
+    Possible keys are:
+        "package": bugs for the given package
+        "submitter": bugs from the submitter
+        "maint": bugs belonging to a maintainer
+        "src": bugs belonging to a source package
+        "severity": bugs with a certain severity
+        "status": can be either "done", "forwarded", or "open"
+        "tag": see http://www.debian.org/Bugs/Developer#tags for available tags
+        "owner": bugs which are assigned to `owner`
+        "bugs": no info
+        "correspondent": no info
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
