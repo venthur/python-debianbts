@@ -221,7 +221,7 @@ def get_bugs(*key_value):
         "tag": see http://www.debian.org/Bugs/Developer#tags for available tags
         "owner": bugs which are assigned to `owner`
         "bugs": no info
-        "correspondent": no info
+        "correspondent": bugs where `correspondent` has sent a mail to
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
