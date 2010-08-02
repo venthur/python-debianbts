@@ -32,14 +32,43 @@ import SOAPpy
 
 
 # Setup the soap server
-# TODO: recognize HTTP proxy environment variable    # Default values
+# TODO: recognize HTTP proxy environment variable
+# Default values
 URL = 'http://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
 server = SOAPpy.SOAPProxy(URL, NS)
 BTS_URL = 'http://bugs.debian.org/'
 
 class Bugreport(object):
-    """Represents a bugreport from Debian's Bug Tracking System."""
+    """Represents a bugreport from Debian's Bug Tracking System.
+
+    A bugreport object provides all attributes provided by the SOAP interface.
+
+    * bug_num: The bugnumber
+    * severity: Severity of the bugreport
+    * tags: List of tags of the bugreport
+    * subject:  The subject/title of the bugreport
+    * originator: Submitter of the bugreport
+    * mergedwith: List of bugnumbers this bug was merged with
+    * package: Package of the bugreport
+    * source: Source package of the bugreport
+    * date: Date of bug creation
+    * log_modified: Date of update of the bugreport
+    * done: Is the bug fixed or not
+    * archived: Is the bug archived or not
+    * unarchived: Was the bug unarchived or not
+    * fixed_versions: List of versions, can be empty even if bug is fixed
+    * found_versions: List of version numbers where bug was found
+    * forwarded: A URL or email address
+    * blocks: List of bugnumbers this bug blocks
+    * blockedby: List of bugnumbers which block this bug
+    * pending: Either 'pending' or 'done'
+    * msgid: Message ID of the bugreport
+    * owner: Who took responsibility for fixing this bug
+    * location: Either 'db-h' or 'archive'
+    * affects: List of Packagenames
+    * summary: Arbitrary text
+    """
 
     def __init__(self):
         self.originator = None
@@ -54,9 +83,7 @@ class Bugreport(object):
         self.severity = None
         self.owner = None
         self.found_versions = None
-        self.found_date = None
         self.fixed_versions = None
-        self.fixed_date = None
         self.blocks = None
         self.blockedby = None
         self.unarchived = None
@@ -67,14 +94,14 @@ class Bugreport(object):
         self.archived = None
         self.bug_num = None
         self.source = None
-        # Buggy implemented in debbugs, ignoring it
-        self.fixed = None
-        # Buggy implemented in debbugs, ignoring it
-        self.found = None
-        self.keywords = None
-        # Will vanish in debbugs, use bug_num
-        self.id = None
         self.pending = None
+        # The ones below are also there but not used
+        #self.fixed = None
+        #self.found = None
+        #self.fixed_date = None
+        #self.found_date = None
+        #self.keywords = None
+        #self.id = None
 
 
     def __str__(self):
@@ -184,8 +211,8 @@ def get_bugs(*key_value):
     Returns a list of bugnumbers, that match the conditions given by the
     key-value pair(s).
 
-    Possible keys are: package, submitter, maint, src, severity, status, tag,
-    owner, bugs, correspondent.
+    Possible keys are: package, submitter, maint, src, severity, status (which
+    can be 'done', 'forwarded', or 'open'), tag, owner, bugs, correspondent.
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
@@ -213,9 +240,7 @@ def _parse_status(status):
     bug.owner = _uc(tmp['owner'])
     # sometimes it is a float, sometimes it is "$packagename/$version"
     bug.found_versions = [_uc(str(i)) for i in tmp['found_versions']]
-    bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
     bug.fixed_versions = [_uc(str(i)) for i in tmp['fixed_versions']]
-    bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
     # sometimes int sometimes str
     bug.blocks = _uc(str(tmp['blocks']))
     # here too: sometimes float sometimes string
@@ -228,14 +253,14 @@ def _parse_status(status):
     bug.archived = bool(tmp["archived"])
     bug.bug_num = int(tmp['bug_num'])
     bug.source = _uc(tmp['source'])
-    # Not fully implemented in debbugs, use fixed_versions and found_versions
+    bug.pending = _uc(tmp['pending'])
+    # Also available, but unused or broken
     #bug.fixed = _parse_crappy_soap(tmp, "fixed")
     #bug.found = _parse_crappy_soap(tmp, "found")
-    # Space separated list
-    bug.keywords = _uc(tmp['keywords']).split()
-    # Will vanish in future versions of debbugs, use bug_num
+    #bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
+    #bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
+    #bug.keywords = _uc(tmp['keywords']).split()
     #bug.id = int(tmp['id'])
-    bug.pending = _uc(tmp['pending'])
     return bug
 
 
