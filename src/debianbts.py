@@ -222,7 +222,7 @@ def get_bugs(*key_value):
         "status": can be either "done", "forwarded", or "open"
         "tag": see http://www.debian.org/Bugs/Developer#tags for available tags
         "owner": bugs which are assigned to `owner`
-        "bugs": no info
+        "bugs": takes list of bugnumbers, filters the list according to given criteria
         "correspondent": bugs where `correspondent` has sent a mail to
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
