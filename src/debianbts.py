@@ -18,20 +18,58 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+"""Query Debian's Bug Tracking System (BTS).
+
+This module provides a layer between Python and Debian's BTS. It provides
+methods to query the BTS using the BTS' SOAP interface, and the Bugreport class
+which represents a bugreport from the BTS.
+"""
+
+
 from datetime import datetime
 
 import SOAPpy
 
 
 # Setup the soap server
-# TODO: recognize HTTP proxy environment variable    # Default values
+# TODO: recognize HTTP proxy environment variable
+# Default values
 URL = 'http://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
 server = SOAPpy.SOAPProxy(URL, NS)
 BTS_URL = 'http://bugs.debian.org/'
 
 class Bugreport(object):
-    """Represents a bugreport from Debian's Bug Tracking System."""
+    """Represents a bugreport from Debian's Bug Tracking System.
+
+    A bugreport object provides all attributes provided by the SOAP interface.
+    Most of the attributs are strings, the others are marked.
+
+    * bug_num: The bugnumber (int)
+    * severity: Severity of the bugreport
+    * tags: List of tags of the bugreport (list of strings)
+    * subject:  The subject/title of the bugreport
+    * originator: Submitter of the bugreport
+    * mergedwith: List of bugnumbers this bug was merged with (list of ints)
+    * package: Package of the bugreport
+    * source: Source package of the bugreport
+    * date: Date of bug creation (datetime)
+    * log_modified: Date of update of the bugreport (datetime)
+    * done: Is the bug fixed or not (bool)
+    * archived: Is the bug archived or not (bool)
+    * unarchived: Was the bug unarchived or not (bool)
+    * fixed_versions: List of versions, can be empty even if bug is fixed (list of strings)
+    * found_versions: List of version numbers where bug was found (list of strings)
+    * forwarded: A URL or email address
+    * blocks: List of bugnumbers this bug blocks (list of ints)
+    * blockedby: List of bugnumbers which block this bug (list of ints)
+    * pending: Either 'pending' or 'done'
+    * msgid: Message ID of the bugreport
+    * owner: Who took responsibility for fixing this bug
+    * location: Either 'db-h' or 'archive'
+    * affects: List of Packagenames (list of strings)
+    * summary: Arbitrary text
+    """
 
     def __init__(self):
         self.originator = None
@@ -46,9 +84,7 @@ class Bugreport(object):
         self.severity = None
         self.owner = None
         self.found_versions = None
-        self.found_date = None
         self.fixed_versions = None
-        self.fixed_date = None
         self.blocks = None
         self.blockedby = None
         self.unarchived = None
@@ -59,19 +95,21 @@ class Bugreport(object):
         self.archived = None
         self.bug_num = None
         self.source = None
-        # Buggy implemented in debbugs, ignoring it
-        self.fixed = None
-        # Buggy implemented in debbugs, ignoring it
-        self.found = None
-        self.keywords = None
-        # Will vanish in debbugs, use bug_num
-        self.id = None
         self.pending = None
+        # The ones below are also there but not used
+        #self.fixed = None
+        #self.found = None
+        #self.fixed_date = None
+        #self.found_date = None
+        #self.keywords = None
+        #self.id = None
 
 
     def __str__(self):
         s = ""
         for key, value in self.__dict__.iteritems():
+            if type(value) == type(unicode()):
+                value = value.encode('utf-8')
             s += "%s: %s\n" % (key, str(value))
         return s
 
@@ -119,7 +157,7 @@ class Bugreport(object):
 
 
 def get_status(*nr):
-    """Returns a list of Bugreports."""
+    """Returns a list of Bugreport objects."""
     reply = server.get_status(*nr)
     # If we called get_status with one single bug, we get a single bug,
     # if we called it with a list of bugs, we get a list,
@@ -136,10 +174,10 @@ def get_status(*nr):
 
 
 def get_usertag(email, *tags):
-    """Return a dictionary of (usertag, buglist) mappings.
+    """Return a dictionary of "usertag" => buglist mappings.
 
-    If tags are given the dictionary is limited to the matching tags, if no tags
-    are given all available tags are returned.
+    If tags are given the dictionary is limited to the matching tags, if no
+    tags are given all available tags are returned.
     """
     reply = server.get_usertag(email, *tags)
     # reply is an empty string if no bugs match the query
@@ -158,26 +196,34 @@ def get_bug_log(nr):
     reply = server.get_bug_log(nr)
     buglog = [i._asdict() for i in reply._aslist()]
     for b in buglog:
-        b["header"] = unicode(b["header"], 'utf-8')
-        b["body"] = unicode(b["body"], 'utf-8')
+        b["header"] = _uc(b["header"])
+        b["body"] = _uc(b["body"])
         b["msg_num"] = int(b["msg_num"])
         b["attachments"] = b["attachments"]._aslist()
     return buglog
 
 
 def newest_bugs(amount):
-    """Returns a list of bugnumbers of the newest bugs."""
+    """Returns a list of bugnumbers of the `amount` newest bugs."""
     reply = server.newest_bugs(amount)
     return reply._aslist()
 
 
 def get_bugs(*key_value):
-    """
-    Returns a list of bugnumbers, that match the conditions given by the
+    """Returns a list of bugnumbers, that match the conditions given by the
     key-value pair(s).
 
-    Possible keys are: package, submitter, maint, src, severity, status, tag,
-    owner, bugs, correspondent.
+    Possible keys are:
+        "package": bugs for the given package
+        "submitter": bugs from the submitter
+        "maint": bugs belonging to a maintainer
+        "src": bugs belonging to a source package
+        "severity": bugs with a certain severity
+        "status": can be either "done", "forwarded", or "open"
+        "tag": see http://www.debian.org/Bugs/Developer#tags for available tags
+        "owner": bugs which are assigned to `owner`
+        "bugs": takes list of bugnumbers, filters the list according to given criteria
+        "correspondent": bugs where `correspondent` has sent a mail to
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
@@ -191,68 +237,44 @@ def _parse_status(status):
     bug = Bugreport()
     tmp = status['value']
 
-    bug.originator = unicode(tmp['originator'], 'utf-8')
+    bug.originator = _uc(tmp['originator'])
     bug.date = datetime.utcfromtimestamp(tmp['date'])
-    bug.subject = unicode(tmp['subject'], 'utf-8')
-    bug.msgid = unicode(tmp['msgid'], 'utf-8')
-    bug.package = unicode(tmp['package'], 'utf-8')
-    bug.tags = unicode(tmp['tags'], 'utf-8').split()
+    bug.subject = _uc(tmp['subject'])
+    bug.msgid = _uc(tmp['msgid'])
+    bug.package = _uc(tmp['package'])
+    bug.tags = _uc(tmp['tags']).split()
     bug.done = bool(tmp['done'])
-    bug.forwarded = unicode(tmp['forwarded'], 'utf-8')
-    # Should be a list but does not appear to be one
-    bug.mergedwith = tmp['mergedwith']
-    bug.severity = unicode(tmp['severity'], 'utf-8')
-    bug.owner = unicode(tmp['owner'], 'utf-8')
-    # sometimes it is a float, sometimes it is "$packagename/$version"
-    bug.found_versions = [unicode(str(i), 'utf-8') for i in tmp['found_versions']]
-    bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
-    bug.fixed_versions = [unicode(str(i), 'utf-8') for i in tmp['fixed_versions']]
-    bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
-    # sometimes int sometimes str
-    bug.blocks = unicode(str(tmp['blocks']), 'utf-8')
-    # here too: sometimes float sometimes string
-    bug.blockedby = unicode(str(tmp['blockedby']), 'utf-8')
+    bug.forwarded = _uc(tmp['forwarded'])
+    bug.mergedwith = [int(i) for i in str(tmp['mergedwith']).split()]
+    bug.severity = _uc(tmp['severity'])
+    bug.owner = _uc(tmp['owner'])
+    bug.found_versions = [_uc(str(i)) for i in tmp['found_versions']]
+    bug.fixed_versions = [_uc(str(i)) for i in tmp['fixed_versions']]
+    bug.blocks = [int(i) for i in str(tmp['blocks']).split()]
+    bug.blockedby = [int(i) for i in str(tmp['blockedby']).split()]
     bug.unarchived = bool(tmp["unarchived"])
-    bug.summary = unicode(tmp['summary'], 'utf-8')
-    bug.affects = unicode(tmp['affects'], 'utf-8')
+    bug.summary = _uc(tmp['summary'])
+    bug.affects = [_uc(i) for i in tmp['affects']]
     bug.log_modified = datetime.utcfromtimestamp(tmp['log_modified'])
-    bug.location = unicode(tmp['location'], 'utf-8')
+    bug.location = _uc(tmp['location'])
     bug.archived = bool(tmp["archived"])
     bug.bug_num = int(tmp['bug_num'])
-    bug.source = unicode(tmp['source'], 'utf-8')
-    # Not fully implemented in debbugs, use fixed_versions and found_versions
+    bug.source = _uc(tmp['source'])
+    bug.pending = _uc(tmp['pending'])
+    # Also available, but unused or broken
     #bug.fixed = _parse_crappy_soap(tmp, "fixed")
     #bug.found = _parse_crappy_soap(tmp, "found")
-    # Space separated list
-    bug.keywords = unicode(tmp['keywords'], 'utf-8').split()
-    # Will vanish in future versions of debbugs, use bug_num
+    #bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
+    #bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
+    #bug.keywords = _uc(tmp['keywords']).split()
     #bug.id = int(tmp['id'])
-    bug.pending = unicode(tmp['pending'], 'utf-8')
     return bug
 
 
-def _parse_crappy_soap(crap, key):
-    """Parses 'interesting' SOAP structure.
+def _uc(string):
+    """Convert string to unicode.
 
-    Crap should be a list, but can be an empty string or a nested dict where
-    the actual list is hidden behind various keys.
+    This method only exists to unify the unicode conversion in this module.
     """
-    tmp = [] if crap[key] == '' else crap[key]._asdict()['item']
-    if type(tmp) != type(list()):
-        tmp = [tmp]
-    l = list()
-    for i in tmp:
-        l.append(unicode(str(i._asdict()['key']), "utf-8"))
-    return l
-
-
-if __name__ == '__main__':
-    pass
-    #buglist = [11111, 22222, 496544, 393837, 547498]
-    buglist = get_bugs("package", "reportbug")
-    bugs = get_status(buglist)
-    bugs.sort()
-    print bugs
-    for i in bugs:
-        print str(i)
+    return unicode(string, 'utf-8', 'replace')
 

@@ -89,6 +89,31 @@ class DebianBtsTestCase(unittest.TestCase):
         self.b2.done = True
         self.assertTrue(self.b2 > self.b1)
 
+    def test_mergedwith(self):
+        """Mergedwith is always a list of int."""
+        # this one is merged with two other bugs
+        m = bts.get_status(486212)[0].mergedwith
+        self.assertTrue(len(m) == 2)
+        for i in m:
+            self.assertEqual(type(i), type(int()))
+        # this one was merged with one bug
+        m = bts.get_status(433550)[0].mergedwith
+        self.assertTrue(len(m) == 1)
+        self.assertEqual(type(m[0]), type(int()))
+        # this one was not merged
+        m = bts.get_status(474955)[0].mergedwith
+        self.assertEqual(m, list())
+
+    def test_affects(self):
+        """affects is a list of str."""
+        # this one affects one bug
+        #a = bts.get_status(290501)[0].affects
+        #self.assertTrue(len(a) == 1)
+        #self.assertEqual(type(a[0]), type(str()))
+        # this one affects no other bug
+        a = bts.get_status(437154)[0].affects
+        self.assertEqual(a, [])
+
     def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
         try:
@@ -103,6 +128,14 @@ class DebianBtsTestCase(unittest.TestCase):
             # TODO: test the string case
             bts.get_status(568657)
         except TypeError:
+            self.fail()
+
+    def test_regression_590725(self):
+        """bug.body utf sometimes contains invalid continuation bytes."""
+        try:
+            bts.get_bug_log(578363)
+            bts.get_bug_log(570825)
+        except UnicodeDecodeError:
             self.fail()
 
 

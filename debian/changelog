@@ -1,3 +1,34 @@
+python-debianbts (1.9) unstable; urgency=low
+
+  * Fixed issue in unicode handling in Bugreport.__str__ method
+  * Added documentation for 'bugs' keyword in get_bugs
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 06 Aug 2010 21:38:29 -0400
+
+python-debianbts (1.8) unstable; urgency=low
+
+  * Fix "please add a Vcs-Browser field in source stanza" (Closes: #590929)
+  * Fixed the types of the mergedwith-, blocks-, blockedby-, and
+    affects-fields of the Bugreport class: the first three changed from
+    "String" to "list of Strings" the last one from "String" to list of
+    Strings"
+  * Removed the keywords-, found_date-, fixed_date-, and id-attributs as they
+    are either not fully implemented in the BTS or superflouos
+  * Added Unittests to ensure the above works as expected
+  * Furhter improved the documentation of the methods and the Bugreport class
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 01 Aug 2010 22:47:06 -0400
+
+python-debianbts (1.7) unstable; urgency=low
+
+  * Fix "remove *.pyc from source package" Added rm *.pyc rule in clean
+    targets. (Closes: #590722)
+  * Fix "UnicodeDecodeError: 'utf8' codec can't decode byte 0xe4 in
+    position 44: invalid continuation byte" We replace invalid unicode
+    characters now (Closes: #590725)
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 29 Jul 2010 22:21:01 +0200
+
 python-debianbts (1.6) unstable; urgency=low
 
   * Fix "reportbug-ng: coercing to Unicode: need string or buffer, int found",
