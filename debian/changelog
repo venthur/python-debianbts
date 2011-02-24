@@ -1,3 +1,9 @@
+python-debianbts (1.10) unstable; urgency=low
+
+  * Switched to distutils
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 24 Feb 2011 10:04:22 +0100
+
 python-debianbts (1.9) unstable; urgency=low
 
   * Fixed issue in unicode handling in Bugreport.__str__ method
