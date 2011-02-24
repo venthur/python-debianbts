@@ -27,7 +27,7 @@ build-stamp: configure-stamp  patch-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE)
+	python setup.py build
 	#docbook-to-man debian/python-debianbts.sgml > python-debianbts.1
 
 	touch $@
@@ -38,9 +38,9 @@ clean: unpatch
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	$(MAKE) clean
+	python setup.py clean
 
-	dh_clean 
+	dh_clean
 
 install: build
 	dh_testdir
@@ -49,7 +49,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/python-debianbts.
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/python-debianbts
+	python setup.py install --install-layout=deb --root=debian/python-debianbts
 
 
 # Build architecture-independent files here.
