@@ -11,7 +11,6 @@
 
 
 
-include /usr/share/dpatch/dpatch.make
 
 configure: configure-stamp
 configure-stamp:
@@ -21,9 +20,13 @@ configure-stamp:
 	touch configure-stamp
 
 
+
+build-arch: build
+build-indep: build
+
 build: build-stamp
 
-build-stamp: configure-stamp  patch-stamp
+build-stamp: configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
@@ -32,7 +35,7 @@ build-stamp: configure-stamp  patch-stamp
 
 	touch $@
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
