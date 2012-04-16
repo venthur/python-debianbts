@@ -1,14 +1,17 @@
-python-debianbts (1.10+nmu1) unstable; urgency=low
+python-debianbts (1.11) unstable; urgency=low
 
-  * Non-maintainer upload.
-  * Remove unused dpatch and upgrade to packaging format "3.0 (native)".
-  * Update to Standards-Version to 3.9.3.1 and debhelper to 9.
-  * Add build-arch and build-indep targets to rules file.
-  * Fix copyright-with-old-dh-make-debian-copyright (Lintian).
-  * Fix spelling-error-in-description (Lintian).
-  * Fix copyright-refers-to-symlink-license (Lintian).
+  * Uploaded lots of changes contributed by Jari Aalto. Thank you very much
+    man!
+    * Remove unused dpatch and upgrade to packaging format "3.0 (native)".
+    * Update to Standards-Version to 3.9.3.1 and debhelper to 9.
+    * Add build-arch and build-indep targets to rules file.
+    * Fix copyright-with-old-dh-make-debian-copyright (Lintian).
+    * Fix spelling-error-in-description (Lintian).
+    * Fix copyright-refers-to-symlink-license (Lintian).
 
- -- Jari Aalto <jari.aalto@cante.net>  Wed, 11 Apr 2012 12:41:10 +0300
+  * Merged with patch from Michael, improving distutils setup.
+
+ -- Bastian Venthur <venthur@debian.org>  Mon, 16 Apr 2012 10:40:08 +0100
 
 python-debianbts (1.10) unstable; urgency=low
 
