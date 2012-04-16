@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='python-debianbts',
@@ -11,6 +11,7 @@ setup(
     license='GPL2',
     package_dir = {'': 'src'},
     py_modules = ['debianbts'],
+    install_requires=['SOAPpy'],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
