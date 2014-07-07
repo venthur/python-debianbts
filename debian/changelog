@@ -1,3 +1,12 @@
+python-debianbts (1.12) unstable; urgency=medium
+
+  * Added HTTP_PROXY support by applying the patch from Raphael Kubo da Costa,
+    thank you very much! (Closes: #630496)
+  * Fix "Bugreport.affects returns an array of chars, not strings" by
+    splitting the input string (Closes: #670446)
+
+ -- Bastian Venthur <venthur@debian.org>  Mon, 07 Jul 2014 14:50:29 +0200
+
 python-debianbts (1.11) unstable; urgency=low
 
   * Uploaded lots of changes contributed by Jari Aalto. Thank you very much
