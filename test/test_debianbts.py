@@ -30,7 +30,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.b1.severity = 'normal'
         self.b2 = bts.Bugreport()
         self.b2.severity = 'normal'
-    
+
     def testGetUsertagEmpty(self):
         """get_usertag should return empty dict if no bugs are found."""
         d = bts.get_usertag("thisisatest@debian.org")
@@ -55,20 +55,20 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(type(l), type([]))
         for i in l:
             self.assertEqual(type(i), type(int()))
-            
+
     def testNewestBugs(self):
         """newest_bugs shoudl return list of bugnumbers."""
         l = bts.newest_bugs(10)
         self.assertEqual(type(l), type([]))
         for i in l:
             self.assertEqual(type(i), type(int()))
-            
+
     def testNewestBugsAmount(self):
         """newest_bugs(amount) should return a list of len 'amount'. """
         for i in 0, 1, 10:
             l = bts.newest_bugs(i)
             self.assertEqual(len(l), i)
-            
+
     def testGetBugLog(self):
         """get_bug_log should return the correct data types."""
         bl = bts.get_bug_log(223344)
@@ -138,7 +138,10 @@ class DebianBtsTestCase(unittest.TestCase):
         except UnicodeDecodeError:
             self.fail()
 
-
+    def test_regression_670446(self):
+        """affects should be split by ','"""
+        bug = bts.get_status(657408)[0]
+        self.assertEqual(bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
 
 
 if __name__ == "__main__":
