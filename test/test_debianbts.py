@@ -18,8 +18,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+import os
+import sys
 import unittest
 
+_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.insert(0, os.path.join(_ROOT_DIR, 'src'))
 import debianbts as bts
 
 
