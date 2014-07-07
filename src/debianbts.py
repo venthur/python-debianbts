@@ -27,17 +27,31 @@ which represents a bugreport from the BTS.
 
 
 from datetime import datetime
+import urllib
+import urlparse
 
 import SOAPpy
 
 
 # Setup the soap server
-# TODO: recognize HTTP proxy environment variable
 # Default values
 URL = 'http://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
-server = SOAPpy.SOAPProxy(URL, NS)
 BTS_URL = 'http://bugs.debian.org/'
+
+def _get_http_proxy():
+    """Returns an HTTP proxy URL formatted for consumption by SOAPpy.
+
+    SOAPpy does some fairly low-level HTTP manipulation and needs to be
+    explicitly made aware of HTTP proxy URLs, which also have to be formatted
+    without a schema or path.
+    """
+    http_proxy = urllib.getproxies().get('http')
+    if http_proxy is None:
+        return None
+    return urlparse.urlparse(http_proxy).netloc
+server = SOAPpy.SOAPProxy(URL, NS, http_proxy=_get_http_proxy())
+
 
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
