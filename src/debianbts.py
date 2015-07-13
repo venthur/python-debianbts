@@ -35,9 +35,9 @@ import SOAPpy
 
 # Setup the soap server
 # Default values
-URL = 'http://bugs.debian.org/cgi-bin/soap.cgi'
+URL = 'https://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
-BTS_URL = 'http://bugs.debian.org/'
+BTS_URL = 'https://bugs.debian.org/'
 
 
 def _get_http_proxy():
