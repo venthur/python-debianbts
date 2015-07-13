@@ -27,11 +27,16 @@ which represents a bugreport from the BTS.
 
 
 from datetime import datetime
+import os
 import urllib
 import urlparse
 
 import SOAPpy
 
+# Support running from Debian infrastructure
+ca_path = '/etc/ssl/ca-debian'
+if os.path.isdir(ca_path):
+    os.environ['SSL_CERT_DIR'] = ca_path
 
 # Setup the soap server
 # Default values
