@@ -43,6 +43,8 @@ if os.path.isdir(ca_path):
 URL = 'https://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
 BTS_URL = 'https://bugs.debian.org/'
+# Max number of bugs to send in a single get_status request
+BATCH_SIZE = 500
 
 
 def _get_http_proxy():
@@ -195,8 +197,8 @@ def get_status(*nrs):
     # Process the input in batches to avoid hitting resource limits on the BTS
     for nr in nrs:
         if isinstance(nr, list):
-            for i in range(0, len(nr), 500):
-                reply = server.get_status(nr[i:i+500])
+            for i in range(0, len(nr), BATCH_SIZE):
+                reply = server.get_status(nr[i:i+BATCH_SIZE])
                 bugs.extend(parse(reply))
         else:
             reply = server.get_status(nr)
