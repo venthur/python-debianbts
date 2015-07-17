@@ -18,7 +18,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+import math
 import unittest
+try:
+    import unittest.mock as mock
+except ImportError:
+    import mock
 
 import debianbts as bts
 
@@ -83,6 +88,15 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertEqual(type(i["header"]), type(unicode()))
             self.assertTrue(i.has_key("msg_num"))
             self.assertEqual(type(i["msg_num"]), type(int()))
+
+    def testStatusBatchesLargeBugCounts(self):
+        """get_status should perform requests in batches to reduce server load."""
+        with mock.patch.object(bts.server, 'get_status') as MockStatus:
+            MockStatus.return_value = None
+            nr = bts.BATCH_SIZE + 10.0
+            calls = int(math.ceil(nr / bts.BATCH_SIZE))
+            bts.get_status([722226] * int(nr))
+            self.assertEqual(MockStatus.call_count, calls)
 
     def testComparison(self):
         self.b1.archived = True
