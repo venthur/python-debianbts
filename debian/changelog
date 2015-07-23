@@ -1,3 +1,13 @@
+python-debianbts (1.13) unstable; urgency=medium
+
+  * Fix "reportbug: HTTPError 500 Internal Server Error" by merging patch
+    contributed by James McCoi, thanks James! (Closes: #722226)
+    * Bugs are now downloaded in batches of 500 bugs
+  * Bumped standards version
+  * Transitioned the package from python-support to dh_python2
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 23 Jul 2015 17:01:28 +0200
+
 python-debianbts (1.12) unstable; urgency=medium
 
   * Added HTTP_PROXY support by applying the patch from Raphael Kubo da Costa,
