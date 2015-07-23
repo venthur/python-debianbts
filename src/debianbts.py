@@ -27,17 +27,24 @@ which represents a bugreport from the BTS.
 
 
 from datetime import datetime
+import os
 import urllib
 import urlparse
 
 import SOAPpy
 
+# Support running from Debian infrastructure
+ca_path = '/etc/ssl/ca-debian'
+if os.path.isdir(ca_path):
+    os.environ['SSL_CERT_DIR'] = ca_path
 
 # Setup the soap server
 # Default values
-URL = 'http://bugs.debian.org/cgi-bin/soap.cgi'
+URL = 'https://bugs.debian.org/cgi-bin/soap.cgi'
 NS = 'Debbugs/SOAP/V1'
-BTS_URL = 'http://bugs.debian.org/'
+BTS_URL = 'https://bugs.debian.org/'
+# Max number of bugs to send in a single get_status request
+BATCH_SIZE = 500
 
 
 def _get_http_proxy():
@@ -174,20 +181,28 @@ class Bugreport(object):
         return val
 
 
-def get_status(*nr):
+def get_status(*nrs):
     """Returns a list of Bugreport objects."""
-    reply = server.get_status(*nr)
     # If we called get_status with one single bug, we get a single bug,
     # if we called it with a list of bugs, we get a list,
-    # No available bugreports returns an enmpy list
+    # No available bugreports returns an empty list
     bugs = []
-    if not reply:
-        pass
-    elif type(reply[0]) == type([]):
-        for elem in reply[0]:
-            bugs.append(_parse_status(elem))
-    else:
-        bugs.append(_parse_status(reply[0]))
+    def parse(n):
+        if not n:
+            return []
+        elif type(reply[0]) == type([]):
+            return [_parse_status(elem) for elem in reply[0]]
+        else:
+            return [_parse_status(reply[0])]
+    # Process the input in batches to avoid hitting resource limits on the BTS
+    for nr in nrs:
+        if isinstance(nr, list):
+            for i in range(0, len(nr), BATCH_SIZE):
+                reply = server.get_status(nr[i:i+BATCH_SIZE])
+                bugs.extend(parse(reply))
+        else:
+            reply = server.get_status(nr)
+            bugs.extend(parse(reply))
     return bugs
 
 
