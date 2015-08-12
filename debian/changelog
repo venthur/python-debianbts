@@ -1,3 +1,12 @@
+python-debianbts (1.14) unstable; urgency=medium
+
+  * Fix "preformance regression in get_status()" by applying patch from James
+    McCoy. Thank you very much James! (Closes: #795198)
+  * Made code more PEP8 compliant
+  * Made unit tests more discoverable for nosetests
+
+ -- Bastian Venthur <venthur@debian.org>  Wed, 12 Aug 2015 10:05:35 +0200
+
 python-debianbts (1.13) unstable; urgency=medium
 
   * Fix "reportbug: HTTPError 500 Internal Server Error" by merging patch
