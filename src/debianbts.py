@@ -194,15 +194,16 @@ def get_status(*nrs):
             return [_parse_status(elem) for elem in reply[0]]
         else:
             return [_parse_status(reply[0])]
+    L = []
     # Process the input in batches to avoid hitting resource limits on the BTS
     for nr in nrs:
         if isinstance(nr, list):
-            for i in range(0, len(nr), BATCH_SIZE):
-                reply = server.get_status(nr[i:i+BATCH_SIZE])
-                bugs.extend(parse(reply))
+            L.extend(nr)
         else:
-            reply = server.get_status(nr)
-            bugs.extend(parse(reply))
+            L.append(nr)
+    for i in range(0, len(L), BATCH_SIZE):
+        reply = server.get_status(L[i:i+BATCH_SIZE])
+        bugs.extend(parse(reply))
     return bugs
 
 
