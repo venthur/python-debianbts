@@ -135,7 +135,7 @@ class Bugreport(object):
     def __str__(self):
         s = ""
         for key, value in self.__dict__.iteritems():
-            if type(value) == type(unicode()):
+            if isinstance(value, unicode):
                 value = value.encode('utf-8')
             s += "%s: %s\n" % (key, str(value))
         return s
