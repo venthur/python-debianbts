@@ -67,15 +67,16 @@ server = SOAPpy.SOAPProxy(URL, NS, http_proxy=_get_http_proxy())
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
 
-    A bugreport object provides all attributes provided by the SOAP interface.
-    Most of the attributs are strings, the others are marked.
+    A bugreport object provides all attributes provided by the SOAP
+    interface. Most of the attributs are strings, the others are marked.
 
     * bug_num: The bugnumber (int)
     * severity: Severity of the bugreport
     * tags: List of tags of the bugreport (list of strings)
     * subject:  The subject/title of the bugreport
     * originator: Submitter of the bugreport
-    * mergedwith: List of bugnumbers this bug was merged with (list of ints)
+    * mergedwith: List of bugnumbers this bug was merged with (list of
+      ints)
     * package: Package of the bugreport
     * source: Source package of the bugreport
     * date: Date of bug creation (datetime)
@@ -83,8 +84,10 @@ class Bugreport(object):
     * done: Is the bug fixed or not (bool)
     * archived: Is the bug archived or not (bool)
     * unarchived: Was the bug unarchived or not (bool)
-    * fixed_versions: List of versions, can be empty even if bug is fixed (list of strings)
-    * found_versions: List of version numbers where bug was found (list of strings)
+    * fixed_versions: List of versions, can be empty even if bug is
+      fixed (list of strings)
+    * found_versions: List of version numbers where bug was found (list
+      of strings)
     * forwarded: A URL or email address
     * blocks: List of bugnumbers this bug blocks (list of ints)
     * blockedby: List of bugnumbers which block this bug (list of ints)
@@ -122,13 +125,12 @@ class Bugreport(object):
         self.source = None
         self.pending = None
         # The ones below are also there but not used
-        #self.fixed = None
-        #self.found = None
-        #self.fixed_date = None
-        #self.found_date = None
-        #self.keywords = None
-        #self.id = None
-
+        # self.fixed = None
+        # self.found = None
+        # self.fixed_date = None
+        # self.found_date = None
+        # self.keywords = None
+        # self.id = None
 
     def __str__(self):
         s = ""
@@ -142,15 +144,18 @@ class Bugreport(object):
         """Compare a bugreport with another.
 
         The more open and and urgent a bug is, the greater the bug is:
+
             outstanding > resolved > archived
+
             critical > grave > serious > important > normal > minor > wishlist.
-        Openness always beats urgency, eg an archived bug is *always* smaller
-        than an outstanding bug.
 
-        This sorting is useful for displaying bugreports in a list and sorting
-        them in a useful way.
+        Openness always beats urgency, eg an archived bug is *always*
+        smaller than an outstanding bug.
+
+        This sorting is useful for displaying bugreports in a list and
+        sorting them in a useful way.
+
         """
-
         myval = self._get_value()
         otherval = other._get_value()
         if myval < otherval:
@@ -159,7 +164,6 @@ class Bugreport(object):
             return 0
         else:
             return 1
-
 
     def _get_value(self):
         if self.archived:
@@ -171,13 +175,13 @@ class Bugreport(object):
         else:
             # not done
             val = 20
-        val += {u"critical" : 7,
-                u"grave" : 6,
-                u"serious" : 5,
-                u"important" : 4,
-                u"normal" : 3,
-                u"minor" : 2,
-                u"wishlist" : 1}[self.severity]
+        val += {u"critical": 7,
+                u"grave": 6,
+                u"serious": 5,
+                u"important": 4,
+                u"normal": 3,
+                u"minor": 2,
+                u"wishlist": 1}[self.severity]
         return val
 
 
@@ -187,6 +191,7 @@ def get_status(*nrs):
     # if we called it with a list of bugs, we get a list,
     # No available bugreports returns an empty list
     bugs = []
+
     def parse(n):
         if not n:
             return []
@@ -210,8 +215,8 @@ def get_status(*nrs):
 def get_usertag(email, *tags):
     """Return a dictionary of "usertag" => buglist mappings.
 
-    If tags are given the dictionary is limited to the matching tags, if no
-    tags are given all available tags are returned.
+    If tags are given the dictionary is limited to the matching tags, if
+    no tags are given all available tags are returned.
     """
     reply = server.get_usertag(email, *tags)
     # reply is an empty string if no bugs match the query
@@ -244,8 +249,8 @@ def newest_bugs(amount):
 
 
 def get_bugs(*key_value):
-    """Returns a list of bugnumbers, that match the conditions given by the
-    key-value pair(s).
+    """Returns a list of bugnumbers, that match the conditions given by
+    the key-value pair(s).
 
     Possible keys are:
         "package": bugs for the given package
@@ -254,9 +259,11 @@ def get_bugs(*key_value):
         "src": bugs belonging to a source package
         "severity": bugs with a certain severity
         "status": can be either "done", "forwarded", or "open"
-        "tag": see http://www.debian.org/Bugs/Developer#tags for available tags
+        "tag": see http://www.debian.org/Bugs/Developer#tags for
+            available tags
         "owner": bugs which are assigned to `owner`
-        "bugs": takes list of bugnumbers, filters the list according to given criteria
+        "bugs": takes list of bugnumbers, filters the list according to
+            given criteria
         "correspondent": bugs where `correspondent` has sent a mail to
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
@@ -297,12 +304,12 @@ def _parse_status(status):
     bug.source = _uc(tmp['source'])
     bug.pending = _uc(tmp['pending'])
     # Also available, but unused or broken
-    #bug.fixed = _parse_crappy_soap(tmp, "fixed")
-    #bug.found = _parse_crappy_soap(tmp, "found")
-    #bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
-    #bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
-    #bug.keywords = _uc(tmp['keywords']).split()
-    #bug.id = int(tmp['id'])
+    # bug.fixed = _parse_crappy_soap(tmp, "fixed")
+    # bug.found = _parse_crappy_soap(tmp, "found")
+    # bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
+    # bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
+    # bug.keywords = _uc(tmp['keywords']).split()
+    # bug.id = int(tmp['id'])
     return bug
 
 
@@ -312,4 +319,3 @@ def _uc(string):
     This method only exists to unify the unicode conversion in this module.
     """
     return unicode(string, 'utf-8', 'replace')
-
