@@ -195,7 +195,7 @@ def get_status(*nrs):
     def parse(n):
         if not n:
             return []
-        elif type(reply[0]) == type([]):
+        elif isinstance(reply[0], list):
             return [_parse_status(elem) for elem in reply[0]]
         else:
             return [_parse_status(reply[0])]
