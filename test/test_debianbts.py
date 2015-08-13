@@ -98,6 +98,20 @@ class DebianBtsTestCase(unittest.TestCase):
             bts.get_status([722226] * int(nr))
             self.assertEqual(MockStatus.call_count, calls)
 
+    def testStatusBatchesMultipleArguments(self):
+        """get_status should batch multiple arguments into one request."""
+        with mock.patch.object(bts.server, 'get_status') as MockStatus:
+            MockStatus.return_value = None
+            batch_size = bts.BATCH_SIZE
+
+            calls = 1
+            bts.get_status(*xrange(batch_size))
+            self.assertEqual(MockStatus.call_count, calls)
+
+            calls += 2
+            bts.get_status(*xrange(batch_size + 1))
+            self.assertEqual(MockStatus.call_count, calls)
+
     def testComparison(self):
         self.b1.archived = True
         self.b2.done = True
