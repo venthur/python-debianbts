@@ -135,9 +135,9 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_affects(self):
         """affects is a list of str."""
         # this one affects one bug
-        #a = bts.get_status(290501)[0].affects
-        #self.assertTrue(len(a) == 1)
-        #self.assertEqual(type(a[0]), type(str()))
+        # a = bts.get_status(290501)[0].affects
+        # self.assertTrue(len(a) == 1)
+        # self.assertEqual(type(a[0]), type(str()))
         # this one affects no other bug
         a = bts.get_status(437154)[0].affects
         self.assertEqual(a, [])
@@ -169,9 +169,9 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_regression_670446(self):
         """affects should be split by ','"""
         bug = bts.get_status(657408)[0]
-        self.assertEqual(bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
+        self.assertEqual(
+            bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
 
 
 if __name__ == "__main__":
     unittest.main()
-
