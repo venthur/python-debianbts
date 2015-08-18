@@ -207,7 +207,7 @@ def get_status(*nrs):
         else:
             list_.append(nr)
     for i in range(0, len(list_), BATCH_SIZE):
-        reply = server.get_status(list_[i:i+BATCH_SIZE])
+        reply = server.get_status(list_[i:i + BATCH_SIZE])
         bugs.extend(parse(reply))
     return bugs
 

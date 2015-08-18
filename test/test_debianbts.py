@@ -80,13 +80,13 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(type(bl), type([]))
         for i in bl:
             self.assertEqual(type(i), type(dict()))
-            self.assertTrue(i.has_key("attachments"))
+            self.assertTrue("attachments" in i)
             self.assertEqual(type(i["attachments"]), type(list()))
-            self.assertTrue(i.has_key("body"))
+            self.assertTrue("body" in i)
             self.assertEqual(type(i["body"]), type(unicode()))
-            self.assertTrue(i.has_key("header"))
+            self.assertTrue("header" in i)
             self.assertEqual(type(i["header"]), type(unicode()))
-            self.assertTrue(i.has_key("msg_num"))
+            self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
     def testStatusBatchesLargeBugCounts(self):
@@ -96,6 +96,20 @@ class DebianBtsTestCase(unittest.TestCase):
             nr = bts.BATCH_SIZE + 10.0
             calls = int(math.ceil(nr / bts.BATCH_SIZE))
             bts.get_status([722226] * int(nr))
+            self.assertEqual(MockStatus.call_count, calls)
+
+    def testStatusBatchesMultipleArguments(self):
+        """get_status should batch multiple arguments into one request."""
+        with mock.patch.object(bts.server, 'get_status') as MockStatus:
+            MockStatus.return_value = None
+            batch_size = bts.BATCH_SIZE
+
+            calls = 1
+            bts.get_status(*range(batch_size))
+            self.assertEqual(MockStatus.call_count, calls)
+
+            calls += 2
+            bts.get_status(*range(batch_size + 1))
             self.assertEqual(MockStatus.call_count, calls)
 
     def testComparison(self):
@@ -121,9 +135,9 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_affects(self):
         """affects is a list of str."""
         # this one affects one bug
-        #a = bts.get_status(290501)[0].affects
-        #self.assertTrue(len(a) == 1)
-        #self.assertEqual(type(a[0]), type(str()))
+        # a = bts.get_status(290501)[0].affects
+        # self.assertTrue(len(a) == 1)
+        # self.assertEqual(type(a[0]), type(str()))
         # this one affects no other bug
         a = bts.get_status(437154)[0].affects
         self.assertEqual(a, [])
@@ -155,9 +169,9 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_regression_670446(self):
         """affects should be split by ','"""
         bug = bts.get_status(657408)[0]
-        self.assertEqual(bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
+        self.assertEqual(
+            bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
 
 
 if __name__ == "__main__":
     unittest.main()
-
