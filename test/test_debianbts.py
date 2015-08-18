@@ -80,13 +80,13 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(type(bl), type([]))
         for i in bl:
             self.assertEqual(type(i), type(dict()))
-            self.assertTrue(i.has_key("attachments"))
+            self.assertTrue("attachments" in i)
             self.assertEqual(type(i["attachments"]), type(list()))
-            self.assertTrue(i.has_key("body"))
+            self.assertTrue("body" in i)
             self.assertEqual(type(i["body"]), type(unicode()))
-            self.assertTrue(i.has_key("header"))
+            self.assertTrue("header" in i)
             self.assertEqual(type(i["header"]), type(unicode()))
-            self.assertTrue(i.has_key("msg_num"))
+            self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
     def testStatusBatchesLargeBugCounts(self):
