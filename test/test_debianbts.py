@@ -105,11 +105,11 @@ class DebianBtsTestCase(unittest.TestCase):
             batch_size = bts.BATCH_SIZE
 
             calls = 1
-            bts.get_status(*xrange(batch_size))
+            bts.get_status(*range(batch_size))
             self.assertEqual(MockStatus.call_count, calls)
 
             calls += 2
-            bts.get_status(*xrange(batch_size + 1))
+            bts.get_status(*range(batch_size + 1))
             self.assertEqual(MockStatus.call_count, calls)
 
     def testComparison(self):
