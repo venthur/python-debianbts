@@ -192,8 +192,8 @@ def get_status(*nrs):
     # No available bugreports returns an empty list
     bugs = []
 
-    def parse(n):
-        if not n:
+    def parse(reply):
+        if not reply:
             return []
         elif isinstance(reply[0], list):
             return [_parse_status(elem) for elem in reply[0]]
