@@ -31,7 +31,7 @@ import os
 import urllib
 import urlparse
 
-import SOAPpy
+from pysimplesoap.client import SoapClient
 
 # Support running from Debian infrastructure
 ca_path = '/etc/ssl/ca-debian'
@@ -46,6 +46,7 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
+soap_client = SoapClient(location=URL, namespace=NS, trace=True, soap_ns='soap')
 
 def _get_http_proxy():
     """Returns an HTTP proxy URL formatted for consumption by SOAPpy.
@@ -61,7 +62,6 @@ def _get_http_proxy():
     return urlparse.urlparse(http_proxy).netloc
 
 
-server = SOAPpy.SOAPProxy(URL, NS, http_proxy=_get_http_proxy())
 
 
 class Bugreport(object):
