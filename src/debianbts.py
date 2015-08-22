@@ -26,6 +26,7 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
+from collections import OrderedDict
 from datetime import datetime
 import os
 import urllib
@@ -244,10 +245,9 @@ def get_bug_log(nr):
 
 def newest_bugs(amount):
     """Returns a list of bugnumbers of the `amount` newest bugs."""
-    reply = soap_client.newest_bugs(arg0=amount)
+    reply = soap_client.newest_bugs(**_build_kwargs(amount,))
     items_el = reply('soapenc:Array')
-    bugs = [int(item_el) for item_el in items_el.children()]
-    return bugs
+    return [int(item_el) for item_el in items_el.children() or []]
 
 
 def get_bugs(*key_value):
@@ -313,6 +313,19 @@ def _parse_status(status):
     # bug.keywords = _uc(tmp['keywords']).split()
     # bug.id = int(tmp['id'])
     return bug
+
+
+def _build_kwargs(*args):
+    """Build ordered dict to use as **kwargs from arguments list
+    Ex. _build_kwargs(1, 2, 3) => {'arg0': 1, 'arg1': 2, 'arg2': 3}"""
+    # We use this since pysimplesoap doesn't support calling a SOAP method
+    # with unnamed arguments
+    key_n = 0
+    kwargs = OrderedDict()
+    for arg in args:
+        kwargs['arg' + str(key_n)] = arg
+        key_n += 1
+    return kwargs
 
 
 def _uc(string):
