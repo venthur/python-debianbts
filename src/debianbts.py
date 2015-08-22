@@ -270,8 +270,9 @@ def get_bugs(*key_value):
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
-    reply = server.get_bugs(*key_value)
-    return reply._aslist()
+    reply = soap_client.get_bugs(**_build_kwargs(*key_value))
+    items_el = reply('soapenc:Array')
+    return [int(item_el) for item_el in items_el.children() or []]
 
 
 def _parse_status(status):
