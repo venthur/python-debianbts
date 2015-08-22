@@ -244,7 +244,7 @@ def get_bug_log(nr):
 
 def newest_bugs(amount):
     """Returns a list of bugnumbers of the `amount` newest bugs."""
-    reply = soap_client.newest_bugs(a=amount)
+    reply = soap_client.newest_bugs(arg0=amount)
     items_el = reply('soapenc:Array')
     bugs = [int(item_el) for item_el in items_el.children()]
     return bugs
