@@ -47,7 +47,7 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-soap_client = SoapClient(location=URL, namespace=NS, trace=True, soap_ns='soap')
+soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 def _get_http_proxy():
     """Returns an HTTP proxy URL formatted for consumption by SOAPpy.
