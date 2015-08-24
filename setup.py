@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='python-debianbts',
     version='1.11',
-    description='Python interface to Debians Bug Tracking System',
+    description="Python interface to Debian's Bug Tracking System",
     keywords='debian, soap, bts',
     author='Bastian Venthur',
     author_email='venthur@debian.org',
