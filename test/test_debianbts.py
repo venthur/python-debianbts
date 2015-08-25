@@ -49,6 +49,9 @@ class DebianBtsTestCase(unittest.TestCase):
         for k, v in d.iteritems():
             self.assertEqual(type(""), type(k))
             self.assertEqual(type([]), type([]))
+            for bug in v:
+                self.assertEquals(type(bug), int)
+
     def testGetUsertagFilters(self):
         """get_usertag should return only requested tags"""
         tags = bts.get_usertag("debian-python@lists.debian.org")
