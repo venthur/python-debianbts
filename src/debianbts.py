@@ -47,7 +47,7 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
+soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap', trace=True)
 
 def _get_http_proxy():
     """Returns an HTTP proxy URL formatted for consumption by SOAPpy.
@@ -219,9 +219,24 @@ def get_usertag(email, *tags):
     If tags are given the dictionary is limited to the matching tags, if
     no tags are given all available tags are returned.
     """
-    reply = server.get_usertag(email, *tags)
-    # reply is an empty string if no bugs match the query
-    return dict() if reply == "" else reply._asdict()
+    reply = soap_client.get_usertag(**_build_kwargs(email, *tags))
+    map_el = reply('s-gensym3')
+    mapping = {}
+    # element <s-gensys3> in responso can have standard type
+    # xsi:type=apachens:Map ( for example email debian-python@lists.debian.org)
+    # OR no type, in this case keys are the names of child elements and
+    # the array is contained in the child elements
+    type_attr = map_el.attributes().get('xsi:type')
+    if type_attr and type_attr.value == 'apachens:Map':
+        for usertag_el in map_el.children() or []:
+            tag = str(usertag_el('key'))
+            buglist_el = usertag_el('value')
+            mapping[tag] = [int(bug) for bug in buglist_el.children() or []]
+    else:
+        for usertag_el in map_el.children() or []:
+            tag = usertag_el.get_name()
+            mapping[tag] = [int(bug) for bug in usertag_el.children() or []]
+    return mapping
 
 
 def get_bug_log(nr):
@@ -233,19 +248,23 @@ def get_bug_log(nr):
         "attachments" => list
         "msg_num" => int
     """
-    reply = server.get_bug_log(nr)
-    buglog = [i._asdict() for i in reply._aslist()]
-    for b in buglog:
-        b["header"] = _uc(b["header"])
-        b["body"] = _uc(b["body"])
-        b["msg_num"] = int(b["msg_num"])
-        b["attachments"] = b["attachments"]._aslist()
-    return buglog
+    reply = soap_client.get_bug_log(**_build_kwargs(nr))
+    items_el = reply('soapenc:Array')
+    buglogs = []
+    for buglog_el in items_el.children():
+        buglog = {}
+        buglog["header"] = _uc(str(buglog_el("header")))
+        buglog["body"] = _uc(str(buglog_el("body")))
+        buglog["msg_num"] = int(buglog_el("msg_num"))
+        buglog["attachments"] = []
+        # server always returns an empty attachments array ?
+        buglogs.append(buglog)
+    return buglogs
 
 
 def newest_bugs(amount):
     """Returns a list of bugnumbers of the `amount` newest bugs."""
-    reply = soap_client.newest_bugs(**_build_kwargs(amount,))
+    reply = soap_client.newest_bugs(**_build_kwargs(amount))
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
 

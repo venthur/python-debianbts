@@ -19,6 +19,7 @@
 
 
 import math
+import random
 import unittest
 try:
     import unittest.mock as mock
@@ -48,6 +49,21 @@ class DebianBtsTestCase(unittest.TestCase):
         for k, v in d.iteritems():
             self.assertEqual(type(""), type(k))
             self.assertEqual(type([]), type([]))
+    def testGetUsertagFilters(self):
+        """get_usertag should return only requested tags"""
+        tags = bts.get_usertag("debian-python@lists.debian.org")
+        self.assertTrue(isinstance(tags, dict))
+        randomKey0 = random.choice(tags.keys())
+        randomKey1 = random.choice(tags.keys())
+
+        filtered_tags = bts.get_usertag(
+            "debian-python@lists.debian.org", randomKey0, randomKey1)
+
+        self.assertEquals(len(filtered_tags), 2)
+        self.assertEquals(set(filtered_tags[randomKey0]),
+                          set(tags[randomKey0]))
+        self.assertEquals(set(filtered_tags[randomKey1]),
+                          set(tags[randomKey1]))
 
     def testGetBugsEmpty(self):
         """get_bugs should return empty list if no matching bugs where found."""
