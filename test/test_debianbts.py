@@ -18,6 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+import datetime
 import math
 import random
 import unittest
@@ -25,6 +26,8 @@ try:
     import unittest.mock as mock
 except ImportError:
     import mock
+
+from pysimplesoap.simplexml import SimpleXMLElement
 
 import debianbts as bts
 
@@ -108,10 +111,54 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
+    def testGetBugLogWithAttachments(self):
+        """get_bug_log should include attachments"""
+        buglogs = bts.get_bug_log(400000)
+        for bl in buglogs:
+            self.assertTrue("attachments" in bl)
+
+    def testEmptyGetStatus(self):
+        """get_status should return empty list if bug doesn't exits"""
+        bugs = bts.get_status(0)
+        self.assertEquals(type(bugs), list)
+        self.assertEquals(len(bugs), 0)
+
+    def testSampleGetStatus(self):
+        """test retrieving of a "known" bug status"""
+        bugs = bts.get_status(486212)
+        self.assertEquals(len(bugs), 1)
+        bug = bugs[0]
+        self.assertEquals(bug.bug_num, 486212)
+        self.assertEquals(bug.date, datetime.datetime(2008, 6, 14, 10, 30, 02))
+        self.assertTrue(bug.subject.startswith('[reportbug-ng] segm'))
+        self.assertEquals(bug.package, 'reportbug-ng')
+        self.assertEquals(bug.severity, 'normal')
+        self.assertEquals(bug.tags, ['help'])
+        self.assertEquals(bug.blockedby, [])
+        self.assertEquals(bug.blocks, [])
+        self.assertEquals(bug.summary, '')
+        self.assertEquals(bug.location, 'archive')
+        self.assertEquals(bug.source, 'reportbug-ng')
+        self.assertEquals(bug.log_modified,
+                          datetime.datetime(2008, 8, 17, 7, 26, 22))
+        self.assertEquals(bug.pending, 'done')
+        self.assertEquals(bug.done, True)
+        self.assertEquals(bug.archived, True)
+        self.assertEquals(bug.found_versions, ['reportbug-ng/0.2008.06.04'])
+        self.assertEquals(bug.fixed_versions, ['reportbug-ng/1.0'])
+        self.assertEquals(bug.affects, [])
+
+    def testGetStatusAffects(self):
+        """test a bug with "affects" field"""
+        bugs = bts.get_status(290501, 770490)
+        self.assertEquals(len(bugs), 2)
+        self.assertEquals(bugs[0].affects, [])
+        self.assertEquals(bugs[1].affects, ['conkeror'])
+
     def testStatusBatchesLargeBugCounts(self):
         """get_status should perform requests in batches to reduce server load."""
-        with mock.patch.object(bts.server, 'get_status') as MockStatus:
-            MockStatus.return_value = None
+        with mock.patch.object(bts.soap_client, 'call') as MockStatus:
+            MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
             nr = bts.BATCH_SIZE + 10.0
             calls = int(math.ceil(nr / bts.BATCH_SIZE))
             bts.get_status([722226] * int(nr))
@@ -119,8 +166,8 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def testStatusBatchesMultipleArguments(self):
         """get_status should batch multiple arguments into one request."""
-        with mock.patch.object(bts.server, 'get_status') as MockStatus:
-            MockStatus.return_value = None
+        with mock.patch.object(bts.soap_client, 'call') as MockStatus:
+            MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
             batch_size = bts.BATCH_SIZE
 
             calls = 1
@@ -151,15 +198,6 @@ class DebianBtsTestCase(unittest.TestCase):
         m = bts.get_status(474955)[0].mergedwith
         self.assertEqual(m, list())
 
-    def test_affects(self):
-        """affects is a list of str."""
-        # this one affects one bug
-        # a = bts.get_status(290501)[0].affects
-        # self.assertTrue(len(a) == 1)
-        # self.assertEqual(type(a[0]), type(str()))
-        # this one affects no other bug
-        a = bts.get_status(437154)[0].affects
-        self.assertEqual(a, [])
 
     def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
