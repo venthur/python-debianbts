@@ -26,7 +26,6 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
-from collections import OrderedDict
 from datetime import datetime
 import os
 
@@ -202,7 +201,7 @@ def get_usertag(email, *tags):
     If tags are given the dictionary is limited to the matching tags, if
     no tags are given all available tags are returned.
     """
-    reply = soap_client.get_usertag(**_build_kwargs(email, *tags))
+    reply = _soap_client_call('get_usertag', email, *tags)
     map_el = reply('s-gensym3')
     mapping = {}
     # element <s-gensys3> in response can have standard type
@@ -231,7 +230,7 @@ def get_bug_log(nr):
         "attachments" => list
         "msg_num" => int
     """
-    reply = soap_client.get_bug_log(**_build_kwargs(nr))
+    reply = _soap_client_call('get_bug_log', nr)
     items_el = reply('soapenc:Array')
     buglogs = []
     for buglog_el in items_el.children():
@@ -247,7 +246,7 @@ def get_bug_log(nr):
 
 def newest_bugs(amount):
     """Returns a list of bugnumbers of the `amount` newest bugs."""
-    reply = soap_client.newest_bugs(**_build_kwargs(amount))
+    reply = _soap_client_call('newest_bugs', amount)
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
 
@@ -272,7 +271,8 @@ def get_bugs(*key_value):
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
-    reply = soap_client.get_bugs(**_build_kwargs(*key_value))
+    reply = _soap_client_call('get_bugs', *key_value)
+
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
 
@@ -314,17 +314,13 @@ def _parse_status(bug_el):
     return bug
 
 
-def _build_kwargs(*args):
-    """Build ordered dict to use as **kwargs from arguments list
-    Ex. _build_kwargs(1, 2, 3) => {'arg0': 1, 'arg1': 2, 'arg2': 3}"""
-    # We use this since pysimplesoap doesn't support calling a SOAP method
-    # with unnamed arguments
-    key_n = 0
-    kwargs = OrderedDict()
-    for arg in args:
-        kwargs['arg' + str(key_n)] = arg
-        key_n += 1
-    return kwargs
+def _soap_client_call(method_name, *args):
+    # wrapper to work around pysimplesoap bug
+    # https://github.com/pysimplesoap/pysimplesoap/issues/31
+    soap_args = []
+    for arg_n, arg in enumerate(args):
+        soap_args.append(('arg' + str(arg_n), arg))
+    return getattr(soap_client, method_name)(soap_client, *soap_args)
 
 
 def _build_int_array_el(el_name, parent, list_):
