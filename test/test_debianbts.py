@@ -26,6 +26,10 @@ try:
     import unittest.mock as mock
 except ImportError:
     import mock
+try: # to test vs. string in python 2/3
+    basestring
+except NameError:
+    basestring = str
 
 from pysimplesoap.simplexml import SimpleXMLElement
 
@@ -111,9 +115,9 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue("attachments" in i)
             self.assertEqual(type(i["attachments"]), type(list()))
             self.assertTrue("body" in i)
-            self.assertEqual(type(i["body"]), type(unicode()))
+            self.assertTrue(isinstance(i["body"], basestring))
             self.assertTrue("header" in i)
-            self.assertEqual(type(i["header"]), type(unicode()))
+            self.assertTrue(isinstance(i["header"], basestring))
             self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
