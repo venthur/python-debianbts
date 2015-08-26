@@ -63,8 +63,8 @@ class DebianBtsTestCase(unittest.TestCase):
         """get_usertag should return only requested tags"""
         tags = bts.get_usertag("debian-python@lists.debian.org")
         self.assertTrue(isinstance(tags, dict))
-        randomKey0 = random.choice(tags.keys())
-        randomKey1 = random.choice(tags.keys())
+        randomKey0 = random.choice(list(tags.keys()))
+        randomKey1 = random.choice(list(tags.keys()))
 
         filtered_tags = bts.get_usertag(
             "debian-python@lists.debian.org", randomKey0, randomKey1)
