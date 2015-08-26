@@ -53,7 +53,7 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertEqual(type(""), type(k))
             self.assertEqual(type([]), type([]))
             for bug in v:
-                self.assertEquals(type(bug), int)
+                self.assertEqual(type(bug), int)
 
     def testGetUsertagFilters(self):
         """get_usertag should return only requested tags"""
@@ -65,10 +65,10 @@ class DebianBtsTestCase(unittest.TestCase):
         filtered_tags = bts.get_usertag(
             "debian-python@lists.debian.org", randomKey0, randomKey1)
 
-        self.assertEquals(len(filtered_tags), 2)
-        self.assertEquals(set(filtered_tags[randomKey0]),
+        self.assertEqual(len(filtered_tags), 2)
+        self.assertEqual(set(filtered_tags[randomKey0]),
                           set(tags[randomKey0]))
-        self.assertEquals(set(filtered_tags[randomKey1]),
+        self.assertEqual(set(filtered_tags[randomKey1]),
                           set(tags[randomKey1]))
 
     def testGetBugsEmpty(self):
@@ -126,40 +126,40 @@ class DebianBtsTestCase(unittest.TestCase):
     def testEmptyGetStatus(self):
         """get_status should return empty list if bug doesn't exits"""
         bugs = bts.get_status(0)
-        self.assertEquals(type(bugs), list)
-        self.assertEquals(len(bugs), 0)
+        self.assertEqual(type(bugs), list)
+        self.assertEqual(len(bugs), 0)
 
     def testSampleGetStatus(self):
         """test retrieving of a "known" bug status"""
         bugs = bts.get_status(486212)
-        self.assertEquals(len(bugs), 1)
+        self.assertEqual(len(bugs), 1)
         bug = bugs[0]
-        self.assertEquals(bug.bug_num, 486212)
-        self.assertEquals(bug.date, datetime.datetime(2008, 6, 14, 10, 30, 02))
+        self.assertEqual(bug.bug_num, 486212)
+        self.assertEqual(bug.date, datetime.datetime(2008, 6, 14, 10, 30, 2))
         self.assertTrue(bug.subject.startswith('[reportbug-ng] segm'))
-        self.assertEquals(bug.package, 'reportbug-ng')
-        self.assertEquals(bug.severity, 'normal')
-        self.assertEquals(bug.tags, ['help'])
-        self.assertEquals(bug.blockedby, [])
-        self.assertEquals(bug.blocks, [])
-        self.assertEquals(bug.summary, '')
-        self.assertEquals(bug.location, 'archive')
-        self.assertEquals(bug.source, 'reportbug-ng')
-        self.assertEquals(bug.log_modified,
+        self.assertEqual(bug.package, 'reportbug-ng')
+        self.assertEqual(bug.severity, 'normal')
+        self.assertEqual(bug.tags, ['help'])
+        self.assertEqual(bug.blockedby, [])
+        self.assertEqual(bug.blocks, [])
+        self.assertEqual(bug.summary, '')
+        self.assertEqual(bug.location, 'archive')
+        self.assertEqual(bug.source, 'reportbug-ng')
+        self.assertEqual(bug.log_modified,
                           datetime.datetime(2008, 8, 17, 7, 26, 22))
-        self.assertEquals(bug.pending, 'done')
-        self.assertEquals(bug.done, True)
-        self.assertEquals(bug.archived, True)
-        self.assertEquals(bug.found_versions, ['reportbug-ng/0.2008.06.04'])
-        self.assertEquals(bug.fixed_versions, ['reportbug-ng/1.0'])
-        self.assertEquals(bug.affects, [])
+        self.assertEqual(bug.pending, 'done')
+        self.assertEqual(bug.done, True)
+        self.assertEqual(bug.archived, True)
+        self.assertEqual(bug.found_versions, ['reportbug-ng/0.2008.06.04'])
+        self.assertEqual(bug.fixed_versions, ['reportbug-ng/1.0'])
+        self.assertEqual(bug.affects, [])
 
     def testGetStatusAffects(self):
         """test a bug with "affects" field"""
         bugs = bts.get_status(290501, 770490)
-        self.assertEquals(len(bugs), 2)
-        self.assertEquals(bugs[0].affects, [])
-        self.assertEquals(bugs[1].affects, ['conkeror'])
+        self.assertEqual(len(bugs), 2)
+        self.assertEqual(bugs[0].affects, [])
+        self.assertEqual(bugs[1].affects, ['conkeror'])
 
     def testStatusBatchesLargeBugCounts(self):
         """get_status should perform requests in batches to reduce server load."""
