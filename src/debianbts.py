@@ -29,6 +29,7 @@ Bugreport class which represents a bugreport from the BTS.
 from datetime import datetime
 import functools
 import os
+import sys
 
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
@@ -349,9 +350,13 @@ def _parse_bool(el):
     return not value.strip() in ('', '0')
 
 
-def _uc(string):
-    """Convert string to unicode.
+"""Convert string to unicode.
 
-    This method only exists to unify the unicode conversion in this module.
-    """
-    return unicode(string, 'utf-8', 'replace')
+This method only exists to unify the unicode conversion in this module.
+"""
+if sys.version_info.major == 2:
+    def _uc(string):
+        return string.decode('utf-8', 'replace')
+else:
+    def _uc(string):
+        return string
