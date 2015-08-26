@@ -29,8 +29,6 @@ Bugreport class which represents a bugreport from the BTS.
 from collections import OrderedDict
 from datetime import datetime
 import os
-import urllib
-import urlparse
 
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
@@ -48,20 +46,7 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap', trace=False)
-
-def _get_http_proxy():
-    """Returns an HTTP proxy URL formatted for consumption by SOAPpy.
-
-    SOAPpy does some fairly low-level HTTP manipulation and needs to be
-    explicitly made aware of HTTP proxy URLs, which also have to be
-    formatted without a schema or path.
-
-    """
-    http_proxy = urllib.getproxies().get('http')
-    if http_proxy is None:
-        return None
-    return urlparse.urlparse(http_proxy).netloc
+soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
 class Bugreport(object):
