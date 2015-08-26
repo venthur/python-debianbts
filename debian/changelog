@@ -1,6 +1,6 @@
 python-debianbts (1.14) unstable; urgency=medium
 
-  * Fix "preformance regression in get_status()" by applying patch from James
+  * Fix "performance regression in get_status()" by applying patch from James
     McCoy. Thank you very much James! (Closes: #795198)
   * Made code more PEP8 compliant
   * Made unit tests more discoverable for nosetests
@@ -61,10 +61,10 @@ python-debianbts (1.8) unstable; urgency=low
     affects-fields of the Bugreport class: the first three changed from
     "String" to "list of Strings" the last one from "String" to list of
     Strings"
-  * Removed the keywords-, found_date-, fixed_date-, and id-attributs as they
-    are either not fully implemented in the BTS or superflouos
+  * Removed the keywords-, found_date-, fixed_date-, and id-attributes as they
+    are either not fully implemented in the BTS or superfluous
   * Added Unittests to ensure the above works as expected
-  * Furhter improved the documentation of the methods and the Bugreport class
+  * Further improved the documentation of the methods and the Bugreport class
 
  -- Bastian Venthur <venthur@debian.org>  Sun, 01 Aug 2010 22:47:06 -0400
 
@@ -109,7 +109,7 @@ python-debianbts (1.4) unstable; urgency=low
 python-debianbts (1.3) unstable; urgency=low
 
   * Removed id, found and fixed (Closes: #550945)
-    - According to Don id is superflous and will vanish, use bug_num instead
+    - According to Don id is superfluous and will vanish, use bug_num instead
     - found and fixed are only partly implemented in debbugs, found_versions
       and fixed_versions give the information you need.
 

@@ -84,7 +84,7 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertEqual(type(i), type(int()))
 
     def testNewestBugs(self):
-        """newest_bugs shoudl return list of bugnumbers."""
+        """newest_bugs should return list of bugnumbers."""
         l = bts.newest_bugs(10)
         self.assertEqual(type(l), type([]))
         for i in l:
