@@ -27,6 +27,7 @@ Bugreport class which represents a bugreport from the BTS.
 
 
 from datetime import datetime
+import functools
 import os
 
 from pysimplesoap.client import SoapClient
@@ -52,6 +53,7 @@ BATCH_SIZE = 500
 soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
+@functools.total_ordering
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
 
@@ -128,7 +130,10 @@ class Bugreport(object):
             s += "%s: %s\n" % (key, str(value))
         return s
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
+        return self._get_value() == other._get_value()
+
+    def __lt__(self, other):
         """Compare a bugreport with another.
 
         The more open and and urgent a bug is, the greater the bug is:
@@ -144,14 +149,7 @@ class Bugreport(object):
         sorting them in a useful way.
 
         """
-        myval = self._get_value()
-        otherval = other._get_value()
-        if myval < otherval:
-            return -1
-        elif myval == otherval:
-            return 0
-        else:
-            return 1
+        return self._get_value() < other._get_value()
 
     def _get_value(self):
         if self.archived:
