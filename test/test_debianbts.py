@@ -53,7 +53,7 @@ class DebianBtsTestCase(unittest.TestCase):
         """get_usertag should return dict with tag(s) and buglist(s)."""
         d = bts.get_usertag("debian-python@lists.debian.org")
         self.assertEqual(type(d), type(dict()))
-        for k, v in d.iteritems():
+        for k, v in d.items():
             self.assertEqual(type(""), type(k))
             self.assertEqual(type([]), type([]))
             for bug in v:
