@@ -2,14 +2,15 @@ Source: python-debianbts
 Section: python
 Priority: optional
 Maintainer: Bastian Venthur <venthur@debian.org>
-Build-Depends: debhelper (>= 9), dh-python, python (>= 2.6.6-3~), python-mock
+Build-Depends: debhelper (>= 9), dh-python, python (>= 2.6.6-3~), python-mock, python-pysimplesoap
 Standards-Version: 3.9.6
+X-Python-Version: >= 2.6
 Vcs-Git: git://github.com/venthur/python-debianbts.git
 Vcs-Browser: http://github.com/venthur/python-debianbts
 
 Package: python-debianbts
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-soappy
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-pysimplesoap
 Provides: ${python:Provides}
 Description: Python interface to Debian's Bug Tracking System
  This package provides the debianbts module, which allows one to query Debian's
