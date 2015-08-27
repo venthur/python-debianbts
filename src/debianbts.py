@@ -42,6 +42,8 @@ if os.path.isdir(ca_path):
 __version__ = '2.0'
 
 
+PY2 = sys.version_info.major == 2
+
 # Setup the soap server
 # Default values
 URL = 'https://bugs.debian.org/cgi-bin/soap.cgi'
@@ -121,13 +123,16 @@ class Bugreport(object):
         # self.keywords = None
         # self.id = None
 
-    def __str__(self):
-        s = ""
-        for key, value in self.__dict__.iteritems():
-            if isinstance(value, unicode):
-                value = value.encode('utf-8')
-            s += "%s: %s\n" % (key, str(value))
-        return s
+    def __unicode__(self):
+        s = '\n'.join('{}: {}'.format(key, str(value))
+                       for key, value in self.__dict__.items())
+        return s + '\n'
+
+    if PY2:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+    else:
+        __str__ = __unicode__
 
     def __lt__(self, other):
         """Compare a bugreport with another.
@@ -364,7 +369,7 @@ def _parse_bool(el):
 
 This method only exists to unify the unicode conversion in this module.
 """
-if sys.version_info.major == 2:
+if PY2:
     def _uc(string):
         return string.decode('utf-8', 'replace')
 else:

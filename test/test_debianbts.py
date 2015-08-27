@@ -154,6 +154,15 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(bug.fixed_versions, ['reportbug-ng/1.0'])
         self.assertEqual(bug.affects, [])
 
+    def testBugStr(self):
+        """test string conversion of a Bugreport"""
+        self.b2.package = u'foo-pkg'
+        self.b2.bug_num = 12222
+        s = str(self.b2)
+        self.assertTrue(isinstance(s, str)) # byte string in py2, unicode in py3
+        self.assertTrue('bug_num: 12222\n' in s)
+        self.assertTrue('package: foo-pkg\n' in s)
+
     def testGetStatusAffects(self):
         """test a bug with "affects" field"""
         bugs = bts.get_status(290501, 770490)
