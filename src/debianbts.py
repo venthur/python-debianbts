@@ -37,6 +37,10 @@ ca_path = '/etc/ssl/ca-debian'
 if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
 
+
+__version__ = '2.0'
+
+
 # Setup the soap server
 # Default values
 URL = 'https://bugs.debian.org/cgi-bin/soap.cgi'

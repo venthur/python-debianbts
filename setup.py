@@ -1,8 +1,14 @@
 from distutils.core import setup
+import sys
+
+sys.path.insert(0, 'src')
+
+import debianbts
+
 
 setup(
     name='python-debianbts',
-    version='1.11',
+    version=debianbts.__version__,
     description="Python interface to Debian's Bug Tracking System",
     keywords='debian, soap, bts',
     author='Bastian Venthur',
