@@ -83,6 +83,12 @@ class DebianBtsTestCase(unittest.TestCase):
         for i in l:
             self.assertEqual(type(i), type(int()))
 
+    def testGetBugsList(self):
+        """previous versions of python-debianbts accepted malformed key-value lists."""
+        l = bts.get_bugs('owner', 'venthur@debian.org', 'severity', 'normal')
+        l2 = bts.get_bugs(['owner', 'venthur@debian.org', 'severity', 'normal'])
+        self.assertEqual(l, l2)
+
     def testNewestBugs(self):
         """newest_bugs should return list of bugnumbers."""
         l = bts.newest_bugs(10)

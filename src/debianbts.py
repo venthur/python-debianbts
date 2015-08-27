@@ -275,8 +275,12 @@ def get_bugs(*key_value):
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
+    # previous versions also accepted get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
+    # if key_value is a list in a one elemented tuple, remove the
+    # wrapping list
+    if len(key_value) == 1 and isinstance(key_value[0], list):
+        key_value = tuple(key_value[0])
     reply = _soap_client_call('get_bugs', *key_value)
-
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
 
