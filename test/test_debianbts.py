@@ -185,9 +185,25 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertEqual(MockStatus.call_count, calls)
 
     def testComparison(self):
+        """comparison of two bugs"""
         self.b1.archived = True
         self.b2.done = True
         self.assertTrue(self.b2 > self.b1)
+        self.assertTrue(self.b2 >= self.b1)
+        self.assertFalse(self.b2 == self.b1)
+        self.assertFalse(self.b2 < self.b1)
+        self.assertFalse(self.b2 <= self.b1)
+
+    def testComparisonEqual(self):
+        """comparison of two bug which are equal regarding their
+        relative order"""
+        self.b1.done = True
+        self.b2.done = True
+        self.assertFalse(self.b2 > self.b1)
+        self.assertTrue(self.b2 >= self.b1)
+        self.assertTrue(self.b2 == self.b1)
+        self.assertFalse(self.b2 < self.b1)
+        self.assertTrue(self.b2 <= self.b1)
 
     def test_mergedwith(self):
         """Mergedwith is always a list of int."""
