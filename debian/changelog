@@ -1,3 +1,11 @@
+python-debianbts (2.1) experimental; urgency=medium
+
+  * Port to Python 3. Thanks again Gaetano Guerriero for providing the initial
+    patch! The code works now under Python2/3 simultaneously 
+    (Closes: #732644)
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 28 Aug 2015 09:30:41 +0200
+
 python-debianbts (2.0) experimental; urgency=medium
 
   * Merged patch that ports python-debianbts from soappy to simplesoap, by
