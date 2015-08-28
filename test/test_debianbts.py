@@ -18,6 +18,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+from __future__ import division, unicode_literals, absolute_import, print_function
+
 import datetime
 import math
 import random
@@ -111,9 +113,9 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue("attachments" in i)
             self.assertEqual(type(i["attachments"]), type(list()))
             self.assertTrue("body" in i)
-            self.assertTrue(isinstance(i["body"], type(u'')))
+            self.assertTrue(isinstance(i["body"], type('')))
             self.assertTrue("header" in i)
-            self.assertTrue(isinstance(i["header"], type(u'')))
+            self.assertTrue(isinstance(i["header"], type('')))
             self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
@@ -156,7 +158,7 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def testBugStr(self):
         """test string conversion of a Bugreport"""
-        self.b2.package = u'foo-pkg'
+        self.b2.package = 'foo-pkg'
         self.b2.bug_num = 12222
         s = str(self.b2)
         self.assertTrue(isinstance(s, str)) # byte string in py2, unicode in py3
@@ -186,11 +188,11 @@ class DebianBtsTestCase(unittest.TestCase):
             batch_size = bts.BATCH_SIZE
 
             calls = 1
-            bts.get_status(*range(batch_size))
+            bts.get_status(*list(range(batch_size)))
             self.assertEqual(MockStatus.call_count, calls)
 
             calls += 2
-            bts.get_status(*range(batch_size + 1))
+            bts.get_status(*list(range(batch_size + 1)))
             self.assertEqual(MockStatus.call_count, calls)
 
     def testComparison(self):
@@ -258,7 +260,7 @@ class DebianBtsTestCase(unittest.TestCase):
         """affects should be split by ','"""
         bug = bts.get_status(657408)[0]
         self.assertEqual(
-            bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
+            bug.affects, ['epiphany-browser-dev', 'libwebkit-dev'])
 
 
 if __name__ == "__main__":
