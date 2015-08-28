@@ -26,8 +26,11 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
+from __future__ import division, unicode_literals, absolute_import, print_function
+
 from datetime import datetime
 import os
+import sys
 
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
@@ -40,6 +43,8 @@ if os.path.isdir(ca_path):
 
 __version__ = '2.0'
 
+
+PY2 = sys.version_info.major == 2
 
 # Setup the soap server
 # Default values
@@ -120,15 +125,18 @@ class Bugreport(object):
         # self.keywords = None
         # self.id = None
 
-    def __str__(self):
-        s = ""
-        for key, value in self.__dict__.iteritems():
-            if isinstance(value, unicode):
-                value = value.encode('utf-8')
-            s += "%s: %s\n" % (key, str(value))
-        return s
+    def __unicode__(self):
+        s = '\n'.join('{}: {}'.format(key, str(value))
+                       for key, value in self.__dict__.items())
+        return s + '\n'
 
-    def __cmp__(self, other):
+    if PY2:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+    else:
+        __str__ = __unicode__
+
+    def __lt__(self, other):
         """Compare a bugreport with another.
 
         The more open and and urgent a bug is, the greater the bug is:
@@ -144,14 +152,22 @@ class Bugreport(object):
         sorting them in a useful way.
 
         """
-        myval = self._get_value()
-        otherval = other._get_value()
-        if myval < otherval:
-            return -1
-        elif myval == otherval:
-            return 0
-        else:
-            return 1
+        return self._get_value() < other._get_value()
+
+    def __le__(self, other):
+        return not self.__gt__(other)
+
+    def __gt__(self, other):
+        return self._get_value() > other._get_value()
+
+    def __ge__(self, other):
+        return not self.__lt__(other)
+
+    def __eq__(self, other):
+        return self._get_value() == other._get_value()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def _get_value(self):
         if self.archived:
@@ -163,13 +179,13 @@ class Bugreport(object):
         else:
             # not done
             val = 20
-        val += {u"critical": 7,
-                u"grave": 6,
-                u"serious": 5,
-                u"important": 4,
-                u"normal": 3,
-                u"minor": 2,
-                u"wishlist": 1}[self.severity]
+        val += {"critical": 7,
+                "grave": 6,
+                "serious": 5,
+                "important": 4,
+                "normal": 3,
+                "minor": 2,
+                "wishlist": 1}[self.severity]
         return val
 
 
@@ -215,12 +231,12 @@ def get_usertag(email, *tags):
     type_attr = map_el.attributes().get('xsi:type')
     if type_attr and type_attr.value == 'apachens:Map':
         for usertag_el in map_el.children() or []:
-            tag = str(usertag_el('key'))
+            tag = _uc(str(usertag_el('key')))
             buglist_el = usertag_el('value')
             mapping[tag] = [int(bug) for bug in buglist_el.children() or []]
     else:
         for usertag_el in map_el.children() or []:
-            tag = usertag_el.get_name()
+            tag = _uc(usertag_el.get_name())
             mapping[tag] = [int(bug) for bug in usertag_el.children() or []]
     return mapping
 
@@ -310,7 +326,7 @@ def _parse_status(bug_el):
                           bug_el('found_versions').children() or []]
     bug.fixed_versions = [_uc(str(el)) for el in
                           bug_el('fixed_versions').children() or []]
-    affects = filter(None, str(bug_el('affects')).split(','))
+    affects = [_f for _f in str(bug_el('affects')).split(',') if _f]
     bug.affects = [_uc(a).strip() for a in affects]
     # Also available, but unused or broken
     # bug.keywords = [_uc(keyword) for keyword in
@@ -351,9 +367,13 @@ def _parse_bool(el):
     return not value.strip() in ('', '0')
 
 
-def _uc(string):
-    """Convert string to unicode.
+"""Convert string to unicode.
 
-    This method only exists to unify the unicode conversion in this module.
-    """
-    return unicode(string, 'utf-8', 'replace')
+This method only exists to unify the unicode conversion in this module.
+"""
+if PY2:
+    def _uc(string):
+        return string.decode('utf-8', 'replace')
+else:
+    def _uc(string):
+        return string
