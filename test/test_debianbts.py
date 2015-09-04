@@ -22,6 +22,7 @@ from __future__ import division, unicode_literals, absolute_import, print_functi
 
 import datetime
 import math
+from os.path import basename, dirname, join, splitext
 import random
 import unittest
 try:
@@ -29,24 +30,32 @@ try:
 except ImportError:
     import mock
 
+from vcr import VCR
 from pysimplesoap.simplexml import SimpleXMLElement
 
 import debianbts as bts
 
 
-class DebianBtsTestCase(unittest.TestCase):
+cassettes_path = join(dirname(__file__), 'fixtures', 'vcrpy',
+                      splitext(basename(__file__))[0])
+vcr = VCR(cassette_library_dir=cassettes_path,
+          path_transformer=VCR.ensure_suffix('.yaml'))
 
+
+class DebianBtsTestCase(unittest.TestCase):
     def setUp(self):
         self.b1 = bts.Bugreport()
         self.b1.severity = 'normal'
         self.b2 = bts.Bugreport()
         self.b2.severity = 'normal'
 
+    @vcr.use_cassette
     def testGetUsertagEmpty(self):
         """get_usertag should return empty dict if no bugs are found."""
         d = bts.get_usertag("thisisatest@debian.org")
         self.assertEqual(d, dict())
 
+    @vcr.use_cassette
     def testGetUsertag(self):
         """get_usertag should return dict with tag(s) and buglist(s)."""
         d = bts.get_usertag("debian-python@lists.debian.org")
@@ -57,6 +66,7 @@ class DebianBtsTestCase(unittest.TestCase):
             for bug in v:
                 self.assertEqual(type(bug), int)
 
+    @vcr.use_cassette
     def testGetUsertagFilters(self):
         """get_usertag should return only requested tags"""
         tags = bts.get_usertag("debian-python@lists.debian.org")
@@ -73,11 +83,13 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(set(filtered_tags[randomKey1]),
                           set(tags[randomKey1]))
 
+    @vcr.use_cassette
     def testGetBugsEmpty(self):
         """get_bugs should return empty list if no matching bugs where found."""
         l = bts.get_bugs("package", "thisisatest")
         self.assertEqual(l, [])
 
+    @vcr.use_cassette
     def testGetBugs(self):
         """get_bugs should return list of bugnumbers."""
         l = bts.get_bugs("owner", "venthur@debian.org")
@@ -85,12 +97,14 @@ class DebianBtsTestCase(unittest.TestCase):
         for i in l:
             self.assertEqual(type(i), type(int()))
 
+    @vcr.use_cassette
     def testGetBugsList(self):
         """previous versions of python-debianbts accepted malformed key-value lists."""
         l = bts.get_bugs('owner', 'venthur@debian.org', 'severity', 'normal')
         l2 = bts.get_bugs(['owner', 'venthur@debian.org', 'severity', 'normal'])
         self.assertEqual(l, l2)
 
+    @vcr.use_cassette
     def testNewestBugs(self):
         """newest_bugs should return list of bugnumbers."""
         l = bts.newest_bugs(10)
@@ -98,12 +112,14 @@ class DebianBtsTestCase(unittest.TestCase):
         for i in l:
             self.assertEqual(type(i), type(int()))
 
+    @vcr.use_cassette
     def testNewestBugsAmount(self):
         """newest_bugs(amount) should return a list of len 'amount'. """
         for i in 0, 1, 10:
             l = bts.newest_bugs(i)
             self.assertEqual(len(l), i)
 
+    @vcr.use_cassette
     def testGetBugLog(self):
         """get_bug_log should return the correct data types."""
         bl = bts.get_bug_log(223344)
@@ -119,18 +135,21 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
+    @vcr.use_cassette
     def testGetBugLogWithAttachments(self):
         """get_bug_log should include attachments"""
         buglogs = bts.get_bug_log(400000)
         for bl in buglogs:
             self.assertTrue("attachments" in bl)
 
+    @vcr.use_cassette
     def testEmptyGetStatus(self):
         """get_status should return empty list if bug doesn't exits"""
         bugs = bts.get_status(0)
         self.assertEqual(type(bugs), list)
         self.assertEqual(len(bugs), 0)
 
+    @vcr.use_cassette
     def testSampleGetStatus(self):
         """test retrieving of a "known" bug status"""
         bugs = bts.get_status(486212)
@@ -165,6 +184,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertTrue('bug_num: 12222\n' in s)
         self.assertTrue('package: foo-pkg\n' in s)
 
+    @vcr.use_cassette
     def testGetStatusAffects(self):
         """test a bug with "affects" field"""
         bugs = bts.get_status(290501, 770490)
@@ -216,6 +236,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertFalse(self.b2 < self.b1)
         self.assertTrue(self.b2 <= self.b1)
 
+    @vcr.use_cassette
     def test_mergedwith(self):
         """Mergedwith is always a list of int."""
         # this one is merged with two other bugs
@@ -231,7 +252,7 @@ class DebianBtsTestCase(unittest.TestCase):
         m = bts.get_status(474955)[0].mergedwith
         self.assertEqual(m, list())
 
-
+    @vcr.use_cassette
     def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
         try:
@@ -239,6 +260,7 @@ class DebianBtsTestCase(unittest.TestCase):
         except UnicodeDecodeError:
             self.fail()
 
+    @vcr.use_cassette
     def test_regression_590073(self):
         """bug.blocks is sometimes a str sometimes an int."""
         try:
@@ -248,6 +270,7 @@ class DebianBtsTestCase(unittest.TestCase):
         except TypeError:
             self.fail()
 
+    @vcr.use_cassette
     def test_regression_590725(self):
         """bug.body utf sometimes contains invalid continuation bytes."""
         try:
@@ -256,6 +279,7 @@ class DebianBtsTestCase(unittest.TestCase):
         except UnicodeDecodeError:
             self.fail()
 
+    @vcr.use_cassette
     def test_regression_670446(self):
         """affects should be split by ','"""
         bug = bts.get_status(657408)[0]
