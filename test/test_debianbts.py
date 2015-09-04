@@ -71,17 +71,14 @@ class DebianBtsTestCase(unittest.TestCase):
         """get_usertag should return only requested tags"""
         tags = bts.get_usertag("debian-python@lists.debian.org")
         self.assertTrue(isinstance(tags, dict))
-        randomKey0 = random.choice(list(tags.keys()))
-        randomKey1 = random.choice(list(tags.keys()))
+        key0, key1 = sorted(tags.keys())[0:2]
 
         filtered_tags = bts.get_usertag(
-            "debian-python@lists.debian.org", randomKey0, randomKey1)
+            "debian-python@lists.debian.org", key0, key1)
 
         self.assertEqual(len(filtered_tags), 2)
-        self.assertEqual(set(filtered_tags[randomKey0]),
-                          set(tags[randomKey0]))
-        self.assertEqual(set(filtered_tags[randomKey1]),
-                          set(tags[randomKey1]))
+        self.assertEqual(set(filtered_tags[key0]), set(tags[key0]))
+        self.assertEqual(set(filtered_tags[key1]), set(tags[key1]))
 
     @vcr.use_cassette
     def testGetBugsEmpty(self):
