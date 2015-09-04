@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope xmlns:soap=\"\
+      http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
+      \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n<soap:Header/>\n\
+      <soap:Body>\n    \n<get_status><arg0 soapenc:arrayType=\"xsd:int[1]\" xmlns:soapenc=\"\
+      http://schemas.xmlsoap.org/soap/encoding/\" xsi:type=\"soapenc:Array\"><item\
+      \ xsi:type=\"xsd:int\">657408</item></arg0></get_status></soap:Body>\n</soap:Envelope>"
+    headers:
+      Connection: [close]
+      Content-Length: ['459']
+      Content-Type: [text/xml; charset="UTF-8"]
+      Host: [bugs.debian.org]
+      Soapaction: ['"Noneget_status"']
+      User-Agent: [Python-urllib/2.7]
+    method: POST
+    uri: https://bugs.debian.org/cgi-bin/soap.cgi
+  response:
+    body: {string: !!python/unicode '<?xml version="1.0" encoding="UTF-8"?><soap:Envelope
+        soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachens="http://xml.apache.org/xml-soap"
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
+        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">657408</key><value><found
+        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">epiphany-browser-dev/3.2.1-2</key><value
+        xsi:nil="true" /></item><item><key xsi:type="xsd:string">webkit/1.6.1-5</key><value
+        xsi:nil="true" /></item></found><severity xsi:type="xsd:string">serious</severity><unarchived
+        xsi:type="xsd:string" /><outlook xsi:type="xsd:string" /><pending xsi:type="xsd:string">done</pending><originator
+        xsi:type="xsd:string">Andreas Beckmann &lt;debian@abeckmann.de&gt;</originator><log_modified
+        xsi:type="xsd:int">1333438515</log_modified><last_modified xsi:type="xsd:int">1333438515</last_modified><forwarded
+        xsi:type="xsd:string" /><archived xsi:type="xsd:int">1</archived><subject
+        xsi:type="xsd:string">libjavascriptcoregtk-1.0-dev: fails to upgrade from
+        squeeze - trying to overwrite ...</subject><mergedwith xsi:type="xsd:string"
+        /><found_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
+        /><affects xsi:type="xsd:string">epiphany-browser-dev,libwebkit-dev</affects><package
+        xsi:type="xsd:string">libjavascriptcoregtk-1.0-dev</package><keywords xsi:type="xsd:string"
+        /><blocks xsi:type="xsd:string" /><owner xsi:type="xsd:string" /><fixed_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><bug_num xsi:type="xsd:int">657408</bug_num><source
+        xsi:type="xsd:string">webkit, webkitgtk, webkitgtk+</source><date xsi:type="xsd:int">1327548062</date><msgid
+        xsi:type="xsd:string">&lt;20120126031639.22931.24805.reportbug@cake.ae.cs.uni-frankfurt.de&gt;</msgid><summary
+        xsi:type="xsd:string" /><fixed xsi:type="apachens:Map"><item><key xsi:type="xsd:string">webkit/1.6.3-1</key><value
+        xsi:nil="true" /></item></fixed><fixed_versions soapenc:arrayType="xsd:string[1]"
+        xsi:type="soapenc:Array"><item xsi:type="xsd:string">webkit/1.6.3-1</item></fixed_versions><done
+        xsi:type="xsd:string">Gustavo Noronha Silva &lt;kov@debian.org&gt;</done><blockedby
+        xsi:type="xsd:string" /><location xsi:type="xsd:string">archive</location><found_versions
+        soapenc:arrayType="xsd:string[2]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">epiphany-browser-dev/3.2.1-2</item><item
+        xsi:type="xsd:string">webkit/1.6.1-5</item></found_versions><id xsi:type="xsd:int">657408</id><tags
+        xsi:type="xsd:string" /></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
+    headers:
+      connection: [close]
+      content-length: ['2801']
+      content-type: [text/xml; charset=utf-8]
+      date: ['Fri, 04 Sep 2015 19:25:22 GMT']
+      server: [Apache]
+      soapserver: ['SOAP::Lite/Perl/1.11']
+      strict-transport-security: [max-age=15552000]
+      vary: [Accept-Encoding]
+      x-clacks-overhead: [GNU Terry Pratchett]
+    status: {code: 200, message: OK}
+version: 1
