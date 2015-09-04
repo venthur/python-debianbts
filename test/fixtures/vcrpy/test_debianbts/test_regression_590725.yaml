@@ -1,0 +1,341 @@
+interactions:
+- request:
+    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope xmlns:soap=\"\
+      http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
+      \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n<soap:Header/>\n\
+      <soap:Body>\n    <get_bug_log xmlns=\"Debbugs/SOAP/V1\">\n    <arg0>578363</arg0></get_bug_log>\n\
+      </soap:Body>\n</soap:Envelope>"
+    headers:
+      Connection: [close]
+      Content-Length: ['344']
+      Content-Type: [text/xml; charset="UTF-8"]
+      Host: [bugs.debian.org]
+      Soapaction: ['"Noneget_bug_log"']
+      User-Agent: [Python-urllib/2.7]
+    method: POST
+    uri: https://bugs.debian.org/cgi-bin/soap.cgi
+  response:
+    body: {string: !!python/unicode "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope\
+        \ soap:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:soap=\"\
+        http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\"\
+        \ xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
+        ><soap:Body><get_bug_logResponse xmlns=\"Debbugs/SOAP/\"><soapenc:Array soapenc:arrayType=\"\
+        xsd:anyType[3]\" xsi:type=\"soapenc:Array\"><item><attachments soapenc:arrayType=\"\
+        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body xsi:type=\"xsd:base64Binary\"\
+        >UGFja2FnZTogZnRwLmRlYmlhbi5vcmcKU2V2ZXJpdHk6IG5vcm1hbAoKCkhpLAoKU2FkbHkgZ3FjYW0gaXMgbm93IGxvbmdlciBkZXZlbG9wZWQgYW5kIGl0J3MgZGVwZW5kZW5jaWVzIG9uIEdUSyAxLjIgYW5kCm9sZCBWNEwgbWFrZXMgaXQgdW5zdWl0YWJsZSBmb3Igc3F1ZWV6ZS4gUGxlYXNlIHJlbW92ZSBpdCBmcm9tIHRoZQphcmNoaXZlLgoKVGhhbmtzLgoKQWxiZXJ0bwoKLS0gCkFsYmVydG8gR29uemFsZXogSW5pZXN0YSAgICB8IEZvcm1hY2nDs24sIGNvbnN1bHRvcsOtYSB5IHNvcG9ydGUgdMOpY25pY28KYWdpQChpbml0dGFiLm9yZ3xkZWJpYW4ub3JnKXwgZW4gR05VL0xpbnV4IHkgc29mdHdhcmUgbGlicmUKRW5jcnlwdGVkIG1haWwgcHJlZmVycmVkICAgIHwgaHR0cDovL2luaXR0YWIuY29tCgpLZXkgZmluZ2VycHJpbnQgPSA5NzgyIDA0RTcgMkI3NSA0MDVDIEY1RTkgIDBDODEgQzUxNCBBRjhFIDRCQTQgMDFDMwoKCg==</body><header\
+        \ xsi:type=\"xsd:string\">Received: (at submit) by bugs.debian.org; 19 Apr\
+        \ 2010 10:15:39 +0000\nFrom agi@inittab.org Mon Apr 19 10:15:39 2010\nX-Spam-Checker-Version:\
+        \ SpamAssassin 3.2.5-bugs.debian.org_2005_01_02\n\t(2008-06-10) on busoni.debian.org\n\
+        X-Spam-Level: \nX-Spam-Bayes: score:0.0000 Tokens: new, 8; hammy, 119; neutral,\
+        \ 37; spammy, 0.\n\tspammytokens: hammytokens:0.000-+--ftpdebianorg, 0.000-+--ftp.debian.org,\n\
+        \t0.000-+--UD:ftp.debian.org, 0.000-+--Severity, 0.000-+--H*u:1.5.20\nX-Spam-Status:\
+        \ No, score=-10.0 required=4.0 tests=BAYES_00,HAS_PACKAGE,\n\tSPF_PASS autolearn=ham\
+        \ version=3.2.5-bugs.debian.org_2005_01_02\nReturn-path: &lt;agi@inittab.org&gt;\n\
+        Received: from pancho.name ([92.48.73.7])\n\tby busoni.debian.org with esmtp\
+        \ (Exim 4.69)\n\t(envelope-from &lt;agi@inittab.org&gt;)\n\tid 1O3o0w-0007UK-21\n\
+        \tfor submit@bugs.debian.org; Mon, 19 Apr 2010 10:15:39 +0000\nReceived: from\
+        \ lib.inittab.org (unknown [10.8.0.30])\n\tby pancho.name (Postfix) with ESMTP\
+        \ id E150260469\n\tfor &lt;submit@bugs.debian.org&gt;; Mon, 19 Apr 2010 12:06:49\
+        \ +0200 (CEST)\nReceived: by lib.inittab.org (Postfix, from userid 1000)\n\
+        \tid B8044451CC; Mon, 19 Apr 2010 12:07:07 +0200 (CEST)\nDate: Mon, 19 Apr\
+        \ 2010 12:07:07 +0200\nFrom: Alberto Gonzalez Iniesta &lt;agi@inittab.org&gt;\n\
+        To: submit@bugs.debian.org\nSubject: RM: gqcam -- ROM; dead upstream, depends\
+        \ on GTK 1.2\nMessage-ID: &lt;20100419100707.GI2336@lib.inittab.org&gt;\n\
+        MIME-Version: 1.0\nContent-Type: text/plain; charset=iso-8859-1\nContent-Disposition:\
+        \ inline\nUser-Agent: Mutt/1.5.20 (2009-06-14)\nContent-Transfer-Encoding:\
+        \ quoted-printable\nX-Greylist: delayed 506 seconds by postgrey-1.31 at busoni;\
+        \ Mon, 19 Apr 2010 10:15:37 UTC\nDelivered-To: submit@bugs.debian.org</header><msg_num\
+        \ xsi:type=\"xsd:int\">5</msg_num></item><item><header xsi:type=\"xsd:string\"\
+        >Received: (at 578363-close) by bugs.debian.org; 19 Apr 2010 10:48:18 +0000\n\
+        From envelope@ftp-master.debian.org Mon Apr 19 10:48:18 2010\nX-Spam-Checker-Version:\
+        \ SpamAssassin 3.2.5-bugs.debian.org_2005_01_02\n\t(2008-06-10) on busoni.debian.org\n\
+        X-Spam-Level: \nX-Spam-Bayes: score:0.0000 Tokens: new, 18; hammy, 151; neutral,\
+        \ 79; spammy,\n\t0. spammytokens: hammytokens:0.000-+--HX-Debian:DAK,\n\t\
+        0.000-+--H*RU:128.148.34.103, 0.000-+--H*rp:D*ftp-master.debian.org,\n\t0.000-+--HX-DAK:dak,\
+        \ 0.000-+--HX-Spam-Relays-External:ries.debian.org\nX-Spam-Status: No, score=-7.6\
+        \ required=4.0 tests=AWL,BAYES_00,HAS_BUG_NUMBER\n\tautolearn=ham version=3.2.5-bugs.debian.org_2005_01_02\n\
+        Return-path: &lt;envelope@ftp-master.debian.org&gt;\nReceived: from ries.debian.org\
+        \ ([128.148.34.103])\n\tfrom C=NA,ST=NA,L=Ankh Morpork,O=Debian SMTP,OU=Debian\
+        \ SMTP CA,CN=ries.debian.org,EMAIL=hostmaster@ries.debian.org (verified)\n\
+        \tby busoni.debian.org with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)\n\t(Exim\
+        \ 4.69)\n\t(envelope-from &lt;envelope@ftp-master.debian.org&gt;)\n\tid 1O3oWY-0004bU-4G\n\
+        \tfor 578363-close@bugs.debian.org; Mon, 19 Apr 2010 10:48:18 +0000\nReceived:\
+        \ from tolimar by ries.debian.org with local (Exim 4.69)\n\t(envelope-from\
+        \ &lt;envelope@ftp-master.debian.org&gt;)\n\tid 1O3oWW-0003fR-EV; Mon, 19\
+        \ Apr 2010 10:48:16 +0000\nFrom: Debian Archive Maintenance &lt;ftpmaster@ftp-master.debian.org&gt;\n\
+        To: 578363-close@bugs.debian.org\nX-DAK: dak rm\nCc: gqcam@packages.debian.org,\
+        \ gqcam@packages.qa.debian.org \nX-Debian: DAK\nMIME-Version: 1.0\nContent-Type:\
+        \ text/plain; charset=\"utf-8\"\nContent-Transfer-Encoding: 8bit\nSubject:\
+        \ Bug#578363: Removed package(s) from unstable\nMessage-Id: &lt;E1O3oWW-0003fR-EV@ries.debian.org&gt;\n\
+        Sender: Alexander Reichle-Schmehl &lt;tolimar@ries.debian.org&gt;\nDate: Mon,\
+        \ 19 Apr 2010 10:48:16 +0000</header><body xsi:type=\"xsd:string\">We believe\
+        \ that the bug you reported is now fixed; the following\npackage(s) have been\
+        \ removed from unstable:\n\n     gqcam |    0.9.1-6 | source, alpha, amd64,\
+        \ armel, hppa, i386, ia64, mips, mipsel, powerpc, s390, sparc\n\n-------------------\
+        \ Reason -------------------\nROM; dead upstream, depends on GTK 1.2\n----------------------------------------------\n\
+        \nNote that the package(s) have simply been removed from the tag\ndatabase\
+        \ and may (or may not) still be in the pool; this is not a bug.\nThe package(s)\
+        \ will be physically removed automatically when no suite\nreferences them\
+        \ (and in the case of source, when no binary references\nit).  Please also\
+        \ remember that the changes have been done on the\nmaster archive (ftp-master.debian.org)\
+        \ and will not propagate to any\nmirrors (ftp.debian.org included) until the\
+        \ next cron.daily run at the\nearliest.\n\nPackages are usually not removed\
+        \ from testing by hand. Testing tracks\nunstable and will automatically remove\
+        \ packages which were removed\nfrom unstable when removing them from testing\
+        \ causes no dependency\nproblems. The release team can force a removal from\
+        \ testing if it is\nreally needed, please contact them if this should be the\
+        \ case.\n\nBugs which have been reported against this package are not automatically\n\
+        removed from the Bug Tracking System.  Please check all open bugs and\nclose\
+        \ them or re-assign them to another package if the removed package\nwas superseded\
+        \ by another one.\n\nThank you for reporting the bug, which will now be closed.\
+        \  If you\nhave further comments please address them to 578363@bugs.debian.org.\n\
+        \nThe full log for this bug can be viewed at http://bugs.debian.org/578363\n\
+        \nThis message was generated automatically; if you believe that there is\n\
+        a problem with it please contact the archive administrators by mailing\nftpmaster@debian.org.\n\
+        \nDebian distribution maintenance software\npp.\nAlexander Reichle-Schmehl\
+        \ (the ftpmaster behind the curtain)\n\n\n</body><attachments soapenc:arrayType=\"\
+        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><msg_num xsi:type=\"xsd:int\"\
+        >10</msg_num></item><item><header xsi:type=\"xsd:string\">Received: (at fakecontrol)\
+        \ by fakecontrolmessage;\nTo: internal_control@bugs.debian.org\nFrom: Debbugs\
+        \ Internal Request &lt;owner@bugs.debian.org&gt;\nSubject: Internal Control\n\
+        Message-Id: Bug archived.\nDate: Tue, 18 May 2010 07:37:21 +0000\nUser-Agent:\
+        \ Fakemail v42.6.9</header><attachments soapenc:arrayType=\"xsd:anyType[0]\"\
+        \ xsi:type=\"soapenc:Array\" /><body xsi:type=\"xsd:string\"># A New Hope\n\
+        # A long time ago, in a galaxy far, far away\n# something happened.\n#\n#\
+        \ Magically this resulted in the following\n# action being taken, but this\
+        \ fake control\n# message doesn't tell you why it happened\n#\n# The action:\n\
+        # Bug archived.\nthanks\n# This fakemail brought to you by your local debbugs\n\
+        # administrator\n</body><msg_num xsi:type=\"xsd:int\">12</msg_num></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
+    headers:
+      connection: [close]
+      content-length: ['7724']
+      content-type: [text/xml; charset=utf-8]
+      date: ['Fri, 04 Sep 2015 19:25:19 GMT']
+      server: [Apache]
+      soapserver: ['SOAP::Lite/Perl/1.11']
+      strict-transport-security: [max-age=15552000]
+      vary: [Accept-Encoding]
+      x-clacks-overhead: [GNU Terry Pratchett]
+    status: {code: 200, message: OK}
+- request:
+    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope xmlns:soap=\"\
+      http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
+      \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n<soap:Header/>\n\
+      <soap:Body>\n    <get_bug_log xmlns=\"Debbugs/SOAP/V1\">\n    <arg0>570825</arg0></get_bug_log>\n\
+      </soap:Body>\n</soap:Envelope>"
+    headers:
+      Connection: [close]
+      Content-Length: ['344']
+      Content-Type: [text/xml; charset="UTF-8"]
+      Host: [bugs.debian.org]
+      Soapaction: ['"Noneget_bug_log"']
+      User-Agent: [Python-urllib/2.7]
+    method: POST
+    uri: https://bugs.debian.org/cgi-bin/soap.cgi
+  response:
+    body: {string: !!python/unicode "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope\
+        \ soap:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:soap=\"\
+        http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\"\
+        \ xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
+        ><soap:Body><get_bug_logResponse xmlns=\"Debbugs/SOAP/\"><soapenc:Array soapenc:arrayType=\"\
+        xsd:anyType[6]\" xsi:type=\"soapenc:Array\"><item><attachments soapenc:arrayType=\"\
+        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body xsi:type=\"xsd:string\"\
+        >Package: ftp.debian.org\nSeverity: normal\n\nWe (the pkg-voip team) decided\
+        \ to drop old RC buggy packages,\nwhich are not developered anymore by upstream\
+        \ and/or do not have\ngot an active maintainer in Debian for a longer time.\n\
+        \n\n</body><header xsi:type=\"xsd:string\">Received: (at submit) by bugs.debian.org;\
+        \ 21 Feb 2010 18:39:28 +0000\nFrom pmatthaei@debian.org Sun Feb 21 18:39:28\
+        \ 2010\nX-Spam-Checker-Version: SpamAssassin 3.2.3-bugs.debian.org_2005_01_02\n\
+        \t(2007-08-08) on rietz.debian.org\nX-Spam-Level: \nX-Spam-Bayes: score:0.0000\
+        \ Tokens: new, 10; hammy, 72; neutral, 34; spammy, 2.\n\tspammytokens:0.995-1--H*M:8457,\
+        \ 0.993-1--H*MI:8457\n\thammytokens:0.000-+--H*M:reportbug, 0.000-+--H*MI:reportbug,\n\
+        \t0.000-+--H*x:reportbug, 0.000-+--H*UA:reportbug, 0.000-+--ftpdebianorg\n\
+        X-Spam-Status: No, score=-15.2 required=4.0 tests=BAYES_00,DNS_FROM_DOB,\n\
+        \tFROMDEVELOPER,HAS_PACKAGE,RCVD_IN_DOB,XMAILER_REPORTBUG,X_DEBBUGS_CC\n\t\
+        autolearn=ham version=3.2.3-bugs.debian.org_2005_01_02\nReturn-path: &lt;pmatthaei@debian.org&gt;\n\
+        Received: from linux-dev.org ([87.98.133.25] ident=postfix)\n\tby rietz.debian.org\
+        \ with esmtp (Exim 4.63)\n\t(envelope-from &lt;pmatthaei@debian.org&gt;)\n\
+        \tid 1NjGiG-0002ct-4x\n\tfor submit@bugs.debian.org; Sun, 21 Feb 2010 18:39:28\
+        \ +0000\nReceived: from localhost (localhost.localdomain [127.0.0.1])\n\t\
+        by linux-dev.org (Postfix) with ESMTP id 8B2F31FFBAA;\n\tSun, 21 Feb 2010\
+        \ 19:39:26 +0100 (CET)\nX-Virus-Scanned: Linux-Dev Waechter\nReceived: from\
+        \ srv1.linux-dev.org ([87.98.133.25])\n\tby localhost (linux-dev.org [127.0.0.1])\
+        \ (amavisd-new, port 10024)\n\twith ESMTP id QLfCBHPNYwpy; Sun, 21 Feb 2010\
+        \ 19:39:26 +0100 (CET)\nReceived: from exez (unknown [192.168.254.2])\n\t\
+        by linux-dev.org (Postfix) with ESMTP id 30C7B1FFB80;\n\tSun, 21 Feb 2010\
+        \ 19:39:26 +0100 (CET)\nReceived: by exez (Postfix, from userid 1000)\n\t\
+        id E88AD151607F; Sun, 21 Feb 2010 19:39:25 +0100 (CET)\nContent-Type: text/plain;\
+        \ charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\n\
+        From: =?utf-8?q?Patrick_Matth=C3=A4i?= &lt;pmatthaei@debian.org&gt;\nTo: Debian\
+        \ Bug Tracking System &lt;submit@bugs.debian.org&gt;\nSubject: RM: openh323-titan\
+        \ -- RoQA;\n RC buggy and unmaintained (from the pkg-voip team and upstream)\n\
+        Message-ID: &lt;20100221183925.7120.8457.reportbug@exez&gt;\nX-Mailer: reportbug\
+        \ 4.10.2\nDate: Sun, 21 Feb 2010 19:39:25 +0100\nX-Debbugs-Cc: pkg-voip-maintainers@lists.alioth.debian.org\n\
+        Delivered-To: submit@bugs.debian.org</header><msg_num xsi:type=\"xsd:int\"\
+        >5</msg_num></item><item><header xsi:type=\"xsd:string\">Received: (at 570825)\
+        \ by bugs.debian.org; 27 Feb 2010 09:56:54 +0000\nFrom twerner@debian.org\
+        \ Sat Feb 27 09:56:54 2010\nX-Spam-Checker-Version: SpamAssassin 3.2.3-bugs.debian.org_2005_01_02\n\
+        \t(2007-08-08) on rietz.debian.org\nX-Spam-Level: \nX-Spam-Bayes: score:0.0000\
+        \ Tokens: new, 0; hammy, 126; neutral, 43; spammy, 0.\n\tspammytokens: hammytokens:0.000-+--schrieb,\n\
+        \t0.000-+--HX-Enigmail-Version:0.95.0, 0.000-+--builddepends,\n\t0.000-+--build-depends,\
+        \ 0.000-+--H*u:sk:Mozilla\nX-Spam-Status: No, score=-9.5 required=4.0 tests=AWL,BAYES_00,FROMDEVELOPER,\n\
+        \tHAS_BUG_NUMBER,SPF_HELO_PASS,VALID_BTS_CONTROL autolearn=unavailable\n\t\
+        version=3.2.3-bugs.debian.org_2005_01_02\nReturn-path: &lt;twerner@debian.org&gt;\n\
+        Received: from moutng.kundenserver.de ([212.227.17.9])\n\tby rietz.debian.org\
+        \ with esmtp (Exim 4.63)\n\t(envelope-from &lt;twerner@debian.org&gt;)\n\t\
+        id 1NlJPq-0008Ty-0z; Sat, 27 Feb 2010 09:56:54 +0000\nReceived: from [192.168.178.36]\
+        \ (pD9EB124A.dip0.t-ipconnect.de [217.235.18.74])\n\tby mrelayeu.kundenserver.de\
+        \ (node=mreu0) with ESMTP (Nemesis)\n\tid 0MIRzP-1Nl1lJ3ftn-0049qa; Sat, 27\
+        \ Feb 2010 10:56:47 +0100\nMessage-ID: &lt;4B88EC34.6020806@debian.org&gt;\n\
+        Date: Sat, 27 Feb 2010 10:56:04 +0100\nFrom: Torsten Werner &lt;twerner@debian.org&gt;\n\
+        User-Agent: Mozilla-Thunderbird 2.0.0.22 (X11/20090706)\nMIME-Version: 1.0\n\
+        To: =?ISO-8859-1?Q?Patrick_Matth=E4i?= &lt;pmatthaei@debian.org&gt;, \n 570825@bugs.debian.org\n\
+        CC: control@bugs.debian.org\nSubject: Re: Bug#570825: RM: openh323-titan --\
+        \ RoQA; RC buggy and unmaintained\n (from the pkg-voip team and upstream)\n\
+        References: &lt;20100221183925.7120.8457.reportbug@exez&gt;\nIn-Reply-To:\
+        \ &lt;20100221183925.7120.8457.reportbug@exez&gt;\nX-Enigmail-Version: 0.95.0\n\
+        Content-Type: text/plain; charset=ISO-8859-1\nContent-Transfer-Encoding: 8bit\n\
+        X-Provags-ID: V01U2FsdGVkX1+nxnscECwmTtka4/0G04Y72D/GU6g7AE6iEX/\n Lv3JyVd5WqRu+ZcsrnJ4dJ7mzyOEDW3/O/SdTPnNCzZrKyR6cX\n\
+        \ FrdCOv12S2Ux1C5EEyWKeMA3r2pN0hY</header><msg_num xsi:type=\"xsd:int\">10</msg_num><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body\
+        \ xsi:type=\"xsd:base64Binary\">dGFncyA1NzA4MjUgKyBtb3JlaW5mbwp0aGFua3MKClBhdHJpY2sgTWF0dGjDpGkgc2NocmllYjoKPiBXZSAodGhlIHBrZy12b2lwIHRlYW0pIGRlY2lkZWQgdG8gZHJvcCBvbGQgUkMgYnVnZ3kgcGFja2FnZXMsCj4gd2hpY2ggYXJlIG5vdCBkZXZlbG9wZXJlZCBhbnltb3JlIGJ5IHVwc3RyZWFtIGFuZC9vciBkbyBub3QgaGF2ZQo+IGdvdCBhbiBhY3RpdmUgbWFpbnRhaW5lciBpbiBEZWJpYW4gZm9yIGEgbG9uZ2VyIHRpbWUuCgpUaGVyZSBhcmUgcHJvYmxlbXMgd2l0aCB0aGUgcmVtb3ZhbCB0aGF0IG11c3QgYmUgcmVzb2x2ZWQ6CgpDaGVja2luZyByZXZlcnNlIGRlcGVuZGVuY2llcy4uLgojIEJyb2tlbiBEZXBlbmRzOgpvcGVubWN1OiBvcGVubWN1IFthbHBoYSBhbWQ2NCBhcm1lbCBocHBhIGkzODYgaWE2NCBtaXBzIG1pcHNlbCBwb3dlcnBjCnMzOTAgc3BhcmNdCnQzOG1vZGVtOiB0Mzhtb2RlbSBbYWxwaGEgYW1kNjQgYXJtZWwgaHBwYSBpMzg2IGlhNjQgbWlwcyBtaXBzZWwgcG93ZXJwYwpzMzkwIHNwYXJjXQoKIyBCcm9rZW4gQnVpbGQtRGVwZW5kczoKb3Blbm1jdTogbGlib3BlbmgzMjMtMS4xOS4xLWRldiAoPj0gMS4xOS4xfikKdDM4bW9kZW06IGxpYm9wZW5oMzIzLTEuMTkuMS1kZXYgKD49IDEuMTkuMX4pCgoKVG9yc3RlbgoKCg==</body></item><item><body\
+        \ xsi:type=\"xsd:base64Binary\">T24gMjcuMDIuMjAxMCAxMDo1NiwgVG9yc3RlbiBXZXJuZXIgd3JvdGU6Cj4gdGFncyA1NzA4MjUgKyBtb3JlaW5mbwo+IHRoYW5rcwo+Cj4gUGF0cmljayBNYXR0aMOkaSBzY2hyaWViOgo+PiBXZSAodGhlIHBrZy12b2lwIHRlYW0pIGRlY2lkZWQgdG8gZHJvcCBvbGQgUkMgYnVnZ3kgcGFja2FnZXMsCj4+IHdoaWNoIGFyZSBub3QgZGV2ZWxvcGVyZWQgYW55bW9yZSBieSB1cHN0cmVhbSBhbmQvb3IgZG8gbm90IGhhdmUKPj4gZ290IGFuIGFjdGl2ZSBtYWludGFpbmVyIGluIERlYmlhbiBmb3IgYSBsb25nZXIgdGltZS4KPgo+IFRoZXJlIGFyZSBwcm9ibGVtcyB3aXRoIHRoZSByZW1vdmFsIHRoYXQgbXVzdCBiZSByZXNvbHZlZDoKPgo+IENoZWNraW5nIHJldmVyc2UgZGVwZW5kZW5jaWVzLi4uCj4gIyBCcm9rZW4gRGVwZW5kczoKPiBvcGVubWN1OiBvcGVubWN1IFthbHBoYSBhbWQ2NCBhcm1lbCBocHBhIGkzODYgaWE2NCBtaXBzIG1pcHNlbCBwb3dlcnBjCj4gczM5MCBzcGFyY10KPiB0Mzhtb2RlbTogdDM4bW9kZW0gW2FscGhhIGFtZDY0IGFybWVsIGhwcGEgaTM4NiBpYTY0IG1pcHMgbWlwc2VsIHBvd2VycGMKPiBzMzkwIHNwYXJjXQo+Cj4gIyBCcm9rZW4gQnVpbGQtRGVwZW5kczoKPiBvcGVubWN1OiBsaWJvcGVuaDMyMy0xLjE5LjEtZGV2ICg+PSAxLjE5LjF+KQo+IHQzOG1vZGVtOiBsaWJvcGVuaDMyMy0xLjE5LjEtZGV2ICg+PSAxLjE5LjF+KQoKSGkgTWFyaywKCmlmIEkgdW5kZXJzdG9vZCB5b3VyIHByZXZpb3VzIG1haWwgdG8gcGtnLXZvaXAgaW4gdGhlIHJpZ2h0IHdheS4geW91IAp3YW50ZWQgdG8gZml4IG9wZW5tY3UgYW5kIHQzOG1vZGVtLCBzbyB0aGF0IHRoZXkgZG8gbm90IHVzZSB0aGUgLXRpdGFuIAp2YXJpYW50PwoKLS0gCi8qCk1pdCBmcmV1bmRsaWNoZW0gR3J1w58gLyBXaXRoIGtpbmQgcmVnYXJkcywKICBQYXRyaWNrIE1hdHRow6RpCiAgR05VL0xpbnV4IERlYmlhbiBEZXZlbG9wZXIKCkUtTWFpbDogcG1hdHRoYWVpQGRlYmlhbi5vcmcKICAgICAgICAgcGF0cmlja0BsaW51eC1kZXYub3JnCgpDb21tZW50OgpBbHdheXMgaWYgd2UgdGhpbmsgd2UgYXJlIHJpZ2h0LAp3ZSB3ZXJlIG1heWJlIHdyb25nLgoqLwoKCg==</body><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header\
+        \ xsi:type=\"xsd:string\">Received: (at 570825) by bugs.debian.org; 27 Feb\
+        \ 2010 10:49:30 +0000\nFrom pmatthaei@debian.org Sat Feb 27 10:49:30 2010\n\
+        X-Spam-Checker-Version: SpamAssassin 3.2.3-bugs.debian.org_2005_01_02\n\t\
+        (2007-08-08) on rietz.debian.org\nX-Spam-Level: \nX-Spam-Bayes: score:0.0000\
+        \ Tokens: new, 15; hammy, 151; neutral, 87; spammy,\n\t0. spammytokens: hammytokens:0.000-+--schrieb,\
+        \ 0.000-+--builddepends,\n\t0.000-+--build-depends, 0.000-+--BuildDepends,\
+        \ 0.000-+--Build-Depends\nX-Spam-Status: No, score=-9.0 required=4.0 tests=BAYES_00,FROMDEVELOPER,\n\
+        \tHAS_BUG_NUMBER autolearn=ham version=3.2.3-bugs.debian.org_2005_01_02\n\
+        Return-path: &lt;pmatthaei@debian.org&gt;\nReceived: from linux-dev.org ([87.98.133.25]\
+        \ ident=postfix)\n\tby rietz.debian.org with esmtp (Exim 4.63)\n\t(envelope-from\
+        \ &lt;pmatthaei@debian.org&gt;)\n\tid 1NlKEk-00023c-5G\n\tfor 570825@bugs.debian.org;\
+        \ Sat, 27 Feb 2010 10:49:30 +0000\nReceived: from localhost (localhost.localdomain\
+        \ [127.0.0.1])\n\tby linux-dev.org (Postfix) with ESMTP id 406A11FFBC3;\n\t\
+        Sat, 27 Feb 2010 11:49:28 +0100 (CET)\nX-Virus-Scanned: Linux-Dev Waechter\n\
+        Received: from srv1.linux-dev.org ([87.98.133.25])\n\tby localhost (linux-dev.org\
+        \ [127.0.0.1]) (amavisd-new, port 10024)\n\twith ESMTP id gHc-ANkqgvWw; Sat,\
+        \ 27 Feb 2010 11:49:28 +0100 (CET)\nReceived: from [192.168.0.2] (i59F54CDF.versanet.de\
+        \ [89.245.76.223])\n\tby linux-dev.org (Postfix) with ESMTPSA id 753DE1FFB38;\n\
+        \tSat, 27 Feb 2010 11:49:27 +0100 (CET)\nMessage-ID: &lt;4B88F8B6.9040404@debian.org&gt;\n\
+        Date: Sat, 27 Feb 2010 11:49:26 +0100\nFrom: =?ISO-8859-1?Q?Patrick_Matth=E4i?=\
+        \ &lt;pmatthaei@debian.org&gt;\nReply-To: pmatthaei@debian.org\nOrganization:\
+        \ www.Debian.org\nUser-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7)\
+        \ Gecko/20100204 Iceowl/1.0b1 Icedove/3.0.1\nMIME-Version: 1.0\nTo: Torsten\
+        \ Werner &lt;twerner@debian.org&gt;\nCC: 570825@bugs.debian.org, Mark Purcell\
+        \ &lt;msp@debian.org&gt;\nSubject: Re: Bug#570825: RM: openh323-titan -- RoQA;\
+        \ RC buggy and unmaintained\n (from the pkg-voip team and upstream)\nReferences:\
+        \ &lt;20100221183925.7120.8457.reportbug@exez&gt; &lt;4B88EC34.6020806@debian.org&gt;\n\
+        In-Reply-To: &lt;4B88EC34.6020806@debian.org&gt;\nContent-Type: text/plain;\
+        \ charset=ISO-8859-1; format=flowed\nContent-Transfer-Encoding: quoted-printable</header><msg_num\
+        \ xsi:type=\"xsd:int\">17</msg_num></item><item><msg_num xsi:type=\"xsd:int\"\
+        >19</msg_num><header xsi:type=\"xsd:string\">Received: (at control) by bugs.debian.org;\
+        \ 1 Mar 2010 12:52:32 +0000\nFrom alexander@schmehl.info Mon Mar 01 12:52:31\
+        \ 2010\nX-Spam-Checker-Version: SpamAssassin 3.2.3-bugs.debian.org_2005_01_02\n\
+        \t(2007-08-08) on rietz.debian.org\nX-Spam-Level: \nX-Spam-Bayes: score:0.0000\
+        \ Tokens: new, 13; hammy, 112; neutral, 42; spammy,\n\t1. spammytokens:0.993-1--hecking\
+        \ hammytokens:0.000-+--builddepends,\n\t0.000-+--build-depends, 0.000-+--BuildDepends,\
+        \ 0.000-+--Build-Depends,\n\t0.000-+--H*f:sk:2010022\nX-Spam-Status: No, score=-8.8\
+        \ required=4.0 tests=AWL,BAYES_00,HAS_BUG_NUMBER,\n\tVALID_BTS_CONTROL autolearn=ham\
+        \ version=3.2.3-bugs.debian.org_2005_01_02\nReturn-path: &lt;alexander@schmehl.info&gt;\n\
+        Received: from melusine.alphascorpii.net ([85.214.32.25])\n\tby rietz.debian.org\
+        \ with esmtp (Exim 4.63)\n\t(envelope-from &lt;alexander@schmehl.info&gt;)\n\
+        \tid 1Nm56t-00068C-NJ; Mon, 01 Mar 2010 12:52:31 +0000\nReceived: from localhost\
+        \ (localhost [127.0.0.1])\n\tby melusine.alphascorpii.net (Postfix) with ESMTP\
+        \ id 215B288AFD4;\n\tMon,  1 Mar 2010 13:52:29 +0100 (CET)\nX-Virus-Scanned:\
+        \ Debian amavisd-new at melusine.alphascorpii.net\nReceived: from melusine.alphascorpii.net\
+        \ ([127.0.0.1])\n\tby localhost (melusine.alphascorpii.net [127.0.0.1]) (amavisd-new,\
+        \ port 10026)\n\twith LMTP id bz8inV4MJODl; Mon,  1 Mar 2010 13:52:26 +0100\
+        \ (CET)\nReceived: by melusine.alphascorpii.net (Postfix, from userid 1001)\n\
+        \tid 8BBFB88AFAC; Mon,  1 Mar 2010 13:52:26 +0100 (CET)\nDate: Mon, 1 Mar\
+        \ 2010 13:52:26 +0100\nFrom: Alexander Reichle-Schmehl &lt;alexander@schmehl.info&gt;\n\
+        To: Patrick =?iso-8859-15?Q?Matth=E4i?= &lt;pmatthaei@debian.org&gt;,\n\t\
+        570824@bugs.debian.org\nSubject: Re: Bug#570824: RM: pwlib-titan -- RoQA;\
+        \ RC buggy and unmaintained\n\t(from the pkg-voip team and upstream)\nMessage-ID:\
+        \ &lt;20100301125226.GA29592@melusine.alphascorpii.net&gt;\nReferences: &lt;20100221183812.7048.81238.reportbug@exez&gt;\n\
+        MIME-Version: 1.0\nContent-Type: text/plain; charset=iso-8859-15\nContent-Disposition:\
+        \ inline\nContent-Transfer-Encoding: quoted-printable\nIn-Reply-To: &lt;20100221183812.7048.81238.reportbug@exez&gt;\n\
+        User-Agent: Mutt/1.5.18 (2008-05-17)\nDelivered-To: control@bugs.debian.org</header><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body\
+        \ xsi:type=\"xsd:base64Binary\">dGFnIDU3MDgyNCArbW9yZWluZm8KYmxvY2sgNTcwODI0IGJ5IDU3MDgyNQp0aGFua3MKCkhpIQoKCiogUGF0cmljayBNYXR0aMOkaSA8cG1hdHRoYWVpQGRlYmlhbi5vcmc+IFsxMDAyMjEgMTk6MzhdOgoKPiBXZSAodGhlIHBrZy12b2lwIHRlYW0pIGRlY2lkZWQgdG8gZHJvcCBvbGQgUkMgYnVnZ3kgcGFja2FnZXMsCj4gd2hpY2ggYXJlIG5vdCBkZXZlbG9wZXJlZCBhbnltb3JlIGJ5IHVwc3RyZWFtIGFuZC9vciBkbyBub3QgaGF2ZQo+IGdvdCBhbiBhY3RpdmUgbWFpbnRhaW5lciBpbiBEZWJpYW4gZm9yIGEgbG9uZ2VyIHRpbWUuCiAKIzU3MDgyNSBuZWVkcyB0byBiZSByZXNvbHZlZCwgYmVmb3JlIHdlIGNhbiByZW1vdmUgdGhpcyBwYWNrYWdlLgpVcGRhdGluZyBidWcgYWNjb3JkaW5nbHk6CgpoZWNraW5nIHJldmVyc2UgZGVwZW5kZW5jaWVzLi4uCiMgQnJva2VuIERlcGVuZHM6Cm9wZW5oMzIzLXRpdGFuOiBsaWJvcGVuaDMyMy0xLjE5LjEgW2FscGhhIGFtZDY0IGFybWVsIGhwcGEgaTM4NiBpYTY0Cm1pcHMgbWlwc2VsIHBvd2VycGMgczM5MCBzcGFyY10KICAgICAgICAgICAgICAgIGxpYm9wZW5oMzIzLTEuMTkuMS1kZXYgW2FscGhhIGFtZDY0IGFybWVsIGhwcGEgaTM4NiBpYTY0Cm1pcHMgbWlwc2VsIHBvd2VycGMgczM5MCBzcGFyY10KICAgICAgICAgICAgICAgIGxpYm9wZW5oMzIzLTEuMTkuMS1kZXZlbG9wIFthbHBoYSBhbWQ2NCBhcm1lbCBocHBhIGkzODYKaWE2NCBtaXBzIG1pcHNlbCBwb3dlcnBjIHMzOTAgc3BhcmNdCiAgICAgICAgICAgICAgICBzaW1waDMyMy10aXRhbiBbYWxwaGEgYW1kNjQgYXJtZWwgaHBwYSBpMzg2IGlhNjQgbWlwcwptaXBzZWwgcG93ZXJwYyBzMzkwIHNwYXJjXQpvcGVubWN1OiBvcGVubWN1IFthbHBoYSBhbWQ2NCBhcm1lbCBocHBhIGkzODYgaWE2NCBtaXBzIG1pcHNlbCBwb3dlcnBjCnMzOTAgc3BhcmNdCgojIEJyb2tlbiBCdWlsZC1EZXBlbmRzOgpvcGVuaDMyMy10aXRhbjogbGlicHQtMS4xMS4yLWRldiAoPj0gMS4xMS4yfikKb3Blbm1jdTogbGlicHQtMS4xMS4yLWRldiAoPj0gMS4xMS4yKQoKCgpCZXN0IFJlZ2FyZHMsCiAgQWxleGFuZGVyCgoK</body></item><item><body\
+        \ xsi:type=\"xsd:string\">We believe that the bug you reported is now fixed;\
+        \ the following\npackage(s) have been removed from unstable:\n\nlibopenh323-1.19.1\
+        \ | 1.19.1~dfsg-4 | alpha, amd64, armel, hppa, i386, ia64, mips, mipsel, powerpc,\
+        \ s390, sparc\nlibopenh323-1.19.1-dbg | 1.19.1~dfsg-4 | alpha, amd64, armel,\
+        \ hppa, i386, ia64, mips, mipsel, powerpc, s390, sparc\nlibopenh323-1.19.1-dev\
+        \ | 1.19.1~dfsg-4 | alpha, amd64, armel, hppa, i386, ia64, mips, mipsel, powerpc,\
+        \ s390, sparc\nlibopenh323-1.19.1-develop | 1.19.1~dfsg-4 | alpha, amd64,\
+        \ armel, hppa, i386, ia64, mips, mipsel, powerpc, s390, sparc\nlibopenh323-1.19.1-doc\
+        \ | 1.19.1~dfsg-4 | all\nopenh323-titan | 1.19.1~dfsg-4 | source\nsimph323-titan\
+        \ | 1.19.1~dfsg-4 | alpha, amd64, armel, hppa, i386, ia64, mips, mipsel, powerpc,\
+        \ s390, sparc\n\n------------------- Reason -------------------\nRoQA; RC\
+        \ buggy and unmaintained (from the pkg-voip team and upstream)\n----------------------------------------------\n\
+        \nNote that the package(s) have simply been removed from the tag\ndatabase\
+        \ and may (or may not) still be in the pool; this is not a bug.\nThe package(s)\
+        \ will be physically removed automatically when no suite\nreferences them\
+        \ (and in the case of source, when no binary references\nit).  Please also\
+        \ remember that the changes have been done on the\nmaster archive (ftp-master.debian.org)\
+        \ and will not propagate to any\nmirrors (ftp.debian.org included) until the\
+        \ next cron.daily run at the\nearliest.\n\nPackages are usually not removed\
+        \ from testing by hand. Testing tracks\nunstable and will automatically remove\
+        \ packages which were removed\nfrom unstable when removing them from testing\
+        \ causes no dependency\nproblems. The release team can force a removal from\
+        \ testing if it is\nreally needed, please contact them if this should be the\
+        \ case.\n\nBugs which have been reported against this package are not automatically\n\
+        removed from the Bug Tracking System.  Please check all open bugs and\nclose\
+        \ them or re-assign them to another package if the removed package\nwas superseded\
+        \ by another one.\n\nThank you for reporting the bug, which will now be closed.\
+        \  If you\nhave further comments please address them to 570825@bugs.debian.org.\n\
+        \nThe full log for this bug can be viewed at http://bugs.debian.org/570825\n\
+        \nThis message was generated automatically; if you believe that there is\n\
+        a problem with it please contact the archive administrators by mailing\nftpmaster@debian.org.\n\
+        \nDebian distribution maintenance software\npp.\nTorsten Werner (the ftpmaster\
+        \ behind the curtain)\n\n\n</body><attachments soapenc:arrayType=\"xsd:anyType[0]\"\
+        \ xsi:type=\"soapenc:Array\" /><msg_num xsi:type=\"xsd:int\">24</msg_num><header\
+        \ xsi:type=\"xsd:string\">Received: (at 570825-close) by bugs.debian.org;\
+        \ 10 Apr 2010 18:49:51 +0000\nFrom envelope@ftp-master.debian.org Sat Apr\
+        \ 10 18:49:51 2010\nX-Spam-Checker-Version: SpamAssassin 3.2.5-bugs.debian.org_2005_01_02\n\
+        \t(2008-06-10) on busoni.debian.org\nX-Spam-Level: \nX-Spam-Bayes: score:0.0000\
+        \ Tokens: new, 17; hammy, 151; neutral, 82; spammy,\n\t0. spammytokens: hammytokens:0.000-+--HX-Debian:DAK,\n\
+        \t0.000-+--H*RU:128.148.34.103, 0.000-+--H*rp:D*ftp-master.debian.org,\n\t\
+        0.000-+--HX-DAK:dak, 0.000-+--HX-Spam-Relays-External:ries.debian.org\nX-Spam-Status:\
+        \ No, score=-7.6 required=4.0 tests=AWL,BAYES_00,HAS_BUG_NUMBER\n\tautolearn=ham\
+        \ version=3.2.5-bugs.debian.org_2005_01_02\nReturn-path: &lt;envelope@ftp-master.debian.org&gt;\n\
+        Received: from ries.debian.org ([128.148.34.103])\n\tfrom C=NA,ST=NA,L=Ankh\
+        \ Morpork,O=Debian SMTP,OU=Debian SMTP CA,CN=ries.debian.org,EMAIL=hostmaster@ries.debian.org\
+        \ (verified)\n\tby busoni.debian.org with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)\n\
+        \t(Exim 4.69)\n\t(envelope-from &lt;envelope@ftp-master.debian.org&gt;)\n\t\
+        id 1O0fkc-0002N3-Rd\n\tfor 570825-close@bugs.debian.org; Sat, 10 Apr 2010\
+        \ 18:49:50 +0000\nReceived: from twerner by ries.debian.org with local (Exim\
+        \ 4.69)\n\t(envelope-from &lt;envelope@ftp-master.debian.org&gt;)\n\tid 1O0fka-0007zh-JK;\
+        \ Sat, 10 Apr 2010 18:49:48 +0000\nFrom: Debian Archive Maintenance &lt;ftpmaster@ftp-master.debian.org&gt;\n\
+        To: 570825-close@bugs.debian.org\nX-DAK: dak rm\nCc: openh323-titan@packages.debian.org,\
+        \ openh323-titan@packages.qa.debian.org \nX-Debian: DAK\nMIME-Version: 1.0\n\
+        Content-Type: text/plain; charset=\"utf-8\"\nContent-Transfer-Encoding: 8bit\n\
+        Subject: Bug#570825: Removed package(s) from unstable\nMessage-Id: &lt;E1O0fka-0007zh-JK@ries.debian.org&gt;\n\
+        Sender: Torsten Werner &lt;twerner@ries.debian.org&gt;\nDate: Sat, 10 Apr\
+        \ 2010 18:49:48 +0000</header></item><item><header xsi:type=\"xsd:string\"\
+        >Received: (at fakecontrol) by fakecontrolmessage;\nTo: internal_control@bugs.debian.org\n\
+        From: Debbugs Internal Request &lt;owner@bugs.debian.org&gt;\nSubject: Internal\
+        \ Control\nMessage-Id: Bug archived.\nDate: Sun, 09 May 2010 07:33:55 +0000\n\
+        User-Agent: Fakemail v42.6.9</header><msg_num xsi:type=\"xsd:int\">26</msg_num><body\
+        \ xsi:type=\"xsd:string\"># A New Hope\n# A long time ago, in a galaxy far,\
+        \ far away\n# something happened.\n#\n# Magically this resulted in the following\n\
+        # action being taken, but this fake control\n# message doesn't tell you why\
+        \ it happened\n#\n# The action:\n# Bug archived.\nthanks\n# This fakemail\
+        \ brought to you by your local debbugs\n# administrator\n</body><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
+    headers:
+      connection: [close]
+      content-length: ['19069']
+      content-type: [text/xml; charset=utf-8]
+      date: ['Fri, 04 Sep 2015 19:25:20 GMT']
+      server: [Apache]
+      soapserver: ['SOAP::Lite/Perl/1.11']
+      strict-transport-security: [max-age=15552000]
+      vary: [Accept-Encoding]
+      x-clacks-overhead: [GNU Terry Pratchett]
+    status: {code: 200, message: OK}
+version: 1
