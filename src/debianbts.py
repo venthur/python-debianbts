@@ -28,6 +28,7 @@ Bugreport class which represents a bugreport from the BTS.
 
 from __future__ import division, unicode_literals, absolute_import, print_function
 
+import email
 from datetime import datetime
 import os
 import sys
@@ -258,8 +259,14 @@ def get_bug_log(nr):
         buglog["header"] = _uc(str(buglog_el("header")))
         buglog["body"] = _uc(str(buglog_el("body")))
         buglog["msg_num"] = int(buglog_el("msg_num"))
-        buglog["attachments"] = []
         # server always returns an empty attachments array ?
+        buglog["attachments"] = []
+
+        mail_parser = email.feedparser.FeedParser()
+        mail_parser.feed(str(buglog_el("header")))
+        mail_parser.feed(str(buglog_el("body")))
+        buglog["message"] = mail_parser.close()
+
         buglogs.append(buglog)
     return buglogs
 

@@ -21,6 +21,7 @@
 from __future__ import division, unicode_literals, absolute_import, print_function
 
 import datetime
+import email
 import math
 import random
 import unittest
@@ -124,6 +125,17 @@ class DebianBtsTestCase(unittest.TestCase):
         buglogs = bts.get_bug_log(400000)
         for bl in buglogs:
             self.assertTrue("attachments" in bl)
+
+    def testBugLogMessage(self):
+        """dict returned by get_bug_log has a email.Message field"""
+        buglogs = bts.get_bug_log(400012)
+        for buglog in buglogs:
+            self.assertTrue('message' in buglog)
+            msg = buglog['message']
+            self.assertIsInstance(msg, email.message.Message)
+            self.assertFalse(msg.is_multipart())
+            self.assertTrue('Subject' in msg)
+            self.assertIsInstance(msg.get_payload(), str)
 
     def testEmptyGetStatus(self):
         """get_status should return empty list if bug doesn't exits"""
