@@ -250,6 +250,7 @@ def get_bug_log(nr):
         "body" => string
         "attachments" => list
         "msg_num" => int
+        "message" => email.message.Message
     """
     reply = _soap_client_call('get_bug_log', nr)
     items_el = reply('soapenc:Array')
