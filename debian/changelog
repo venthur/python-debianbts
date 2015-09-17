@@ -1,3 +1,10 @@
+python-debianbts (2.2) unstable; urgency=medium
+
+  * Added patch by Gaetano to provide proper email messages in Buglog.
+  * Upload to unstable
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 17 Sep 2015 12:41:37 +0200
+
 python-debianbts (2.1) experimental; urgency=medium
 
   * Port to Python 3. Thanks again Gaetano Guerriero for providing the initial
