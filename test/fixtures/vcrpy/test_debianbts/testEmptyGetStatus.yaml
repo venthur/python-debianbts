@@ -25,7 +25,7 @@ interactions:
       connection: [close]
       content-length: ['442']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:24:41 GMT']
+      date: ['Thu, 17 Sep 2015 12:35:41 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]

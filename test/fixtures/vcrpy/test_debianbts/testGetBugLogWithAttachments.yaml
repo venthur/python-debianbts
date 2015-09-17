@@ -20,12 +20,32 @@ interactions:
         http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\"\
         \ xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         ><soap:Body><get_bug_logResponse xmlns=\"Debbugs/SOAP/\"><soapenc:Array soapenc:arrayType=\"\
-        xsd:anyType[4]\" xsi:type=\"soapenc:Array\"><item><header xsi:type=\"xsd:string\"\
-        >Received: (at submit) by bugs.debian.org; 23 Nov 2006 11:42:33 +0000\nFrom\
-        \ bubulle@debian.org Thu Nov 23 03:42:33 2006\nReturn-path: &lt;bubulle@debian.org&gt;\n\
-        Received: from smtp3-g19.free.fr ([212.27.42.29])\n\tby spohr.debian.org with\
-        \ esmtp (Exim 4.50)\n\tid 1GnCyP-0000pc-Ag\n\tfor submit@bugs.debian.org;\
-        \ Thu, 23 Nov 2006 03:42:33 -0800\nReceived: from kheops.perrier.eu.org (perrier.eu.org\
+        xsd:anyType[4]\" xsi:type=\"soapenc:Array\"><item><attachments soapenc:arrayType=\"\
+        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body xsi:type=\"xsd:string\"\
+        >Package: libroxen-imho\nVersion: N/A\nSeverity: wishlist\nTags: patch l10n\n\
+        \nPlease find attached the french debconf templates update, proofread by the\n\
+        debian-l10n-french mailing list contributors.\n\nIf you do not already use\
+        \ it, please remember about the\n\"podebconf-report-po\" utility, which helps\
+        \ warning translators about\nchanges when you modify some debconf templates\
+        \ in your packages. See\nits man page for details.\n\nThe usual policy when\
+        \ using it is sending a warning to translators when\nyou plan to upload a\
+        \ version of your package with debconf templates\nchanges (EVEN TYPO CORRECTIONS).\
+        \ Then leave about one week for them to\nupdate their files (several translation\
+        \ teams have a QA process which\nrequires time).\n\npodebconf-report-po will\
+        \ take care of sending the translators the\nneeded material as well as getting\
+        \ the translators adresses from the\nPO files. All you have to do is just\
+        \ using the utility..:-)\n\nIf you apply this policy, please forget about\
+        \ these remarks, of\ncourse....This message is generic..:-)\n\n\n-- System\
+        \ Information:\nDebian Release: 4.0\n  APT prefers unstable\n  APT policy:\
+        \ (500, 'unstable')\nArchitecture: i386 (i686)\nShell:  /bin/sh linked to\
+        \ /bin/dash\nKernel: Linux 2.6.18-2-686\nLocale: LANG=fr_FR.UTF-8, LC_CTYPE=fr_FR.UTF-8\
+        \ (charmap=UTF-8) (ignored: LC_ALL set to fr_FR.UTF-8)</body><msg_num xsi:type=\"\
+        xsd:int\">5</msg_num><header xsi:type=\"xsd:string\">Received: (at submit)\
+        \ by bugs.debian.org; 23 Nov 2006 11:42:33 +0000\nFrom bubulle@debian.org\
+        \ Thu Nov 23 03:42:33 2006\nReturn-path: &lt;bubulle@debian.org&gt;\nReceived:\
+        \ from smtp3-g19.free.fr ([212.27.42.29])\n\tby spohr.debian.org with esmtp\
+        \ (Exim 4.50)\n\tid 1GnCyP-0000pc-Ag\n\tfor submit@bugs.debian.org; Thu, 23\
+        \ Nov 2006 03:42:33 -0800\nReceived: from kheops.perrier.eu.org (perrier.eu.org\
         \ [81.56.227.253])\n\tby smtp3-g19.free.fr (Postfix) with ESMTP id AF01D4A143;\n\
         \tThu, 23 Nov 2006 12:42:31 +0100 (CET)\nReceived: from localhost (localhost\
         \ [127.0.0.1])\n\tby kheops.perrier.eu.org (Postfix) with ESMTP id 7766A6B60B;\n\
@@ -45,33 +65,35 @@ interactions:
         Delivered-To: submit@bugs.debian.org\nX-Spam-Checker-Version: SpamAssassin\
         \ 2.60-bugs.debian.org_2005_01_02 \n\t(1.212-2003-09-23-exp) on spohr.debian.org\n\
         X-Spam-Level: \nX-Spam-Status: No, hits=-8.0 required=4.0 tests=BAYES_00,HAS_PACKAGE\
-        \ \n\tautolearn=no version=2.60-bugs.debian.org_2005_01_02</header><attachments\
-        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><msg_num\
-        \ xsi:type=\"xsd:int\">5</msg_num><body xsi:type=\"xsd:string\">Package: libroxen-imho\n\
-        Version: N/A\nSeverity: wishlist\nTags: patch l10n\n\nPlease find attached\
-        \ the french debconf templates update, proofread by the\ndebian-l10n-french\
-        \ mailing list contributors.\n\nIf you do not already use it, please remember\
-        \ about the\n\"podebconf-report-po\" utility, which helps warning translators\
-        \ about\nchanges when you modify some debconf templates in your packages.\
-        \ See\nits man page for details.\n\nThe usual policy when using it is sending\
-        \ a warning to translators when\nyou plan to upload a version of your package\
-        \ with debconf templates\nchanges (EVEN TYPO CORRECTIONS). Then leave about\
-        \ one week for them to\nupdate their files (several translation teams have\
-        \ a QA process which\nrequires time).\n\npodebconf-report-po will take care\
-        \ of sending the translators the\nneeded material as well as getting the translators\
-        \ adresses from the\nPO files. All you have to do is just using the utility..:-)\n\
-        \nIf you apply this policy, please forget about these remarks, of\ncourse....This\
-        \ message is generic..:-)\n\n\n-- System Information:\nDebian Release: 4.0\n\
-        \  APT prefers unstable\n  APT policy: (500, 'unstable')\nArchitecture: i386\
-        \ (i686)\nShell:  /bin/sh linked to /bin/dash\nKernel: Linux 2.6.18-2-686\n\
-        Locale: LANG=fr_FR.UTF-8, LC_CTYPE=fr_FR.UTF-8 (charmap=UTF-8) (ignored: LC_ALL\
-        \ set to fr_FR.UTF-8)</body></item><item><body xsi:type=\"xsd:string\">retitle\
-        \ 400824 anthy: [INTL:fr] French debconf templates translation update\nretitle\
-        \ 400692 apt-listbugs: [INTL:fr] French program translation update\nretitle\
-        \ 398886 argus: [INTL:fr] French debconf templates translation update\nretitle\
-        \ 393740 atftp: [INTL:fr] French debconf templates translation update\nretitle\
-        \ 395534 caudium: [INTL:fr] French debconf templates translation update\n\
-        retitle 400712 dnprogs: [INTL:fr] French debconf templates translation update\n\
+        \ \n\tautolearn=no version=2.60-bugs.debian.org_2005_01_02</header></item><item><header\
+        \ xsi:type=\"xsd:string\">Received: (at control) by bugs.debian.org; 3 Dec\
+        \ 2006 10:42:18 +0000\nFrom thomas.huriaux@gmail.com Sun Dec 03 02:42:18 2006\n\
+        Return-path: &lt;thomas.huriaux@gmail.com&gt;\nReceived: from smtp4.orange.fr\
+        \ ([193.252.22.27] helo=smtp-msa-out04.orange.fr)\n\tby spohr.debian.org with\
+        \ esmtp (Exim 4.50)\n\tid 1GqonZ-0004g1-QP\n\tfor control@bugs.debian.org;\
+        \ Sun, 03 Dec 2006 02:42:18 -0800\nReceived: from lancelot.huriaux.dnsalias.net\
+        \ (AMontsouris-753-1-5-162.w90-2.abo.wanadoo.fr [90.2.192.162])\n\tby mwinf0412.orange.fr\
+        \ (SMTP Server) with ESMTP id 73BAE1C00163\n\tfor &lt;control@bugs.debian.org&gt;;\
+        \ Sun,  3 Dec 2006 11:41:43 +0100 (CET)\nX-ME-UUID: 20061203104143474.73BAE1C00163@mwinf0412.orange.fr\n\
+        Received: from thuriaux by lancelot.huriaux.dnsalias.net with local (Exim\
+        \ 4.63)\n\t(envelope-from &lt;thomas.huriaux@gmail.com&gt;)\n\tid 1Gqomy-0001Rq-Mb\n\
+        \tfor control@bugs.debian.org; Sun, 03 Dec 2006 11:41:40 +0100\nDate: Sun,\
+        \ 3 Dec 2006 11:41:40 +0100\nFrom: Thomas Huriaux &lt;thomas.huriaux@gmail.com&gt;\n\
+        To: control@bugs.debian.org\nSubject: fixing French l10n bugs\nMessage-ID:\
+        \ &lt;20061203104140.GD3455@localhost&gt;\nMIME-Version: 1.0\nContent-Type:\
+        \ multipart/signed; micalg=pgp-sha1;\n\tprotocol=\"application/pgp-signature\"\
+        ; boundary=\"IDYEmSnFhs3mNXr+\"\nContent-Disposition: inline\nUser-Agent:\
+        \ Mutt/1.5.13 (2006-08-11)\nDelivered-To: control@bugs.debian.org\nX-Spam-Checker-Version:\
+        \ SpamAssassin 2.60-bugs.debian.org_2005_01_02 \n\t(1.212-2003-09-23-exp)\
+        \ on spohr.debian.org\nX-Spam-Level: \nX-Spam-Status: No, hits=-4.0 required=4.0\
+        \ tests=BAYES_00,RCVD_IN_SORBS,\n\tVALID_BTS_CONTROL autolearn=no version=2.60-bugs.debian.org_2005_01_02</header><msg_num\
+        \ xsi:type=\"xsd:int\">7</msg_num><body xsi:type=\"xsd:string\">retitle 400824\
+        \ anthy: [INTL:fr] French debconf templates translation update\nretitle 400692\
+        \ apt-listbugs: [INTL:fr] French program translation update\nretitle 398886\
+        \ argus: [INTL:fr] French debconf templates translation update\nretitle 393740\
+        \ atftp: [INTL:fr] French debconf templates translation update\nretitle 395534\
+        \ caudium: [INTL:fr] French debconf templates translation update\nretitle\
+        \ 400712 dnprogs: [INTL:fr] French debconf templates translation update\n\
         retitle 394732 flashybrid: [INTL:fr] French debconf templates translation\n\
         retitle 399364 foomatic-filters: [INTL:fr] French debconf templates translation\
         \ update\nretitle 394066 hesiod: [INTL:fr] French debconf templates translation\
@@ -94,29 +116,23 @@ interactions:
         \ debconf templates translation\nretitle 392691 wxwidgets2.6: [INTL:fr] French\
         \ program translation update\ntag 392691 patch\nretitle 397101 xmail: [INTL:fr]\
         \ French debconf templates translation update\nthanks\n\n-- \nThomas Huriaux</body><attachments\
-        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header\
-        \ xsi:type=\"xsd:string\">Received: (at control) by bugs.debian.org; 3 Dec\
-        \ 2006 10:42:18 +0000\nFrom thomas.huriaux@gmail.com Sun Dec 03 02:42:18 2006\n\
-        Return-path: &lt;thomas.huriaux@gmail.com&gt;\nReceived: from smtp4.orange.fr\
-        \ ([193.252.22.27] helo=smtp-msa-out04.orange.fr)\n\tby spohr.debian.org with\
-        \ esmtp (Exim 4.50)\n\tid 1GqonZ-0004g1-QP\n\tfor control@bugs.debian.org;\
-        \ Sun, 03 Dec 2006 02:42:18 -0800\nReceived: from lancelot.huriaux.dnsalias.net\
-        \ (AMontsouris-753-1-5-162.w90-2.abo.wanadoo.fr [90.2.192.162])\n\tby mwinf0412.orange.fr\
-        \ (SMTP Server) with ESMTP id 73BAE1C00163\n\tfor &lt;control@bugs.debian.org&gt;;\
-        \ Sun,  3 Dec 2006 11:41:43 +0100 (CET)\nX-ME-UUID: 20061203104143474.73BAE1C00163@mwinf0412.orange.fr\n\
-        Received: from thuriaux by lancelot.huriaux.dnsalias.net with local (Exim\
-        \ 4.63)\n\t(envelope-from &lt;thomas.huriaux@gmail.com&gt;)\n\tid 1Gqomy-0001Rq-Mb\n\
-        \tfor control@bugs.debian.org; Sun, 03 Dec 2006 11:41:40 +0100\nDate: Sun,\
-        \ 3 Dec 2006 11:41:40 +0100\nFrom: Thomas Huriaux &lt;thomas.huriaux@gmail.com&gt;\n\
-        To: control@bugs.debian.org\nSubject: fixing French l10n bugs\nMessage-ID:\
-        \ &lt;20061203104140.GD3455@localhost&gt;\nMIME-Version: 1.0\nContent-Type:\
-        \ multipart/signed; micalg=pgp-sha1;\n\tprotocol=\"application/pgp-signature\"\
-        ; boundary=\"IDYEmSnFhs3mNXr+\"\nContent-Disposition: inline\nUser-Agent:\
-        \ Mutt/1.5.13 (2006-08-11)\nDelivered-To: control@bugs.debian.org\nX-Spam-Checker-Version:\
-        \ SpamAssassin 2.60-bugs.debian.org_2005_01_02 \n\t(1.212-2003-09-23-exp)\
-        \ on spohr.debian.org\nX-Spam-Level: \nX-Spam-Status: No, hits=-4.0 required=4.0\
-        \ tests=BAYES_00,RCVD_IN_SORBS,\n\tVALID_BTS_CONTROL autolearn=no version=2.60-bugs.debian.org_2005_01_02</header><msg_num\
-        \ xsi:type=\"xsd:int\">7</msg_num></item><item><body xsi:type=\"xsd:string\"\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /></item><item><msg_num\
+        \ xsi:type=\"xsd:int\">12</msg_num><header xsi:type=\"xsd:string\">Received:\
+        \ (at 400000-close) by bugs.debian.org; 7 Dec 2006 09:17:01 +0000\nFrom dak@ftp-master.debian.org\
+        \ Thu Dec 07 01:17:01 2006\nReturn-path: &lt;dak@ftp-master.debian.org&gt;\n\
+        Received: from ries.debian.org ([128.148.34.103])\n\tby spohr.debian.org with\
+        \ esmtp (Exim 4.50)\n\tid 1GsFNF-0003Jj-Mn\n\tfor 400000-close@bugs.debian.org;\
+        \ Thu, 07 Dec 2006 01:17:01 -0800\nReceived: from dak by ries.debian.org with\
+        \ local (Exim 4.50)\n\tid 1GsEuE-00031M-Gm; Thu, 07 Dec 2006 08:47:02 +0000\n\
+        From: Turbo Fredriksson &lt;turbo@debian.org&gt;\nTo: 400000-close@bugs.debian.org\n\
+        X-DAK: dak process-unchecked\nX-Katie: $Revision: 1.65 $\nSubject: Bug#400000:\
+        \ fixed in libroxen-imho 0.99-6\nMessage-Id: &lt;E1GsEuE-00031M-Gm@ries.debian.org&gt;\n\
+        Sender: Archive Administrator &lt;dak@ftp-master.debian.org&gt;\nDate: Thu,\
+        \ 07 Dec 2006 08:47:02 +0000\nX-Spam-Checker-Version: SpamAssassin 2.60-bugs.debian.org_2005_01_02\
+        \ \n\t(1.212-2003-09-23-exp) on spohr.debian.org\nX-Spam-Level: \nX-Spam-Status:\
+        \ No, hits=-6.0 required=4.0 tests=BAYES_00,HAS_BUG_NUMBER \n\tautolearn=no\
+        \ version=2.60-bugs.debian.org_2005_01_02</header><attachments soapenc:arrayType=\"\
+        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body xsi:type=\"xsd:string\"\
         >Source: libroxen-imho\nSource-Version: 0.99-6\n\nWe believe that the bug\
         \ you reported is fixed in the latest version of\nlibroxen-imho, which is\
         \ due to be installed in the Debian FTP archive:\n\nlibroxen-imho_0.99-6.diff.gz\n\
@@ -144,39 +160,23 @@ interactions:
         \ web optional libroxen-imho_0.99-6.diff.gz\n fdd1cff448c9e8072373e60f8b5c1b09\
         \ 123818 web optional libroxen-imho_0.99-6_powerpc.deb\n\n-----BEGIN PGP SIGNATURE-----\n\
         Version: GnuPG v1.4.1 (GNU/Linux)\n\niD8DBQFFd9FVmlWzPKccHgARAiGcAJ0XjL13rvNswSYUCHw8VemPmNm1+gCfVa0R\n\
-        IYl5DBOC6b5ZhYqAWQ4+Sm8=\n=2EX5\n-----END PGP SIGNATURE-----\n\n\n</body><msg_num\
-        \ xsi:type=\"xsd:int\">12</msg_num><header xsi:type=\"xsd:string\">Received:\
-        \ (at 400000-close) by bugs.debian.org; 7 Dec 2006 09:17:01 +0000\nFrom dak@ftp-master.debian.org\
-        \ Thu Dec 07 01:17:01 2006\nReturn-path: &lt;dak@ftp-master.debian.org&gt;\n\
-        Received: from ries.debian.org ([128.148.34.103])\n\tby spohr.debian.org with\
-        \ esmtp (Exim 4.50)\n\tid 1GsFNF-0003Jj-Mn\n\tfor 400000-close@bugs.debian.org;\
-        \ Thu, 07 Dec 2006 01:17:01 -0800\nReceived: from dak by ries.debian.org with\
-        \ local (Exim 4.50)\n\tid 1GsEuE-00031M-Gm; Thu, 07 Dec 2006 08:47:02 +0000\n\
-        From: Turbo Fredriksson &lt;turbo@debian.org&gt;\nTo: 400000-close@bugs.debian.org\n\
-        X-DAK: dak process-unchecked\nX-Katie: $Revision: 1.65 $\nSubject: Bug#400000:\
-        \ fixed in libroxen-imho 0.99-6\nMessage-Id: &lt;E1GsEuE-00031M-Gm@ries.debian.org&gt;\n\
-        Sender: Archive Administrator &lt;dak@ftp-master.debian.org&gt;\nDate: Thu,\
-        \ 07 Dec 2006 08:47:02 +0000\nX-Spam-Checker-Version: SpamAssassin 2.60-bugs.debian.org_2005_01_02\
-        \ \n\t(1.212-2003-09-23-exp) on spohr.debian.org\nX-Spam-Level: \nX-Spam-Status:\
-        \ No, hits=-6.0 required=4.0 tests=BAYES_00,HAS_BUG_NUMBER \n\tautolearn=no\
-        \ version=2.60-bugs.debian.org_2005_01_02</header><attachments soapenc:arrayType=\"\
-        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /></item><item><body xsi:type=\"\
-        xsd:string\"># A New Hope\n# A log time ago, in a galaxy far, far away\n#\
-        \ something happened.\n#\n# Magically this resulted in the following\n# action\
-        \ being taken, but this fake control\n# message doesn't tell you why it happened\n\
-        #\n# The action:\n# Bug archived.\nthanks\n# This fakemail brought to you\
-        \ by your local debbugs\n# administrator\n</body><header xsi:type=\"xsd:string\"\
-        >Received: (at fakecontrol) by fakecontrolmessage;\nTo: internal_control@bugs.debian.org\n\
-        From: Debbugs Internal Request &lt;owner@bugs.debian.org&gt;\nSubject: Internal\
-        \ Control\nMessage-Id: Bug archived.\nUser-Agent: Fakemail v42.6.9</header><attachments\
-        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><msg_num\
-        \ xsi:type=\"xsd:int\">14</msg_num></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
+        IYl5DBOC6b5ZhYqAWQ4+Sm8=\n=2EX5\n-----END PGP SIGNATURE-----\n\n\n</body></item><item><body\
+        \ xsi:type=\"xsd:string\"># A New Hope\n# A log time ago, in a galaxy far,\
+        \ far away\n# something happened.\n#\n# Magically this resulted in the following\n\
+        # action being taken, but this fake control\n# message doesn't tell you why\
+        \ it happened\n#\n# The action:\n# Bug archived.\nthanks\n# This fakemail\
+        \ brought to you by your local debbugs\n# administrator\n</body><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header\
+        \ xsi:type=\"xsd:string\">Received: (at fakecontrol) by fakecontrolmessage;\n\
+        To: internal_control@bugs.debian.org\nFrom: Debbugs Internal Request &lt;owner@bugs.debian.org&gt;\n\
+        Subject: Internal Control\nMessage-Id: Bug archived.\nUser-Agent: Fakemail\
+        \ v42.6.9</header><msg_num xsi:type=\"xsd:int\">14</msg_num></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
     headers:
       connection: [close]
       content-length: ['12037']
       content-type: [multipart/related; type="text/xml"; start="<main_envelope>";
           boundary="===============1479533737=="]
-      date: ['Fri, 04 Sep 2015 19:24:44 GMT']
+      date: ['Thu, 17 Sep 2015 12:35:43 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]

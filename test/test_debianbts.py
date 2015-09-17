@@ -40,7 +40,8 @@ import debianbts as bts
 cassettes_path = join(dirname(__file__), 'fixtures', 'vcrpy',
                       splitext(basename(__file__))[0])
 vcr = VCR(cassette_library_dir=cassettes_path,
-          path_transformer=VCR.ensure_suffix('.yaml'))
+          path_transformer=VCR.ensure_suffix('.yaml'),
+          filter_headers=('date',))
 
 
 class DebianBtsTestCase(unittest.TestCase):

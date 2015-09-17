@@ -21,32 +21,32 @@ interactions:
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
         xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">568657</key><value><unarchived
-        xsi:type="xsd:string" /><id xsi:type="xsd:int">568657</id><pending xsi:type="xsd:string">forwarded</pending><subject
-        xsi:type="xsd:string">openjdk-6-jre: crashes while playing freecol</subject><affects
-        xsi:type="xsd:string" /><summary xsi:type="xsd:string" /><fixed xsi:type="apachens:Map"><item><key
-        xsi:type="xsd:string">openjdk-6/6b20-1.9-1</key><value xsi:nil="true" /></item></fixed><bug_num
-        xsi:type="xsd:int">568657</bug_num><originator xsi:type="xsd:string">Timo
-        Juhani Lindfors &lt;timo.lindfors@iki.fi&gt;</originator><log_modified xsi:type="xsd:int">1291550233</log_modified><last_modified
-        xsi:type="xsd:int">1291550233</last_modified><blocks xsi:type="xsd:int">583692</blocks><mergedwith
-        xsi:type="xsd:string" /><found_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
-        /><severity xsi:type="xsd:string">normal</severity><found_versions soapenc:arrayType="xsd:string[1]"
-        xsi:type="soapenc:Array"><item xsi:type="xsd:string">openjdk-6/6b17-1.7-1</item></found_versions><msgid
-        xsi:type="xsd:string">&lt;84vdeaffrn.fsf@sauna.l.org&gt;</msgid><blockedby
-        xsi:type="xsd:string" /><done xsi:type="xsd:string" /><keywords xsi:type="xsd:string">upstream
-        confirmed fixed-upstream</keywords><source xsi:type="xsd:string">openjdk-6</source><location
-        xsi:type="xsd:string">db-h</location><archived xsi:type="xsd:int">0</archived><package
-        xsi:type="xsd:string">openjdk-6-jre</package><owner xsi:type="xsd:string"
-        /><tags xsi:type="xsd:string">upstream confirmed fixed-upstream</tags><fixed_date
-        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><outlook xsi:type="xsd:string"
-        /><forwarded xsi:type="xsd:string">http://icedtea.classpath.org/bugzilla/show_bug.cgi?id=587</forwarded><fixed_versions
-        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">openjdk-6/6b20-1.9-1</item></fixed_versions><date
-        xsi:type="xsd:int">1265476681</date><found xsi:type="apachens:Map"><item><key
-        xsi:type="xsd:string">openjdk-6/6b17-1.7-1</key><value xsi:nil="true" /></item></found></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
+        xsi:type="xsd:string" /><archived xsi:type="xsd:int">0</archived><tags xsi:type="xsd:string">upstream
+        confirmed fixed-upstream</tags><blockedby xsi:type="xsd:string" /><bug_num
+        xsi:type="xsd:int">568657</bug_num><keywords xsi:type="xsd:string">upstream
+        confirmed fixed-upstream</keywords><outlook xsi:type="xsd:string" /><msgid
+        xsi:type="xsd:string">&lt;84vdeaffrn.fsf@sauna.l.org&gt;</msgid><found xsi:type="apachens:Map"><item><key
+        xsi:type="xsd:string">openjdk-6/6b17-1.7-1</key><value xsi:nil="true" /></item></found><affects
+        xsi:type="xsd:string" /><last_modified xsi:type="xsd:int">1291550233</last_modified><owner
+        xsi:type="xsd:string" /><done xsi:type="xsd:string" /><package xsi:type="xsd:string">openjdk-6-jre</package><mergedwith
+        xsi:type="xsd:string" /><forwarded xsi:type="xsd:string">http://icedtea.classpath.org/bugzilla/show_bug.cgi?id=587</forwarded><source
+        xsi:type="xsd:string">openjdk-6</source><fixed xsi:type="apachens:Map"><item><key
+        xsi:type="xsd:string">openjdk-6/6b20-1.9-1</key><value xsi:nil="true" /></item></fixed><summary
+        xsi:type="xsd:string" /><fixed_versions soapenc:arrayType="xsd:string[1]"
+        xsi:type="soapenc:Array"><item xsi:type="xsd:string">openjdk-6/6b20-1.9-1</item></fixed_versions><found_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><blocks xsi:type="xsd:int">583692</blocks><pending
+        xsi:type="xsd:string">forwarded</pending><originator xsi:type="xsd:string">Timo
+        Juhani Lindfors &lt;timo.lindfors@iki.fi&gt;</originator><severity xsi:type="xsd:string">normal</severity><fixed_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><subject xsi:type="xsd:string">openjdk-6-jre:
+        crashes while playing freecol</subject><id xsi:type="xsd:int">568657</id><log_modified
+        xsi:type="xsd:int">1291550233</log_modified><location xsi:type="xsd:string">db-h</location><date
+        xsi:type="xsd:int">1265476681</date><found_versions soapenc:arrayType="xsd:string[1]"
+        xsi:type="soapenc:Array"><item xsi:type="xsd:string">openjdk-6/6b17-1.7-1</item></found_versions></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
     headers:
       connection: [close]
       content-length: ['2622']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:25:17 GMT']
+      date: ['Thu, 17 Sep 2015 12:36:10 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]

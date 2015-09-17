@@ -21,55 +21,55 @@ interactions:
         soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachens="http://xml.apache.org/xml-soap"
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
-        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">290501</key><value><pending
-        xsi:type="xsd:string">done</pending><fixed_date soapenc:arrayType="xsd:anyType[0]"
-        xsi:type="soapenc:Array" /><date xsi:type="xsd:int">1105720537</date><done
-        xsi:type="xsd:string">Don Armstrong &lt;don@debian.org&gt;</done><location
-        xsi:type="xsd:string">archive</location><tags xsi:type="xsd:string">patch</tags><unarchived
-        xsi:type="xsd:string" /><fixed xsi:type="apachens:Map"><item><key xsi:type="xsd:string">debbugs/2.4.2~exp0</key><value
-        xsi:nil="true" /></item></fixed><package xsi:type="xsd:string">debbugs</package><outlook
-        xsi:type="xsd:string" /><found_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
-        /><affects xsi:type="xsd:string" /><last_modified xsi:type="xsd:int">1426058732</last_modified><mergedwith
-        xsi:type="xsd:string" /><found_versions soapenc:arrayType="xsd:anyType[0]"
-        xsi:type="soapenc:Array" /><msgid xsi:type="xsd:string">&lt;20050114131450.GA6192@jas.helas.net&gt;</msgid><keywords
-        xsi:type="xsd:string">patch</keywords><id xsi:type="xsd:int">290501</id><blockedby
-        xsi:type="xsd:string" /><owner xsi:type="xsd:string">don@debian.org</owner><severity
-        xsi:type="xsd:string">important</severity><blocks xsi:type="xsd:string" /><bug_num
-        xsi:type="xsd:int">290501</bug_num><summary xsi:type="xsd:string" /><archived
-        xsi:type="xsd:int">1</archived><source xsi:type="xsd:string">debbugs</source><fixed_versions
-        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">debbugs/2.4.2~exp0</item></fixed_versions><subject
-        xsi:type="xsd:string">spamscan in debbugs does not work any more after upgrading
-        to spamassassin 3.0.2-1</subject><originator xsi:type="xsd:string">Martin
-        Zobel-Helas &lt;mhelas@helas.net&gt;</originator><forwarded xsi:type="xsd:string"
-        /><found /><log_modified xsi:type="xsd:int">1426058732</log_modified></value></item><item><key
-        xsi:type="xsd:int">770490</key><value><originator xsi:type="xsd:string">Nils
-        Dagsson Moskopp &lt;nils+debian-reportbug@dieweltistgarnichtso.net&gt;</originator><found
-        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">iceweasel/31.2.0esr-3</key><value
-        xsi:nil="true" /></item></found><forwarded xsi:type="xsd:string" /><log_modified
-        xsi:type="xsd:int">1418418204</log_modified><summary xsi:type="xsd:string"
-        /><archived xsi:type="xsd:int">0</archived><subject xsi:type="xsd:string">iceweasel:
-        WebM loading crashes iceweasel</subject><fixed_versions soapenc:arrayType="xsd:string[1]"
-        xsi:type="soapenc:Array"><item xsi:type="xsd:string">iceweasel/31.3.0esr-1</item></fixed_versions><source
-        xsi:type="xsd:string">iceweasel</source><keywords xsi:type="xsd:string">upstream
-        security fixed-upstream</keywords><owner xsi:type="xsd:string" /><blockedby
-        xsi:type="xsd:string" /><id xsi:type="xsd:int">770490</id><blocks xsi:type="xsd:string"
-        /><severity xsi:type="xsd:string">grave</severity><bug_num xsi:type="xsd:int">770490</bug_num><affects
-        xsi:type="xsd:string">conkeror</affects><mergedwith xsi:type="xsd:int">770499</mergedwith><last_modified
-        xsi:type="xsd:int">1418418204</last_modified><found_versions soapenc:arrayType="xsd:string[1]"
-        xsi:type="soapenc:Array"><item xsi:type="xsd:string">iceweasel/31.2.0esr-3</item></found_versions><msgid
-        xsi:type="xsd:string">&lt;20141121174159.9107.88618.reportbug@lustschutzbunker&gt;</msgid><fixed
+        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">290501</key><value><affects
+        xsi:type="xsd:string" /><package xsi:type="xsd:string">debbugs</package><originator
+        xsi:type="xsd:string">Martin Zobel-Helas &lt;mhelas@helas.net&gt;</originator><keywords
+        xsi:type="xsd:string">patch</keywords><id xsi:type="xsd:int">290501</id><fixed
+        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">debbugs/2.4.2~exp0</key><value
+        xsi:nil="true" /></item></fixed><severity xsi:type="xsd:string">important</severity><found_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><log_modified
+        xsi:type="xsd:int">1426058732</log_modified><mergedwith xsi:type="xsd:string"
+        /><outlook xsi:type="xsd:string" /><pending xsi:type="xsd:string">done</pending><summary
+        xsi:type="xsd:string" /><subject xsi:type="xsd:string">spamscan in debbugs
+        does not work any more after upgrading to spamassassin 3.0.2-1</subject><archived
+        xsi:type="xsd:int">1</archived><last_modified xsi:type="xsd:int">1426058732</last_modified><unarchived
+        xsi:type="xsd:string" /><date xsi:type="xsd:int">1105720537</date><tags xsi:type="xsd:string">patch</tags><forwarded
+        xsi:type="xsd:string" /><source xsi:type="xsd:string">debbugs</source><blockedby
+        xsi:type="xsd:string" /><bug_num xsi:type="xsd:int">290501</bug_num><done
+        xsi:type="xsd:string">Don Armstrong &lt;don@debian.org&gt;</done><found /><msgid
+        xsi:type="xsd:string">&lt;20050114131450.GA6192@jas.helas.net&gt;</msgid><owner
+        xsi:type="xsd:string">don@debian.org</owner><blocks xsi:type="xsd:string"
+        /><location xsi:type="xsd:string">archive</location><fixed_date soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><found_versions soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><fixed_versions soapenc:arrayType="xsd:string[1]"
+        xsi:type="soapenc:Array"><item xsi:type="xsd:string">debbugs/2.4.2~exp0</item></fixed_versions></value></item><item><key
+        xsi:type="xsd:int">770490</key><value><outlook xsi:type="xsd:string" /><pending
+        xsi:type="xsd:string">pending</pending><summary xsi:type="xsd:string" /><mergedwith
+        xsi:type="xsd:int">770499</mergedwith><log_modified xsi:type="xsd:int">1418418204</log_modified><archived
+        xsi:type="xsd:int">0</archived><last_modified xsi:type="xsd:int">1418418204</last_modified><subject
+        xsi:type="xsd:string">iceweasel: WebM loading crashes iceweasel</subject><id
+        xsi:type="xsd:int">770490</id><keywords xsi:type="xsd:string">upstream security
+        fixed-upstream</keywords><originator xsi:type="xsd:string">Nils Dagsson Moskopp
+        &lt;nils+debian-reportbug@dieweltistgarnichtso.net&gt;</originator><affects
+        xsi:type="xsd:string">conkeror</affects><package xsi:type="xsd:string">iceweasel</package><fixed
         xsi:type="apachens:Map"><item><key xsi:type="xsd:string">iceweasel/31.3.0esr-1</key><value
-        xsi:nil="true" /></item></fixed><package xsi:type="xsd:string">iceweasel</package><outlook
-        xsi:type="xsd:string" /><found_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
-        /><unarchived xsi:type="xsd:string" /><location xsi:type="xsd:string">db-h</location><tags
-        xsi:type="xsd:string">upstream security fixed-upstream</tags><pending xsi:type="xsd:string">pending</pending><fixed_date
-        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><date xsi:type="xsd:int">1416591901</date><done
+        xsi:nil="true" /></item></fixed><found_date soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><severity xsi:type="xsd:string">grave</severity><msgid
+        xsi:type="xsd:string">&lt;20141121174159.9107.88618.reportbug@lustschutzbunker&gt;</msgid><found
+        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">iceweasel/31.2.0esr-3</key><value
+        xsi:nil="true" /></item></found><done xsi:type="xsd:string" /><source xsi:type="xsd:string">iceweasel</source><bug_num
+        xsi:type="xsd:int">770490</bug_num><blockedby xsi:type="xsd:string" /><fixed_versions
+        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">iceweasel/31.3.0esr-1</item></fixed_versions><found_versions
+        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">iceweasel/31.2.0esr-3</item></found_versions><fixed_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><location xsi:type="xsd:string">db-h</location><blocks
+        xsi:type="xsd:string" /><owner xsi:type="xsd:string" /><tags xsi:type="xsd:string">upstream
+        security fixed-upstream</tags><unarchived xsi:type="xsd:string" /><date xsi:type="xsd:int">1416591901</date><forwarded
         xsi:type="xsd:string" /></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
     headers:
       connection: [close]
       content-length: ['4486']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:24:53 GMT']
+      date: ['Thu, 17 Sep 2015 12:35:49 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]

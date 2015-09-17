@@ -20,12 +20,12 @@ interactions:
         http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\"\
         \ xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         ><soap:Body><get_bug_logResponse xmlns=\"Debbugs/SOAP/\"><soapenc:Array soapenc:arrayType=\"\
-        xsd:anyType[5]\" xsi:type=\"soapenc:Array\"><item><msg_num xsi:type=\"xsd:int\"\
-        >5</msg_num><header xsi:type=\"xsd:string\">Received: (at submit) by bugs.debian.org;\
-        \ 8 Dec 2003 18:23:07 +0000\nFrom joey@kitenet.net Mon Dec 08 12:22:26 2003\n\
-        Return-path: &lt;joey@kitenet.net&gt;\nReceived: from kitenet.net [64.62.161.42]\
-        \ \n\tby master.debian.org with esmtp (Exim 3.35 1 (Debian))\n\tid 1ATOBD-0006Gm-00;\
-        \ Mon, 08 Dec 2003 10:24:15 -0600\nReceived: from dragon.kitenet.net (dial248.pm3bloun2.bloun.naxs.com\
+        xsd:anyType[5]\" xsi:type=\"soapenc:Array\"><item><header xsi:type=\"xsd:string\"\
+        >Received: (at submit) by bugs.debian.org; 8 Dec 2003 18:23:07 +0000\nFrom\
+        \ joey@kitenet.net Mon Dec 08 12:22:26 2003\nReturn-path: &lt;joey@kitenet.net&gt;\n\
+        Received: from kitenet.net [64.62.161.42] \n\tby master.debian.org with esmtp\
+        \ (Exim 3.35 1 (Debian))\n\tid 1ATOBD-0006Gm-00; Mon, 08 Dec 2003 10:24:15\
+        \ -0600\nReceived: from dragon.kitenet.net (dial248.pm3bloun2.bloun.naxs.com\
         \ [216.98.69.248])\n\t(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256\
         \ bits))\n\t(Client CN \"Joey Hess\", Issuer \"Joey Hess\" (verified OK))\n\
         \tby kitenet.net (Postfix) with ESMTP id 3079417E94\n\tfor &lt;submit@bugs.debian.org&gt;;\
@@ -40,14 +40,21 @@ interactions:
         \ submit@bugs.debian.org\nX-Spam-Checker-Version: SpamAssassin \n\t2.60-master.debian.org_2003_11_25-bugs.debian.org_2003_11_20\
         \ \n\t(1.212-2003-09-23-exp) on master.debian.org\nX-Spam-Status: No, hits=-5.0\
         \ required=4.0 tests=HAS_PACKAGE autolearn=no \n\tversion=2.60-master.debian.org_2003_11_25-bugs.debian.org_2003_11_20\n\
-        X-Spam-Level: </header><attachments soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"\
-        soapenc:Array\" /><body xsi:type=\"xsd:string\">Package: cdebconf\nSeverity:\
-        \ normal\n\nFor some reason cdebconf starts its frontend when the debconf-set\
-        \ and\ndebconf-get commands are run. Enough to clear the screen anyway. Of\n\
-        course debconf-get also outputs its result to stderr. This could be\nbetter.\n\
-        \n-- System Information:\nDebian Release: testing/unstable\nArchitecture:\
-        \ i386\nKernel: Linux dragon 2.4.22 #1 Sun Oct 12 15:11:10 EDT 2003 i686\n\
-        Locale: LANG=en_US, LC_CTYPE=en_US\n\n-- \nsee shy jo</body></item><item><attachments\
+        X-Spam-Level: </header><msg_num xsi:type=\"xsd:int\">5</msg_num><body xsi:type=\"\
+        xsd:string\">Package: cdebconf\nSeverity: normal\n\nFor some reason cdebconf\
+        \ starts its frontend when the debconf-set and\ndebconf-get commands are run.\
+        \ Enough to clear the screen anyway. Of\ncourse debconf-get also outputs its\
+        \ result to stderr. This could be\nbetter.\n\n-- System Information:\nDebian\
+        \ Release: testing/unstable\nArchitecture: i386\nKernel: Linux dragon 2.4.22\
+        \ #1 Sun Oct 12 15:11:10 EDT 2003 i686\nLocale: LANG=en_US, LC_CTYPE=en_US\n\
+        \n-- \nsee shy jo</body><attachments soapenc:arrayType=\"xsd:anyType[0]\"\
+        \ xsi:type=\"soapenc:Array\" /></item><item><body xsi:type=\"xsd:string\"\
+        >Of course debconf-get and debconf-set are not part of cdebconf, they are\n\
+        in rootskel. Looking at their current implementation, and after spending\n\
+        some time last night fixing debconf-get to at least be usable, though,\nit's\
+        \ clear to me that their problems can only really be solved by\nwriting them\
+        \ to ude the cdebconf library directly, probably as part of\ncdebconf. So\
+        \ I guess this bug is a wishlist in that direction.\n\n-- \nsee shy jo</body><attachments\
         \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header\
         \ xsi:type=\"xsd:string\">Received: (at 223344) by bugs.debian.org; 9 Dec\
         \ 2003 16:44:42 +0000\nFrom joey@kitenet.net Tue Dec 09 10:44:41 2003\nReturn-path:\
@@ -70,79 +77,73 @@ interactions:
         \ \n\t(1.212-2003-09-23-exp) on master.debian.org\nX-Spam-Status: No, hits=-2.6\
         \ required=4.0 tests=DATE_IN_PAST_12_24,FOOASDF,\n\tHAS_BUG_NUMBER autolearn=no\
         \ \n\tversion=2.60-master.debian.org_2003_11_25-bugs.debian.org_2003_11_20\n\
-        X-Spam-Level: </header><msg_num xsi:type=\"xsd:int\">10</msg_num><body xsi:type=\"\
-        xsd:string\">Of course debconf-get and debconf-set are not part of cdebconf,\
-        \ they are\nin rootskel. Looking at their current implementation, and after\
-        \ spending\nsome time last night fixing debconf-get to at least be usable,\
-        \ though,\nit's clear to me that their problems can only really be solved\
-        \ by\nwriting them to ude the cdebconf library directly, probably as part\
-        \ of\ncdebconf. So I guess this bug is a wishlist in that direction.\n\n--\
-        \ \nsee shy jo</body></item><item><attachments soapenc:arrayType=\"xsd:anyType[0]\"\
-        \ xsi:type=\"soapenc:Array\" /><msg_num xsi:type=\"xsd:int\">15</msg_num><header\
-        \ xsi:type=\"xsd:string\">Received: (at 223344) by bugs.debian.org; 30 Jan\
-        \ 2004 22:30:23 +0000\nFrom barbier@linuxfr.org Fri Jan 30 14:30:23 2004\n\
-        Return-path: &lt;barbier@linuxfr.org&gt;\nReceived: from zobe.linuxfr.org\
-        \ [212.27.33.220] \n\tby spohr.debian.org with esmtp (Exim 3.35 1 (Debian))\n\
-        \tid 1Amh9b-0000xa-00; Fri, 30 Jan 2004 14:30:23 -0800\nReceived: by zobe.linuxfr.org\
-        \ (Postfix, from userid 1015)\n\tid 654BAE850; Fri, 30 Jan 2004 23:30:19 +0100\
-        \ (CET)\nDate: Fri, 30 Jan 2004 23:30:19 +0100\nTo: 223344@bugs.debian.org\n\
-        Subject: Re: Bug#223344: debconf-set and debconf-get clear the screen\nMessage-ID:\
-        \ &lt;20040130223019.GA17486@zobe.linuxfr.org&gt;\nReferences: &lt;20031208032111.GA24775@kitenet.net&gt;\n\
-        Mime-Version: 1.0\nContent-Type: text/plain; charset=us-ascii\nContent-Disposition:\
-        \ inline\nIn-Reply-To: &lt;20031208032111.GA24775@kitenet.net&gt;\nUser-Agent:\
-        \ Mutt/1.3.28i\nFrom: barbier@linuxfr.org (Denis Barbier)\nDelivered-To: 223344@bugs.debian.org\n\
+        X-Spam-Level: </header><msg_num xsi:type=\"xsd:int\">10</msg_num></item><item><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body\
+        \ xsi:type=\"xsd:string\">On Sun, Dec 07, 2003 at 10:21:11PM -0500, Joey Hess\
+        \ wrote:\n&gt; Package: cdebconf\n&gt; Severity: normal\n&gt; \n&gt; For some\
+        \ reason cdebconf starts its frontend when the debconf-set and\n&gt; debconf-get\
+        \ commands are run. Enough to clear the screen anyway. Of\n&gt; course debconf-get\
+        \ also outputs its result to stderr. This could be\n&gt; better.\n\nI just\
+        \ committed a change in cdebconf/src/frontend.c which might help\nthere. \
+        \ It adds a new 'none' frontend so that debconf-set and debconf-get\ncan be\
+        \ replaced by commands like\n   echo get foo/bar |\\\n       DEBIAN_FRONTEND=none\
+        \ debconf-communicate |\\\n       sed -e 's/^[0-9]* //'\n\nIf this works,\
+        \ a more user-friendly approach is to have debconf-set and\ndebconf-get be\
+        \ symlinks to debconf-communicate, and add few lines to\nbehave in a different\
+        \ manner according to executable name.\n\nDenis\n\n</body><msg_num xsi:type=\"\
+        xsd:int\">15</msg_num><header xsi:type=\"xsd:string\">Received: (at 223344)\
+        \ by bugs.debian.org; 30 Jan 2004 22:30:23 +0000\nFrom barbier@linuxfr.org\
+        \ Fri Jan 30 14:30:23 2004\nReturn-path: &lt;barbier@linuxfr.org&gt;\nReceived:\
+        \ from zobe.linuxfr.org [212.27.33.220] \n\tby spohr.debian.org with esmtp\
+        \ (Exim 3.35 1 (Debian))\n\tid 1Amh9b-0000xa-00; Fri, 30 Jan 2004 14:30:23\
+        \ -0800\nReceived: by zobe.linuxfr.org (Postfix, from userid 1015)\n\tid 654BAE850;\
+        \ Fri, 30 Jan 2004 23:30:19 +0100 (CET)\nDate: Fri, 30 Jan 2004 23:30:19 +0100\n\
+        To: 223344@bugs.debian.org\nSubject: Re: Bug#223344: debconf-set and debconf-get\
+        \ clear the screen\nMessage-ID: &lt;20040130223019.GA17486@zobe.linuxfr.org&gt;\n\
+        References: &lt;20031208032111.GA24775@kitenet.net&gt;\nMime-Version: 1.0\n\
+        Content-Type: text/plain; charset=us-ascii\nContent-Disposition: inline\n\
+        In-Reply-To: &lt;20031208032111.GA24775@kitenet.net&gt;\nUser-Agent: Mutt/1.3.28i\n\
+        From: barbier@linuxfr.org (Denis Barbier)\nDelivered-To: 223344@bugs.debian.org\n\
         X-Spam-Checker-Version: SpamAssassin 2.60-bugs.debian.org_2004_01_27 \n\t\
         (1.212-2003-09-23-exp) on spohr.debian.org\nX-Spam-Status: No, hits=-3.0 required=4.0\
         \ tests=HAS_BUG_NUMBER autolearn=no \n\tversion=2.60-bugs.debian.org_2004_01_27\n\
-        X-Spam-Level: </header><body xsi:type=\"xsd:string\">On Sun, Dec 07, 2003\
-        \ at 10:21:11PM -0500, Joey Hess wrote:\n&gt; Package: cdebconf\n&gt; Severity:\
-        \ normal\n&gt; \n&gt; For some reason cdebconf starts its frontend when the\
-        \ debconf-set and\n&gt; debconf-get commands are run. Enough to clear the\
-        \ screen anyway. Of\n&gt; course debconf-get also outputs its result to stderr.\
-        \ This could be\n&gt; better.\n\nI just committed a change in cdebconf/src/frontend.c\
-        \ which might help\nthere.  It adds a new 'none' frontend so that debconf-set\
-        \ and debconf-get\ncan be replaced by commands like\n   echo get foo/bar |\\\
-        \n       DEBIAN_FRONTEND=none debconf-communicate |\\\n       sed -e 's/^[0-9]*\
-        \ //'\n\nIf this works, a more user-friendly approach is to have debconf-set\
-        \ and\ndebconf-get be symlinks to debconf-communicate, and add few lines to\n\
-        behave in a different manner according to executable name.\n\nDenis\n\n</body></item><item><attachments\
-        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header\
-        \ xsi:type=\"xsd:string\">Received: (at 223344-done) by bugs.debian.org; 26\
-        \ Jun 2005 16:29:56 +0000\nFrom joey@kitenet.net Sun Jun 26 09:29:56 2005\n\
-        Return-path: &lt;joey@kitenet.net&gt;\nReceived: from kitenet.net [64.62.161.42]\
-        \ (postfix)\n\tby spohr.debian.org with esmtp (Exim 3.35 1 (Debian))\n\tid\
-        \ 1Dma16-0003dq-00; Sun, 26 Jun 2005 09:29:56 -0700\nReceived: from dragon.kitenet.net\
-        \ (68-67-225-150.chvlva.adelphia.net [68.67.225.150])\n\t(using TLSv1 with\
-        \ cipher DHE-RSA-AES256-SHA (256/256 bits))\n\t(Client CN \"Joey Hess\", Issuer\
-        \ \"Joey Hess\" (verified OK))\n\tby kitenet.net (Postfix) with ESMTP id 0FF8517DC7\n\
-        \tfor &lt;223344-done@bugs.debian.org&gt;; Sun, 26 Jun 2005 16:29:56 +0000\
-        \ (GMT)\nReceived: by dragon.kitenet.net (Postfix, from userid 1000)\n\tid\
-        \ 538A36E8E6; Sun, 26 Jun 2005 12:30:09 -0400 (EDT)\nDate: Sun, 26 Jun 2005\
-        \ 12:30:09 -0400\nFrom: Joey Hess &lt;joeyh@debian.org&gt;\nTo: 223344-done@bugs.debian.org\n\
-        Subject: closing\nMessage-ID: &lt;20050626163009.GA10153@kitenet.net&gt;\n\
+        X-Spam-Level: </header></item><item><body xsi:type=\"xsd:string\">the \"none\"\
+        \ frontend was the solution\n\n-- \nsee shy jo</body><attachments soapenc:arrayType=\"\
+        xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header xsi:type=\"xsd:string\"\
+        >Received: (at 223344-done) by bugs.debian.org; 26 Jun 2005 16:29:56 +0000\n\
+        From joey@kitenet.net Sun Jun 26 09:29:56 2005\nReturn-path: &lt;joey@kitenet.net&gt;\n\
+        Received: from kitenet.net [64.62.161.42] (postfix)\n\tby spohr.debian.org\
+        \ with esmtp (Exim 3.35 1 (Debian))\n\tid 1Dma16-0003dq-00; Sun, 26 Jun 2005\
+        \ 09:29:56 -0700\nReceived: from dragon.kitenet.net (68-67-225-150.chvlva.adelphia.net\
+        \ [68.67.225.150])\n\t(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256\
+        \ bits))\n\t(Client CN \"Joey Hess\", Issuer \"Joey Hess\" (verified OK))\n\
+        \tby kitenet.net (Postfix) with ESMTP id 0FF8517DC7\n\tfor &lt;223344-done@bugs.debian.org&gt;;\
+        \ Sun, 26 Jun 2005 16:29:56 +0000 (GMT)\nReceived: by dragon.kitenet.net (Postfix,\
+        \ from userid 1000)\n\tid 538A36E8E6; Sun, 26 Jun 2005 12:30:09 -0400 (EDT)\n\
+        Date: Sun, 26 Jun 2005 12:30:09 -0400\nFrom: Joey Hess &lt;joeyh@debian.org&gt;\n\
+        To: 223344-done@bugs.debian.org\nSubject: closing\nMessage-ID: &lt;20050626163009.GA10153@kitenet.net&gt;\n\
         Mime-Version: 1.0\nContent-Type: multipart/signed; micalg=pgp-sha1;\n\tprotocol=\"\
         application/pgp-signature\"; boundary=\"+HP7ph2BbKc20aGI\"\nContent-Disposition:\
         \ inline\nUser-Agent: Mutt/1.5.9i\nDelivered-To: 223344-done@bugs.debian.org\n\
         X-Spam-Checker-Version: SpamAssassin 2.60-bugs.debian.org_2005_01_02 \n\t\
         (1.212-2003-09-23-exp) on spohr.debian.org\nX-Spam-Status: No, hits=-2.0 required=4.0\
         \ tests=BAYES_00,ONEWORD autolearn=no \n\tversion=2.60-bugs.debian.org_2005_01_02\n\
-        X-Spam-Level: </header><msg_num xsi:type=\"xsd:int\">20</msg_num><body xsi:type=\"\
-        xsd:string\">the \"none\" frontend was the solution\n\n-- \nsee shy jo</body></item><item><body\
+        X-Spam-Level: </header><msg_num xsi:type=\"xsd:int\">20</msg_num></item><item><msg_num\
+        \ xsi:type=\"xsd:int\">22</msg_num><header xsi:type=\"xsd:string\">Received:\
+        \ (at fakecontrol) by fakecontrolmessage;\nTo: internal_control@bugs.debian.org\n\
+        From: Debbugs Internal Request &lt;owner@bugs.debian.org&gt;\nSubject: Internal\
+        \ Control\nMessage-Id: Bug archived.\nUser-Agent: Fakemail v42.6.9</header><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><body\
         \ xsi:type=\"xsd:string\"># A New Hope\n# A log time ago, in a galaxy far,\
         \ far away\n# something happened.\n#\n# Magically this resulted in the following\n\
         # action being taken, but this fake control\n# message doesn't tell you why\
         \ it happened\n#\n# The action:\n# Bug archived.\nthanks\n# This fakemail\
-        \ brought to you by your local debbugs\n# administrator\n</body><attachments\
-        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><header\
-        \ xsi:type=\"xsd:string\">Received: (at fakecontrol) by fakecontrolmessage;\n\
-        To: internal_control@bugs.debian.org\nFrom: Debbugs Internal Request &lt;owner@bugs.debian.org&gt;\n\
-        Subject: Internal Control\nMessage-Id: Bug archived.\nUser-Agent: Fakemail\
-        \ v42.6.9</header><msg_num xsi:type=\"xsd:int\">22</msg_num></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
+        \ brought to you by your local debbugs\n# administrator\n</body></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
     headers:
       connection: [close]
       content-length: ['9646']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:24:42 GMT']
+      date: ['Thu, 17 Sep 2015 12:35:42 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]

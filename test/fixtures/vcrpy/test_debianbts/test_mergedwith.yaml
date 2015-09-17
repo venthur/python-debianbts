@@ -20,33 +20,33 @@ interactions:
         soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachens="http://xml.apache.org/xml-soap"
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
-        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">486212</key><value><unarchived
-        xsi:type="xsd:string" /><fixed_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
-        /><subject xsi:type="xsd:string">[reportbug-ng] segmentation fault on sorting
-        for last action</subject><blockedby xsi:type="xsd:string" /><fixed xsi:type="apachens:Map"><item><key
-        xsi:type="xsd:string">reportbug-ng/1.0</key><value xsi:nil="true" /></item></fixed><pending
-        xsi:type="xsd:string">done</pending><owner xsi:type="xsd:string" /><location
-        xsi:type="xsd:string">archive</location><forwarded xsi:type="xsd:string" /><msgid
-        xsi:type="xsd:string">&lt;20080614122738.9e8c25cf.riccardo@datahost.it&gt;</msgid><severity
-        xsi:type="xsd:string">normal</severity><keywords xsi:type="xsd:string">help</keywords><found_versions
-        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2008.06.04</item></found_versions><done
-        xsi:type="xsd:string">Bastian Venthur &lt;venthur@debian.org&gt;</done><found
+        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">486212</key><value><blocks
+        xsi:type="xsd:string" /><tags xsi:type="xsd:string">help</tags><originator
+        xsi:type="xsd:string">Riccardo Magliocchetti &lt;riccardo@datahost.it&gt;</originator><done
+        xsi:type="xsd:string">Bastian Venthur &lt;venthur@debian.org&gt;</done><unarchived
+        xsi:type="xsd:string" /><archived xsi:type="xsd:int">1</archived><id xsi:type="xsd:int">486212</id><msgid
+        xsi:type="xsd:string">&lt;20080614122738.9e8c25cf.riccardo@datahost.it&gt;</msgid><keywords
+        xsi:type="xsd:string">help</keywords><subject xsi:type="xsd:string">[reportbug-ng]
+        segmentation fault on sorting for last action</subject><found_versions soapenc:arrayType="xsd:string[1]"
+        xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2008.06.04</item></found_versions><bug_num
+        xsi:type="xsd:int">486212</bug_num><source xsi:type="xsd:string">reportbug-ng</source><found_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><forwarded xsi:type="xsd:string"
+        /><mergedwith xsi:type="xsd:string">486743 488122</mergedwith><date xsi:type="xsd:int">1213439402</date><location
+        xsi:type="xsd:string">archive</location><log_modified xsi:type="xsd:int">1218957982</log_modified><fixed_versions
+        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/1.0</item></fixed_versions><blockedby
+        xsi:type="xsd:string" /><outlook xsi:type="xsd:string" /><pending xsi:type="xsd:string">done</pending><affects
+        xsi:type="xsd:string" /><package xsi:type="xsd:string">reportbug-ng</package><found
         xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/0.2008.06.04</key><value
-        xsi:nil="true" /></item></found><found_date soapenc:arrayType="xsd:anyType[0]"
-        xsi:type="soapenc:Array" /><mergedwith xsi:type="xsd:string">486743 488122</mergedwith><package
-        xsi:type="xsd:string">reportbug-ng</package><log_modified xsi:type="xsd:int">1218957982</log_modified><blocks
-        xsi:type="xsd:string" /><last_modified xsi:type="xsd:int">1218957982</last_modified><date
-        xsi:type="xsd:int">1213439402</date><summary xsi:type="xsd:string" /><tags
-        xsi:type="xsd:string">help</tags><affects xsi:type="xsd:string" /><id xsi:type="xsd:int">486212</id><outlook
-        xsi:type="xsd:string" /><source xsi:type="xsd:string">reportbug-ng</source><originator
-        xsi:type="xsd:string">Riccardo Magliocchetti &lt;riccardo@datahost.it&gt;</originator><bug_num
-        xsi:type="xsd:int">486212</bug_num><archived xsi:type="xsd:int">1</archived><fixed_versions
-        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/1.0</item></fixed_versions></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
+        xsi:nil="true" /></item></found><fixed_date soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><owner xsi:type="xsd:string" /><fixed xsi:type="apachens:Map"><item><key
+        xsi:type="xsd:string">reportbug-ng/1.0</key><value xsi:nil="true" /></item></fixed><severity
+        xsi:type="xsd:string">normal</severity><summary xsi:type="xsd:string" /><last_modified
+        xsi:type="xsd:int">1218957982</last_modified></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
     headers:
       connection: [close]
       content-length: ['2596']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:25:11 GMT']
+      date: ['Thu, 17 Sep 2015 12:36:04 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]
@@ -74,32 +74,33 @@ interactions:
         soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachens="http://xml.apache.org/xml-soap"
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
-        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">433550</key><value><found_versions
-        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2007.07.12</item></found_versions><severity
-        xsi:type="xsd:string">normal</severity><blocks xsi:type="xsd:string" /><done
-        xsi:type="xsd:string">Bastian Venthur &lt;venthur@debian.org&gt;</done><owner
-        xsi:type="xsd:string" /><last_modified xsi:type="xsd:int">1218958071</last_modified><log_modified
-        xsi:type="xsd:int">1218958071</log_modified><mergedwith xsi:type="xsd:int">433524</mergedwith><msgid
-        xsi:type="xsd:string">&lt;200707172253.24652.gilles.mocellin@free.fr&gt;</msgid><source
-        xsi:type="xsd:string">reportbug-ng</source><archived xsi:type="xsd:int">1</archived><outlook
-        xsi:type="xsd:string" /><pending xsi:type="xsd:string">done</pending><package
-        xsi:type="xsd:string">reportbug-ng</package><unarchived xsi:type="xsd:string"
-        /><forwarded xsi:type="xsd:string" /><affects xsi:type="xsd:string" /><found_date
-        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><bug_num xsi:type="xsd:int">433550</bug_num><subject
-        xsi:type="xsd:string">Loose menu by volontary hidding it</subject><id xsi:type="xsd:int">433550</id><fixed
-        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/1.0</key><value
-        xsi:nil="true" /></item></fixed><summary xsi:type="xsd:string" /><date xsi:type="xsd:int">1184705642</date><originator
-        xsi:type="xsd:string">Gilles Mocellin &lt;gilles.mocellin@free.fr&gt;</originator><tags
+        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">433550</key><value><forwarded
+        xsi:type="xsd:string" /><owner xsi:type="xsd:string" /><location xsi:type="xsd:string">archive</location><affects
         xsi:type="xsd:string" /><found xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/0.2007.07.12</key><value
-        xsi:nil="true" /></item></found><location xsi:type="xsd:string">archive</location><fixed_date
-        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><blockedby xsi:type="xsd:string"
-        /><keywords xsi:type="xsd:string" /><fixed_versions soapenc:arrayType="xsd:string[1]"
-        xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/1.0</item></fixed_versions></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
+        xsi:nil="true" /></item></found><blockedby xsi:type="xsd:string" /><tags xsi:type="xsd:string"
+        /><source xsi:type="xsd:string">reportbug-ng</source><originator xsi:type="xsd:string">Gilles
+        Mocellin &lt;gilles.mocellin@free.fr&gt;</originator><bug_num xsi:type="xsd:int">433550</bug_num><unarchived
+        xsi:type="xsd:string" /><archived xsi:type="xsd:int">1</archived><mergedwith
+        xsi:type="xsd:int">433524</mergedwith><found_date soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><log_modified xsi:type="xsd:int">1218958071</log_modified><outlook
+        xsi:type="xsd:string" /><pending xsi:type="xsd:string">done</pending><fixed
+        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/1.0</key><value
+        xsi:nil="true" /></item></fixed><blocks xsi:type="xsd:string" /><package xsi:type="xsd:string">reportbug-ng</package><severity
+        xsi:type="xsd:string">normal</severity><id xsi:type="xsd:int">433550</id><done
+        xsi:type="xsd:string">Bastian Venthur &lt;venthur@debian.org&gt;</done><msgid
+        xsi:type="xsd:string">&lt;200707172253.24652.gilles.mocellin@free.fr&gt;</msgid><last_modified
+        xsi:type="xsd:int">1218958071</last_modified><fixed_date soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><keywords xsi:type="xsd:string" /><summary xsi:type="xsd:string"
+        /><fixed_versions soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item
+        xsi:type="xsd:string">reportbug-ng/1.0</item></fixed_versions><found_versions
+        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2007.07.12</item></found_versions><date
+        xsi:type="xsd:int">1184705642</date><subject xsi:type="xsd:string">Loose menu
+        by volontary hidding it</subject></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
     headers:
       connection: [close]
       content-length: ['2532']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:25:13 GMT']
+      date: ['Thu, 17 Sep 2015 12:36:06 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]
@@ -127,32 +128,32 @@ interactions:
         soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachens="http://xml.apache.org/xml-soap"
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
-        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">474955</key><value><last_modified
-        xsi:type="xsd:int">1241940747</last_modified><fixed_versions soapenc:arrayType="xsd:anyType[0]"
-        xsi:type="soapenc:Array" /><found xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/0.2008.03.28</key><value
-        xsi:nil="true" /></item></found><package xsi:type="xsd:string">reportbug-ng</package><summary
-        xsi:type="xsd:string" /><fixed_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
-        /><owner xsi:type="xsd:string" /><severity xsi:type="xsd:string">normal</severity><log_modified
-        xsi:type="xsd:int">1241940747</log_modified><blocks xsi:type="xsd:string"
-        /><outlook xsi:type="xsd:string" /><subject xsi:type="xsd:string">[reportbug-ng]
-        No feedback (just on command line) when unsupported encoded character is given
-        in summary</subject><bug_num xsi:type="xsd:int">474955</bug_num><unarchived
-        xsi:type="xsd:string" /><keywords xsi:type="xsd:string" /><id xsi:type="xsd:int">474955</id><found_date
-        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><tags xsi:type="xsd:string"
-        /><source xsi:type="xsd:string">reportbug-ng</source><fixed /><found_versions
-        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2008.03.28</item></found_versions><forwarded
-        xsi:type="xsd:string" /><date xsi:type="xsd:int">1207638721</date><pending
-        xsi:type="xsd:string">done</pending><msgid xsi:type="xsd:string">&lt;1207638677.3360.6.camel@mattotaupa.wohnung.familie-menzel.net&gt;</msgid><blockedby
-        xsi:type="xsd:string" /><done xsi:type="xsd:string">Bastian Venthur &lt;venthur@debian.org&gt;</done><originator
-        xsi:type="xsd:string">Paul Menzel &lt;pm.debian@googlemail.com&gt;</originator><location
-        xsi:type="xsd:string">archive</location><mergedwith xsi:type="xsd:string"
-        /><archived xsi:type="xsd:int">1</archived><affects xsi:type="xsd:string"
-        /></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
+        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">474955</key><value><pending
+        xsi:type="xsd:string">done</pending><mergedwith xsi:type="xsd:string" /><subject
+        xsi:type="xsd:string">[reportbug-ng] No feedback (just on command line) when
+        unsupported encoded character is given in summary</subject><msgid xsi:type="xsd:string">&lt;1207638677.3360.6.camel@mattotaupa.wohnung.familie-menzel.net&gt;</msgid><fixed_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><fixed /><blockedby
+        xsi:type="xsd:string" /><last_modified xsi:type="xsd:int">1241940747</last_modified><found
+        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/0.2008.03.28</key><value
+        xsi:nil="true" /></item></found><forwarded xsi:type="xsd:string" /><owner
+        xsi:type="xsd:string" /><archived xsi:type="xsd:int">1</archived><location
+        xsi:type="xsd:string">archive</location><keywords xsi:type="xsd:string" /><found_versions
+        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2008.03.28</item></found_versions><bug_num
+        xsi:type="xsd:int">474955</bug_num><outlook xsi:type="xsd:string" /><done
+        xsi:type="xsd:string">Bastian Venthur &lt;venthur@debian.org&gt;</done><found_date
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><fixed_versions
+        soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array" /><summary xsi:type="xsd:string"
+        /><package xsi:type="xsd:string">reportbug-ng</package><log_modified xsi:type="xsd:int">1241940747</log_modified><source
+        xsi:type="xsd:string">reportbug-ng</source><affects xsi:type="xsd:string"
+        /><blocks xsi:type="xsd:string" /><id xsi:type="xsd:int">474955</id><tags
+        xsi:type="xsd:string" /><originator xsi:type="xsd:string">Paul Menzel &lt;pm.debian@googlemail.com&gt;</originator><severity
+        xsi:type="xsd:string">normal</severity><unarchived xsi:type="xsd:string" /><date
+        xsi:type="xsd:int">1207638721</date></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
     headers:
       connection: [close]
       content-length: ['2423']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:25:14 GMT']
+      date: ['Thu, 17 Sep 2015 12:36:07 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]

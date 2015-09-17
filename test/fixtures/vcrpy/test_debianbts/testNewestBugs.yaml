@@ -20,16 +20,16 @@ interactions:
         xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><newest_bugsResponse
         xmlns="Debbugs/SOAP/"><soapenc:Array soapenc:arrayType="xsd:int[10]" xsi:type="soapenc:Array"><item
-        xsi:type="xsd:int">798035</item><item xsi:type="xsd:int">798036</item><item
-        xsi:type="xsd:int">798037</item><item xsi:type="xsd:int">798038</item><item
-        xsi:type="xsd:int">798039</item><item xsi:type="xsd:int">798040</item><item
-        xsi:type="xsd:int">798041</item><item xsi:type="xsd:int">798042</item><item
-        xsi:type="xsd:int">798043</item><item xsi:type="xsd:int">798044</item></soapenc:Array></newest_bugsResponse></soap:Body></soap:Envelope>'}
+        xsi:type="xsd:int">799264</item><item xsi:type="xsd:int">799265</item><item
+        xsi:type="xsd:int">799266</item><item xsi:type="xsd:int">799267</item><item
+        xsi:type="xsd:int">799268</item><item xsi:type="xsd:int">799269</item><item
+        xsi:type="xsd:int">799270</item><item xsi:type="xsd:int">799271</item><item
+        xsi:type="xsd:int">799272</item><item xsi:type="xsd:int">799273</item></soapenc:Array></newest_bugsResponse></soap:Body></soap:Envelope>'}
     headers:
       connection: [close]
       content-length: ['900']
       content-type: [text/xml; charset=utf-8]
-      date: ['Fri, 04 Sep 2015 19:25:03 GMT']
+      date: ['Thu, 17 Sep 2015 12:35:58 GMT']
       server: [Apache]
       soapserver: ['SOAP::Lite/Perl/1.11']
       strict-transport-security: [max-age=15552000]
