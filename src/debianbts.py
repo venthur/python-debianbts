@@ -26,17 +26,26 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
+from __future__ import division, unicode_literals, absolute_import, print_function
+
+import email
 from datetime import datetime
 import os
-import urllib
-import urlparse
+import sys
 
-import SOAPpy
+from pysimplesoap.client import SoapClient
+from pysimplesoap.simplexml import SimpleXMLElement
 
 # Support running from Debian infrastructure
 ca_path = '/etc/ssl/ca-debian'
 if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
+
+
+__version__ = '2.1'
+
+
+PY2 = sys.version_info.major == 2
 
 # Setup the soap server
 # Default values
@@ -46,22 +55,7 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-
-def _get_http_proxy():
-    """Returns an HTTP proxy URL formatted for consumption by SOAPpy.
-
-    SOAPpy does some fairly low-level HTTP manipulation and needs to be
-    explicitly made aware of HTTP proxy URLs, which also have to be
-    formatted without a schema or path.
-
-    """
-    http_proxy = urllib.getproxies().get('http')
-    if http_proxy is None:
-        return None
-    return urlparse.urlparse(http_proxy).netloc
-
-
-server = SOAPpy.SOAPProxy(URL, NS, http_proxy=_get_http_proxy())
+soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
 class Bugreport(object):
@@ -132,15 +126,18 @@ class Bugreport(object):
         # self.keywords = None
         # self.id = None
 
-    def __str__(self):
-        s = ""
-        for key, value in self.__dict__.iteritems():
-            if isinstance(value, unicode):
-                value = value.encode('utf-8')
-            s += "%s: %s\n" % (key, str(value))
-        return s
+    def __unicode__(self):
+        s = '\n'.join('{}: {}'.format(key, str(value))
+                       for key, value in self.__dict__.items())
+        return s + '\n'
 
-    def __cmp__(self, other):
+    if PY2:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+    else:
+        __str__ = __unicode__
+
+    def __lt__(self, other):
         """Compare a bugreport with another.
 
         The more open and and urgent a bug is, the greater the bug is:
@@ -156,14 +153,22 @@ class Bugreport(object):
         sorting them in a useful way.
 
         """
-        myval = self._get_value()
-        otherval = other._get_value()
-        if myval < otherval:
-            return -1
-        elif myval == otherval:
-            return 0
-        else:
-            return 1
+        return self._get_value() < other._get_value()
+
+    def __le__(self, other):
+        return not self.__gt__(other)
+
+    def __gt__(self, other):
+        return self._get_value() > other._get_value()
+
+    def __ge__(self, other):
+        return not self.__lt__(other)
+
+    def __eq__(self, other):
+        return self._get_value() == other._get_value()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def _get_value(self):
         if self.archived:
@@ -175,13 +180,13 @@ class Bugreport(object):
         else:
             # not done
             val = 20
-        val += {u"critical": 7,
-                u"grave": 6,
-                u"serious": 5,
-                u"important": 4,
-                u"normal": 3,
-                u"minor": 2,
-                u"wishlist": 1}[self.severity]
+        val += {"critical": 7,
+                "grave": 6,
+                "serious": 5,
+                "important": 4,
+                "normal": 3,
+                "minor": 2,
+                "wishlist": 1}[self.severity]
         return val
 
 
@@ -191,24 +196,23 @@ def get_status(*nrs):
     # if we called it with a list of bugs, we get a list,
     # No available bugreports returns an empty list
     bugs = []
-
-    def parse(reply):
-        if not reply:
-            return []
-        elif isinstance(reply[0], list):
-            return [_parse_status(elem) for elem in reply[0]]
-        else:
-            return [_parse_status(reply[0])]
     list_ = []
-    # Process the input in batches to avoid hitting resource limits on the BTS
     for nr in nrs:
         if isinstance(nr, list):
             list_.extend(nr)
         else:
             list_.append(nr)
+    # Process the input in batches to avoid hitting resource limits on the BTS
     for i in range(0, len(list_), BATCH_SIZE):
-        reply = server.get_status(list_[i:i + BATCH_SIZE])
-        bugs.extend(parse(reply))
+        slice_ = list_[i:i + BATCH_SIZE]
+        # I build body by hand, pysimplesoap doesn't generate soap Arrays
+        # without using wsdl
+        method_el = SimpleXMLElement('<get_status></get_status>')
+        _build_int_array_el('arg0', method_el, slice_)
+        reply = soap_client.call('get_status', method_el)
+        for bug_item_el in reply('s-gensym3').children() or []:
+            bug_el = bug_item_el.children()[1]
+            bugs.append(_parse_status(bug_el))
     return bugs
 
 
@@ -218,9 +222,24 @@ def get_usertag(email, *tags):
     If tags are given the dictionary is limited to the matching tags, if
     no tags are given all available tags are returned.
     """
-    reply = server.get_usertag(email, *tags)
-    # reply is an empty string if no bugs match the query
-    return dict() if reply == "" else reply._asdict()
+    reply = _soap_client_call('get_usertag', email, *tags)
+    map_el = reply('s-gensym3')
+    mapping = {}
+    # element <s-gensys3> in response can have standard type
+    # xsi:type=apachens:Map (example, for email debian-python@lists.debian.org)
+    # OR no type, in this case keys are the names of child elements and
+    # the array is contained in the child elements
+    type_attr = map_el.attributes().get('xsi:type')
+    if type_attr and type_attr.value == 'apachens:Map':
+        for usertag_el in map_el.children() or []:
+            tag = _uc(str(usertag_el('key')))
+            buglist_el = usertag_el('value')
+            mapping[tag] = [int(bug) for bug in buglist_el.children() or []]
+    else:
+        for usertag_el in map_el.children() or []:
+            tag = _uc(usertag_el.get_name())
+            mapping[tag] = [int(bug) for bug in usertag_el.children() or []]
+    return mapping
 
 
 def get_bug_log(nr):
@@ -231,21 +250,33 @@ def get_bug_log(nr):
         "body" => string
         "attachments" => list
         "msg_num" => int
+        "message" => email.message.Message
     """
-    reply = server.get_bug_log(nr)
-    buglog = [i._asdict() for i in reply._aslist()]
-    for b in buglog:
-        b["header"] = _uc(b["header"])
-        b["body"] = _uc(b["body"])
-        b["msg_num"] = int(b["msg_num"])
-        b["attachments"] = b["attachments"]._aslist()
-    return buglog
+    reply = _soap_client_call('get_bug_log', nr)
+    items_el = reply('soapenc:Array')
+    buglogs = []
+    for buglog_el in items_el.children():
+        buglog = {}
+        buglog["header"] = _uc(str(buglog_el("header")))
+        buglog["body"] = _uc(str(buglog_el("body")))
+        buglog["msg_num"] = int(buglog_el("msg_num"))
+        # server always returns an empty attachments array ?
+        buglog["attachments"] = []
+
+        mail_parser = email.feedparser.FeedParser()
+        mail_parser.feed(str(buglog_el("header")))
+        mail_parser.feed(str(buglog_el("body")))
+        buglog["message"] = mail_parser.close()
+
+        buglogs.append(buglog)
+    return buglogs
 
 
 def newest_bugs(amount):
     """Returns a list of bugnumbers of the `amount` newest bugs."""
-    reply = server.newest_bugs(amount)
-    return reply._aslist()
+    reply = _soap_client_call('newest_bugs', amount)
+    items_el = reply('soapenc:Array')
+    return [int(item_el) for item_el in items_el.children() or []]
 
 
 def get_bugs(*key_value):
@@ -268,54 +299,89 @@ def get_bugs(*key_value):
 
     Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
     """
-    reply = server.get_bugs(*key_value)
-    return reply._aslist()
+    # previous versions also accepted get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
+    # if key_value is a list in a one elemented tuple, remove the
+    # wrapping list
+    if len(key_value) == 1 and isinstance(key_value[0], list):
+        key_value = tuple(key_value[0])
+    reply = _soap_client_call('get_bugs', *key_value)
+    items_el = reply('soapenc:Array')
+    return [int(item_el) for item_el in items_el.children() or []]
 
 
-def _parse_status(status):
-    """Return a bugreport object from a given status."""
-    status = status._asdict()
+def _parse_status(bug_el):
+    """Return a bugreport object from a given status xml element"""
     bug = Bugreport()
-    tmp = status['value']
 
-    bug.originator = _uc(tmp['originator'])
-    bug.date = datetime.utcfromtimestamp(tmp['date'])
-    bug.subject = _uc(tmp['subject'])
-    bug.msgid = _uc(tmp['msgid'])
-    bug.package = _uc(tmp['package'])
-    bug.tags = _uc(tmp['tags']).split()
-    bug.done = bool(tmp['done'])
-    bug.forwarded = _uc(tmp['forwarded'])
-    bug.mergedwith = [int(i) for i in str(tmp['mergedwith']).split()]
-    bug.severity = _uc(tmp['severity'])
-    bug.owner = _uc(tmp['owner'])
-    bug.found_versions = [_uc(str(i)) for i in tmp['found_versions']]
-    bug.fixed_versions = [_uc(str(i)) for i in tmp['fixed_versions']]
-    bug.blocks = [int(i) for i in str(tmp['blocks']).split()]
-    bug.blockedby = [int(i) for i in str(tmp['blockedby']).split()]
-    bug.unarchived = bool(tmp["unarchived"])
-    bug.summary = _uc(tmp['summary'])
-    affects = tmp['affects'].strip()
-    bug.affects = [_uc(i.strip()) for i in affects.split(',')] if affects else []
-    bug.log_modified = datetime.utcfromtimestamp(tmp['log_modified'])
-    bug.location = _uc(tmp['location'])
-    bug.archived = bool(tmp["archived"])
-    bug.bug_num = int(tmp['bug_num'])
-    bug.source = _uc(tmp['source'])
-    bug.pending = _uc(tmp['pending'])
+    # plain fields
+    for field in ('originator', 'subject', 'msgid', 'package', 'severity',
+                  'owner', 'summary', 'location', 'source', 'pending',
+                  'forwarded'):
+        setattr(bug, field, _uc(str(bug_el(field))))
+
+    bug.date = datetime.utcfromtimestamp(float(bug_el('date')))
+    bug.log_modified = datetime.utcfromtimestamp(float(bug_el('log_modified')))
+    bug.tags = [_uc(tag) for tag in str(bug_el('tags')).split()]
+    bug.done = _parse_bool(bug_el('done'))
+    bug.archived = _parse_bool(bug_el('archived'))
+    bug.unarchived = _parse_bool(bug_el('unarchived'))
+    bug.bug_num = int(bug_el('bug_num'))
+    bug.mergedwith = [int(i) for i in str(bug_el('mergedwith')).split()]
+    bug.blockedby = [int(i) for i in str(bug_el('blockedby')).split()]
+    bug.blocks = [int(i) for i in str(bug_el('blocks')).split()]
+
+    bug.found_versions = [_uc(str(el)) for el in
+                          bug_el('found_versions').children() or []]
+    bug.fixed_versions = [_uc(str(el)) for el in
+                          bug_el('fixed_versions').children() or []]
+    affects = [_f for _f in str(bug_el('affects')).split(',') if _f]
+    bug.affects = [_uc(a).strip() for a in affects]
     # Also available, but unused or broken
+    # bug.keywords = [_uc(keyword) for keyword in
+    #                 str(bug_el('keywords')).split()]
     # bug.fixed = _parse_crappy_soap(tmp, "fixed")
     # bug.found = _parse_crappy_soap(tmp, "found")
     # bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
     # bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
-    # bug.keywords = _uc(tmp['keywords']).split()
-    # bug.id = int(tmp['id'])
     return bug
 
 
-def _uc(string):
-    """Convert string to unicode.
+def _soap_client_call(method_name, *args):
+    # wrapper to work around pysimplesoap bug
+    # https://github.com/pysimplesoap/pysimplesoap/issues/31
+    soap_args = []
+    for arg_n, arg in enumerate(args):
+        soap_args.append(('arg' + str(arg_n), arg))
+    return getattr(soap_client, method_name)(soap_client, *soap_args)
 
-    This method only exists to unify the unicode conversion in this module.
-    """
-    return unicode(string, 'utf-8', 'replace')
+
+def _build_int_array_el(el_name, parent, list_):
+    """build a soapenc:Array made of ints called `el_name` as a child
+    of `parent`"""
+    el = parent.add_child(el_name)
+    el.add_attribute('xmlns:soapenc',
+                     'http://schemas.xmlsoap.org/soap/encoding/')
+    el.add_attribute('xsi:type', 'soapenc:Array')
+    el.add_attribute('soapenc:arrayType', 'xsd:int[{:d}]'.format(len(list_)))
+    for item in list_:
+        item_el = el.add_child('item', str(item))
+        item_el.add_attribute('xsi:type', 'xsd:int')
+    return el
+
+
+def _parse_bool(el):
+    """parse a boolean value from a xml element"""
+    value = str(el)
+    return not value.strip() in ('', '0')
+
+
+"""Convert string to unicode.
+
+This method only exists to unify the unicode conversion in this module.
+"""
+if PY2:
+    def _uc(string):
+        return string.decode('utf-8', 'replace')
+else:
+    def _uc(string):
+        return string

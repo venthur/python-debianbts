@@ -18,12 +18,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+from __future__ import division, unicode_literals, absolute_import, print_function
+
+import datetime
+import email
 import math
+import random
 import unittest
 try:
     import unittest.mock as mock
 except ImportError:
     import mock
+
+from pysimplesoap.simplexml import SimpleXMLElement
 
 import debianbts as bts
 
@@ -45,9 +52,27 @@ class DebianBtsTestCase(unittest.TestCase):
         """get_usertag should return dict with tag(s) and buglist(s)."""
         d = bts.get_usertag("debian-python@lists.debian.org")
         self.assertEqual(type(d), type(dict()))
-        for k, v in d.iteritems():
+        for k, v in d.items():
             self.assertEqual(type(""), type(k))
             self.assertEqual(type([]), type([]))
+            for bug in v:
+                self.assertEqual(type(bug), int)
+
+    def testGetUsertagFilters(self):
+        """get_usertag should return only requested tags"""
+        tags = bts.get_usertag("debian-python@lists.debian.org")
+        self.assertTrue(isinstance(tags, dict))
+        randomKey0 = random.choice(list(tags.keys()))
+        randomKey1 = random.choice(list(tags.keys()))
+
+        filtered_tags = bts.get_usertag(
+            "debian-python@lists.debian.org", randomKey0, randomKey1)
+
+        self.assertEqual(len(filtered_tags), 2)
+        self.assertEqual(set(filtered_tags[randomKey0]),
+                          set(tags[randomKey0]))
+        self.assertEqual(set(filtered_tags[randomKey1]),
+                          set(tags[randomKey1]))
 
     def testGetBugsEmpty(self):
         """get_bugs should return empty list if no matching bugs where found."""
@@ -60,6 +85,12 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(type(l), type([]))
         for i in l:
             self.assertEqual(type(i), type(int()))
+
+    def testGetBugsList(self):
+        """previous versions of python-debianbts accepted malformed key-value lists."""
+        l = bts.get_bugs('owner', 'venthur@debian.org', 'severity', 'normal')
+        l2 = bts.get_bugs(['owner', 'venthur@debian.org', 'severity', 'normal'])
+        self.assertEqual(l, l2)
 
     def testNewestBugs(self):
         """newest_bugs should return list of bugnumbers."""
@@ -83,16 +114,80 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue("attachments" in i)
             self.assertEqual(type(i["attachments"]), type(list()))
             self.assertTrue("body" in i)
-            self.assertEqual(type(i["body"]), type(unicode()))
+            self.assertTrue(isinstance(i["body"], type('')))
             self.assertTrue("header" in i)
-            self.assertEqual(type(i["header"]), type(unicode()))
+            self.assertTrue(isinstance(i["header"], type('')))
             self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
+    def testGetBugLogWithAttachments(self):
+        """get_bug_log should include attachments"""
+        buglogs = bts.get_bug_log(400000)
+        for bl in buglogs:
+            self.assertTrue("attachments" in bl)
+
+    def testBugLogMessage(self):
+        """dict returned by get_bug_log has a email.Message field"""
+        buglogs = bts.get_bug_log(400012)
+        for buglog in buglogs:
+            self.assertTrue('message' in buglog)
+            msg = buglog['message']
+            self.assertIsInstance(msg, email.message.Message)
+            self.assertFalse(msg.is_multipart())
+            self.assertTrue('Subject' in msg)
+            self.assertIsInstance(msg.get_payload(), str)
+
+    def testEmptyGetStatus(self):
+        """get_status should return empty list if bug doesn't exits"""
+        bugs = bts.get_status(0)
+        self.assertEqual(type(bugs), list)
+        self.assertEqual(len(bugs), 0)
+
+    def testSampleGetStatus(self):
+        """test retrieving of a "known" bug status"""
+        bugs = bts.get_status(486212)
+        self.assertEqual(len(bugs), 1)
+        bug = bugs[0]
+        self.assertEqual(bug.bug_num, 486212)
+        self.assertEqual(bug.date, datetime.datetime(2008, 6, 14, 10, 30, 2))
+        self.assertTrue(bug.subject.startswith('[reportbug-ng] segm'))
+        self.assertEqual(bug.package, 'reportbug-ng')
+        self.assertEqual(bug.severity, 'normal')
+        self.assertEqual(bug.tags, ['help'])
+        self.assertEqual(bug.blockedby, [])
+        self.assertEqual(bug.blocks, [])
+        self.assertEqual(bug.summary, '')
+        self.assertEqual(bug.location, 'archive')
+        self.assertEqual(bug.source, 'reportbug-ng')
+        self.assertEqual(bug.log_modified,
+                          datetime.datetime(2008, 8, 17, 7, 26, 22))
+        self.assertEqual(bug.pending, 'done')
+        self.assertEqual(bug.done, True)
+        self.assertEqual(bug.archived, True)
+        self.assertEqual(bug.found_versions, ['reportbug-ng/0.2008.06.04'])
+        self.assertEqual(bug.fixed_versions, ['reportbug-ng/1.0'])
+        self.assertEqual(bug.affects, [])
+
+    def testBugStr(self):
+        """test string conversion of a Bugreport"""
+        self.b2.package = 'foo-pkg'
+        self.b2.bug_num = 12222
+        s = str(self.b2)
+        self.assertTrue(isinstance(s, str)) # byte string in py2, unicode in py3
+        self.assertTrue('bug_num: 12222\n' in s)
+        self.assertTrue('package: foo-pkg\n' in s)
+
+    def testGetStatusAffects(self):
+        """test a bug with "affects" field"""
+        bugs = bts.get_status(290501, 770490)
+        self.assertEqual(len(bugs), 2)
+        self.assertEqual(bugs[0].affects, [])
+        self.assertEqual(bugs[1].affects, ['conkeror'])
+
     def testStatusBatchesLargeBugCounts(self):
         """get_status should perform requests in batches to reduce server load."""
-        with mock.patch.object(bts.server, 'get_status') as MockStatus:
-            MockStatus.return_value = None
+        with mock.patch.object(bts.soap_client, 'call') as MockStatus:
+            MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
             nr = bts.BATCH_SIZE + 10.0
             calls = int(math.ceil(nr / bts.BATCH_SIZE))
             bts.get_status([722226] * int(nr))
@@ -100,22 +195,38 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def testStatusBatchesMultipleArguments(self):
         """get_status should batch multiple arguments into one request."""
-        with mock.patch.object(bts.server, 'get_status') as MockStatus:
-            MockStatus.return_value = None
+        with mock.patch.object(bts.soap_client, 'call') as MockStatus:
+            MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
             batch_size = bts.BATCH_SIZE
 
             calls = 1
-            bts.get_status(*range(batch_size))
+            bts.get_status(*list(range(batch_size)))
             self.assertEqual(MockStatus.call_count, calls)
 
             calls += 2
-            bts.get_status(*range(batch_size + 1))
+            bts.get_status(*list(range(batch_size + 1)))
             self.assertEqual(MockStatus.call_count, calls)
 
     def testComparison(self):
+        """comparison of two bugs"""
         self.b1.archived = True
         self.b2.done = True
         self.assertTrue(self.b2 > self.b1)
+        self.assertTrue(self.b2 >= self.b1)
+        self.assertFalse(self.b2 == self.b1)
+        self.assertFalse(self.b2 < self.b1)
+        self.assertFalse(self.b2 <= self.b1)
+
+    def testComparisonEqual(self):
+        """comparison of two bug which are equal regarding their
+        relative order"""
+        self.b1.done = True
+        self.b2.done = True
+        self.assertFalse(self.b2 > self.b1)
+        self.assertTrue(self.b2 >= self.b1)
+        self.assertTrue(self.b2 == self.b1)
+        self.assertFalse(self.b2 < self.b1)
+        self.assertTrue(self.b2 <= self.b1)
 
     def test_mergedwith(self):
         """Mergedwith is always a list of int."""
@@ -132,15 +243,6 @@ class DebianBtsTestCase(unittest.TestCase):
         m = bts.get_status(474955)[0].mergedwith
         self.assertEqual(m, list())
 
-    def test_affects(self):
-        """affects is a list of str."""
-        # this one affects one bug
-        # a = bts.get_status(290501)[0].affects
-        # self.assertTrue(len(a) == 1)
-        # self.assertEqual(type(a[0]), type(str()))
-        # this one affects no other bug
-        a = bts.get_status(437154)[0].affects
-        self.assertEqual(a, [])
 
     def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
@@ -170,7 +272,7 @@ class DebianBtsTestCase(unittest.TestCase):
         """affects should be split by ','"""
         bug = bts.get_status(657408)[0]
         self.assertEqual(
-            bug.affects, [u'epiphany-browser-dev', u'libwebkit-dev'])
+            bug.affects, ['epiphany-browser-dev', 'libwebkit-dev'])
 
 
 if __name__ == "__main__":
