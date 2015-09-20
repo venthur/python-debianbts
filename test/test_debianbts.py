@@ -25,6 +25,7 @@ import email
 import math
 import random
 import unittest
+import logging
 try:
     import unittest.mock as mock
 except ImportError:
@@ -33,6 +34,10 @@ except ImportError:
 from pysimplesoap.simplexml import SimpleXMLElement
 
 import debianbts as bts
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.NOTSET)
 
 
 class DebianBtsTestCase(unittest.TestCase):
