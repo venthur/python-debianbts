@@ -86,15 +86,19 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def testGetBugs(self):
         """get_bugs should return list of bugnumbers."""
-        l = bts.get_bugs("owner", "venthur@debian.org")
+        l = bts.get_bugs("submitter", "venthur@debian.org")
+        self.assertFalse(len(l) == 0)
         self.assertEqual(type(l), type([]))
         for i in l:
             self.assertEqual(type(i), type(int()))
 
     def testGetBugsList(self):
         """previous versions of python-debianbts accepted malformed key-value lists."""
-        l = bts.get_bugs('owner', 'venthur@debian.org', 'severity', 'normal')
-        l2 = bts.get_bugs(['owner', 'venthur@debian.org', 'severity', 'normal'])
+        l = bts.get_bugs('submitter', 'venthur@debian.org', 'severity', 'normal')
+        l2 = bts.get_bugs(['submitter', 'venthur@debian.org', 'severity', 'normal'])
+        self.assertFalse(len(l) == 0)
+        l.sort()
+        l2.sort()
         self.assertEqual(l, l2)
 
     def testNewestBugs(self):
