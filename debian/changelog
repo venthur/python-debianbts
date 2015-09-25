@@ -1,3 +1,10 @@
+python-debianbts (2.3) UNRELEASED; urgency=medium
+
+  * Added logging to unit tests
+  * Fixed some unittests
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 20 Sep 2015 15:29:19 +0200
+
 python-debianbts (2.2) unstable; urgency=medium
 
   * Added patch by Gaetano to provide proper email messages in Buglog.

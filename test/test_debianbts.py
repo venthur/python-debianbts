@@ -253,6 +253,24 @@ class DebianBtsTestCase(unittest.TestCase):
         m = bts.get_status(474955)[0].mergedwith
         self.assertEqual(m, list())
 
+    def test_base64_originator(self):
+        """field originator in bug status is sometimes base64-encoded"""
+        bug = bts.get_status(711111)[0]
+        if bts.PY2:
+            self.assertIsInstance(bug.originator, unicode)
+        else:
+            self.assertIsInstance(bug.originator, str)
+        self.assertTrue(bug.originator.endswith('gmail.com>'))
+        self.assertTrue('ł' in bug.originator)
+
+    def test_string_originator(self):
+        """test reading of bug status originator that is not base64-encoded"""
+        bug = bts.get_status(711112)[0]
+        if bts.PY2:
+            self.assertIsInstance(bug.originator, unicode)
+        else:
+            self.assertIsInstance(bug.originator, str)
+        self.assertTrue(bug.originator.endswith('debian.org>'))
 
     def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
@@ -284,25 +302,11 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(
             bug.affects, ['epiphany-browser-dev', 'libwebkit-dev'])
 
-    def test_base64_originator(self):
-        """field originator in bug status is sometimes base64-encoded"""
-        bug = bts.get_status(711111)[0]
-        if bts.PY2:
-            self.assertIsInstance(bug.originator, unicode)
-        else:
-            self.assertIsInstance(bug.originator, str)
-        self.assertTrue(bug.originator.endswith('gmail.com>'))
+    def test_regression_799528(self):
+        """bug.originator is sometimes base64 encoded."""
+        # bug with base64 encoding
+        [bug] = bts.get_status(711111)
         self.assertTrue('ł' in bug.originator)
-
-    def test_string_originator(self):
-        """test reading of bug status originator that is not base64-encoded"""
-        bug = bts.get_status(711112)[0]
-        if bts.PY2:
-            self.assertIsInstance(bug.originator, unicode)
-        else:
-            self.assertIsInstance(bug.originator, str)
-        self.assertTrue(bug.originator.endswith('debian.org>'))
-
 
 if __name__ == "__main__":
     unittest.main()
