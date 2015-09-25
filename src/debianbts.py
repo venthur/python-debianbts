@@ -56,7 +56,7 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap', trace=1)
+soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
 class Bugreport(object):
