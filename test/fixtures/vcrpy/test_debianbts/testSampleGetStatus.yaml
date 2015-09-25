@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope xmlns:soap=\"\
+      http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
+      \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n<soap:Header/>\n\
+      <soap:Body>\n    \n<get_status><arg0 soapenc:arrayType=\"xsd:int[1]\" xmlns:soapenc=\"\
+      http://schemas.xmlsoap.org/soap/encoding/\" xsi:type=\"soapenc:Array\"><item\
+      \ xsi:type=\"xsd:int\">486212</item></arg0></get_status></soap:Body>\n</soap:Envelope>"
+    headers:
+      Connection: [close]
+      Content-Length: ['459']
+      Content-Type: [text/xml; charset="UTF-8"]
+      Host: [bugs.debian.org]
+      Soapaction: ['"Noneget_status"']
+      User-Agent: [Python-urllib/2.7]
+    method: POST
+    uri: https://bugs.debian.org/cgi-bin/soap.cgi
+  response:
+    body: {string: !!python/unicode '<?xml version="1.0" encoding="UTF-8"?><soap:Envelope
+        soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachens="http://xml.apache.org/xml-soap"
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><get_statusResponse
+        xmlns="Debbugs/SOAP"><s-gensym3 xsi:type="apachens:Map"><item><key xsi:type="xsd:int">486212</key><value><blockedby
+        xsi:type="xsd:string" /><bug_num xsi:type="xsd:int">486212</bug_num><found_versions
+        soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/0.2008.06.04</item></found_versions><keywords
+        xsi:type="xsd:string">help</keywords><forwarded xsi:type="xsd:string" /><tags
+        xsi:type="xsd:string">help</tags><fixed_versions soapenc:arrayType="xsd:string[1]"
+        xsi:type="soapenc:Array"><item xsi:type="xsd:string">reportbug-ng/1.0</item></fixed_versions><fixed
+        xsi:type="apachens:Map"><item><key xsi:type="xsd:string">reportbug-ng/1.0</key><value
+        xsi:nil="true" /></item></fixed><archived xsi:type="xsd:int">1</archived><subject
+        xsi:type="xsd:string">[reportbug-ng] segmentation fault on sorting for last
+        action</subject><unarchived xsi:type="xsd:string" /><fixed_date soapenc:arrayType="xsd:anyType[0]"
+        xsi:type="soapenc:Array" /><originator xsi:type="xsd:string">Riccardo Magliocchetti
+        &lt;riccardo@datahost.it&gt;</originator><blocks xsi:type="xsd:string" /><package
+        xsi:type="xsd:string">reportbug-ng</package><found xsi:type="apachens:Map"><item><key
+        xsi:type="xsd:string">reportbug-ng/0.2008.06.04</key><value xsi:nil="true"
+        /></item></found><found_date soapenc:arrayType="xsd:anyType[0]" xsi:type="soapenc:Array"
+        /><location xsi:type="xsd:string">archive</location><last_modified xsi:type="xsd:int">1218957982</last_modified><summary
+        xsi:type="xsd:string" /><pending xsi:type="xsd:string">done</pending><source
+        xsi:type="xsd:string">reportbug-ng</source><severity xsi:type="xsd:string">normal</severity><msgid
+        xsi:type="xsd:string">&lt;20080614122738.9e8c25cf.riccardo@datahost.it&gt;</msgid><outlook
+        xsi:type="xsd:string" /><affects xsi:type="xsd:string" /><owner xsi:type="xsd:string"
+        /><id xsi:type="xsd:int">486212</id><done xsi:type="xsd:string">Bastian Venthur
+        &lt;venthur@debian.org&gt;</done><mergedwith xsi:type="xsd:string">486743
+        488122</mergedwith><date xsi:type="xsd:int">1213439402</date><log_modified
+        xsi:type="xsd:int">1218957982</log_modified></value></item></s-gensym3></get_statusResponse></soap:Body></soap:Envelope>'}
+    headers:
+      connection: [close]
+      content-length: ['2596']
+      content-type: [text/xml; charset=utf-8]
+      date: ['Thu, 17 Sep 2015 12:36:03 GMT']
+      server: [Apache]
+      soapserver: ['SOAP::Lite/Perl/1.11']
+      strict-transport-security: [max-age=15552000]
+      vary: [Accept-Encoding]
+      x-clacks-overhead: [GNU Terry Pratchett]
+    status: {code: 200, message: OK}
+version: 1

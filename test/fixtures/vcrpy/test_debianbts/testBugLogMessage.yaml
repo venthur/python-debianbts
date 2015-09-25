@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope xmlns:soap=\"\
+      http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
+      \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n<soap:Header/>\n\
+      <soap:Body>\n    <get_bug_log xmlns=\"Debbugs/SOAP/V1\">\n    <arg0>400012</arg0></get_bug_log>\n\
+      </soap:Body>\n</soap:Envelope>"
+    headers:
+      Connection: [close]
+      Content-Length: ['344']
+      Content-Type: [text/xml; charset="UTF-8"]
+      Host: [bugs.debian.org]
+      Soapaction: ['"Noneget_bug_log"']
+      User-Agent: [Python-urllib/2.7]
+    method: POST
+    uri: https://bugs.debian.org/cgi-bin/soap.cgi
+  response:
+    body: {string: !!python/unicode "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope\
+        \ soap:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:soap=\"\
+        http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\"\
+        \ xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
+        ><soap:Body><get_bug_logResponse xmlns=\"Debbugs/SOAP/\"><soapenc:Array soapenc:arrayType=\"\
+        xsd:anyType[3]\" xsi:type=\"soapenc:Array\"><item><header xsi:type=\"xsd:string\"\
+        >Received: (at submit) by bugs.debian.org; 23 Nov 2006 13:18:39 +0000\nFrom\
+        \ henrich@debian.or.jp Thu Nov 23 05:18:37 2006\nReturn-path: &lt;henrich@debian.or.jp&gt;\n\
+        Received: from mbox-o00.iijmio.jp ([210.138.144.205])\n\tby spohr.debian.org\
+        \ with esmtp (Exim 4.50)\n\tid 1GnETK-00040s-SX\n\tfor submit@bugs.debian.org;\
+        \ Thu, 23 Nov 2006 05:18:36 -0800\nReceived: MIO O00 id kANDIVfp016832; Thu,\
+        \ 23 Nov 2006 22:18:31 +0900 (JST)\nReceived: from localhost (ne0316lan1.rev.em-net.ne.jp\
+        \ [210.254.95.193])\n\tby mbox.iijmio-mail.jp (MMS-MR/mms-r00) id kANDIUFD000262;\n\
+        \tThu, 23 Nov 2006 22:18:31 +0900 (JST)\nDate: Thu, 23 Nov 2006 22:18:28 +0900\n\
+        From: Hideki Yamane &lt;henrich@debian.or.jp&gt;\nTo: submit@bugs.debian.org\n\
+        Subject: xtel: [INTL:ja] Updated Japanese po-debconf template translation\n\
+        \ (ja.po)\nMessage-Id: &lt;20061123221828.e7962f8c.henrich@debian.or.jp&gt;\n\
+        Organization: Debian JP Project\nX-Mailer: Sylpheed version 2.3.0beta5 (GTK+\
+        \ 2.8.20; i486-pc-linux-gnu)\nMime-Version: 1.0\nContent-Type: multipart/signed;\
+        \ protocol=\"application/pgp-signature\";\n micalg=\"PGP-SHA1\";\n boundary=\"\
+        Signature=_Thu__23_Nov_2006_22_18_28_+0900_fQdVMiA7fSMPysds\"\nDelivered-To:\
+        \ submit@bugs.debian.org\nX-Spam-Checker-Version: SpamAssassin 2.60-bugs.debian.org_2005_01_02\
+        \ \n\t(1.212-2003-09-23-exp) on spohr.debian.org\nX-Spam-Level: \nX-Spam-Status:\
+        \ No, hits=0.1 required=4.0 tests=BAYES_00,RCVD_IN_SBLXBL,\n\tRCVD_IN_SBLXBL_CBL,RCVD_IN_SORBS,RCVD_IN_SORBS_WEB\
+        \ autolearn=no \n\tversion=2.60-bugs.debian.org_2005_01_02</header><body xsi:type=\"\
+        xsd:string\">Package: xtel\nVersion: 3.3.0-5.4\nSeverity: wishlist\nTags:\
+        \ l10n patch\n\nDear xtel maintainer,\n\n Here's updated Japanese po-debconf\
+        \ template (ja.po) file that\n reviewed by several Japanese Debian developers\
+        \ and users.\n\n Could you apply it, please?\n\n--\nRegards,\n\n Hideki Yamane\
+        \     henrich @ debian.or.jp/samba.gr.jp/iijmio-mail.jp</body><attachments\
+        \ soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"soapenc:Array\" /><msg_num\
+        \ xsi:type=\"xsd:int\">5</msg_num></item><item><msg_num xsi:type=\"xsd:int\"\
+        >10</msg_num><attachments soapenc:arrayType=\"xsd:anyType[0]\" xsi:type=\"\
+        soapenc:Array\" /><body xsi:type=\"xsd:string\">Source: xtel\nSource-Version:\
+        \ 3.3.0-5.6\n\nWe believe that the bug you reported is fixed in the latest\
+        \ version of\nxtel, which is due to be installed in the Debian FTP archive:\n\
+        \nxtel_3.3.0-5.6.diff.gz\n  to pool/main/x/xtel/xtel_3.3.0-5.6.diff.gz\nxtel_3.3.0-5.6.dsc\n\
+        \  to pool/main/x/xtel/xtel_3.3.0-5.6.dsc\nxtel_3.3.0-5.6_i386.deb\n  to pool/main/x/xtel/xtel_3.3.0-5.6_i386.deb\n\
+        \n\n\nA summary of the changes between this version and the previous one is\n\
+        attached.\n\nThank you for reporting the bug, which will now be closed.  If\
+        \ you\nhave further comments please address them to 400012@bugs.debian.org,\n\
+        and the maintainer will reopen the bug report if appropriate.\n\nDebian distribution\
+        \ maintenance software\npp.\nChristian Perrier &lt;bubulle@debian.org&gt;\
+        \ (supplier of updated xtel package)\n\n(This message was generated automatically\
+        \ at their request; if you\nbelieve that there is a problem with it please\
+        \ contact the archive\nadministrators by mailing ftpmaster@debian.org)\n\n\
+        \n-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nFormat: 1.7\nDate: Sun,\
+        \ 18 Feb 2007 19:43:02 +0100\nSource: xtel\nBinary: xtel\nArchitecture: source\
+        \ i386\nVersion: 3.3.0-5.6\nDistribution: unstable\nUrgency: low\nMaintainer:\
+        \ Eric Delaunay &lt;delaunay@debian.org&gt;\nChanged-By: Christian Perrier\
+        \ &lt;bubulle@debian.org&gt;\nDescription: \n xtel       - An X emulator of\
+        \ the French Minitel\nCloses: 247639 383395 388988 400012\nChanges: \n xtel\
+        \ (3.3.0-5.6) unstable; urgency=low\n .\n   * Non-maintainer upload to fix\
+        \ pending debconf issues.\n   * Remove the overzealous debconf notes. Move\
+        \ their text to README.Debian\n     Closes: #388988, #383395, #400012, #247639\n\
+        Files: \n ed5b41bfc5fd6819d8f4fcacff5212ec 719 comm extra xtel_3.3.0-5.6.dsc\n\
+        \ e100d53aa3fc7048e708f786d157fea9 26168 comm extra xtel_3.3.0-5.6.diff.gz\n\
+        \ 76504db0fc375e38a3520bcfca5b3ea8 211820 comm extra xtel_3.3.0-5.6_i386.deb\n\
+        \n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.6 (GNU/Linux)\n\niD8DBQFF2KGb1OXtrMAUPS0RAsc+AJ9iTkZ/w6l/R+CkCR2SeMKgLExoSACeONV6\n\
+        DRw5Y0EXZ1vS8xA4G+ruIAA=\n=bzYS\n-----END PGP SIGNATURE-----\n\n\n</body><header\
+        \ xsi:type=\"xsd:string\">Received: (at 400012-close) by bugs.debian.org;\
+        \ 18 Feb 2007 19:17:59 +0000\nFrom dak@ftp-master.debian.org Sun Feb 18 19:17:59\
+        \ 2007\nReturn-path: &lt;dak@ftp-master.debian.org&gt;\nReceived: from ries.debian.org\
+        \ ([128.148.34.103])\n\tby rietz.debian.org with esmtp (Exim 4.50)\n\tid 1HIrXr-0000IG-6u\n\
+        \tfor 400012-close@bugs.debian.org; Sun, 18 Feb 2007 19:17:59 +0000\nReceived:\
+        \ from dak by ries.debian.org with local (Exim 4.50)\n\tid 1HIrWy-0007e4-Ch;\
+        \ Sun, 18 Feb 2007 19:17:04 +0000\nFrom: Christian Perrier &lt;bubulle@debian.org&gt;\n\
+        To: 400012-close@bugs.debian.org\nX-DAK: dak process-unchecked\nX-Katie: $Revision:\
+        \ 1.65 $\nSubject: Bug#400012: fixed in xtel 3.3.0-5.6\nMessage-Id: &lt;E1HIrWy-0007e4-Ch@ries.debian.org&gt;\n\
+        Sender: Archive Administrator &lt;dak@ftp-master.debian.org&gt;\nDate: Sun,\
+        \ 18 Feb 2007 19:17:04 +0000\nX-Spam-Checker-Version: SpamAssassin 2.60-bugs.debian.org_2005_01_02\
+        \ \n\t(1.212-2003-09-23-exp) on rietz.debian.org\nX-Spam-Level: \nX-Spam-Status:\
+        \ No, hits=-8.0 required=4.0 tests=BAYES_00,FROMDEVELOPER,\n\tHAS_BUG_NUMBER\
+        \ autolearn=no version=2.60-bugs.debian.org_2005_01_02</header></item><item><msg_num\
+        \ xsi:type=\"xsd:int\">12</msg_num><attachments soapenc:arrayType=\"xsd:anyType[0]\"\
+        \ xsi:type=\"soapenc:Array\" /><body xsi:type=\"xsd:string\"># A New Hope\n\
+        # A log time ago, in a galaxy far, far away\n# something happened.\n#\n# Magically\
+        \ this resulted in the following\n# action being taken, but this fake control\n\
+        # message doesn't tell you why it happened\n#\n# The action:\n# Bug archived.\n\
+        thanks\n# This fakemail brought to you by your local debbugs\n# administrator\n\
+        </body><header xsi:type=\"xsd:string\">Received: (at fakecontrol) by fakecontrolmessage;\n\
+        To: internal_control@bugs.debian.org\nFrom: Debbugs Internal Request &lt;owner@bugs.debian.org&gt;\n\
+        Subject: Internal Control\nMessage-Id: Bug archived.\nUser-Agent: Fakemail\
+        \ v42.6.9</header></item></soapenc:Array></get_bug_logResponse></soap:Body></soap:Envelope>"}
+    headers:
+      connection: [close]
+      content-length: ['6597']
+      content-type: [text/xml; charset=utf-8]
+      date: ['Thu, 17 Sep 2015 12:35:39 GMT']
+      server: [Apache]
+      soapserver: ['SOAP::Lite/Perl/1.11']
+      strict-transport-security: [max-age=15552000]
+      vary: [Accept-Encoding]
+      x-clacks-overhead: [GNU Terry Pratchett]
+    status: {code: 200, message: OK}
+version: 1
