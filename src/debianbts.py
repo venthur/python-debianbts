@@ -28,6 +28,7 @@ Bugreport class which represents a bugreport from the BTS.
 
 from __future__ import division, unicode_literals, absolute_import, print_function
 
+import base64
 import email
 from datetime import datetime
 import os
@@ -314,10 +315,12 @@ def _parse_status(bug_el):
     bug = Bugreport()
 
     # plain fields
-    for field in ('originator', 'subject', 'msgid', 'package', 'severity',
+    for field in ('subject', 'msgid', 'package', 'severity',
                   'owner', 'summary', 'location', 'source', 'pending',
                   'forwarded'):
         setattr(bug, field, _uc(str(bug_el(field))))
+
+    bug.originator = _parse_string_el(bug_el('originator'))
 
     bug.date = datetime.utcfromtimestamp(float(bug_el('date')))
     bug.log_modified = datetime.utcfromtimestamp(float(bug_el('log_modified')))
@@ -373,6 +376,18 @@ def _parse_bool(el):
     """parse a boolean value from a xml element"""
     value = str(el)
     return not value.strip() in ('', '0')
+
+
+def _parse_string_el(el):
+    """read a string element, maybe encoded in base64"""
+    value = str(el)
+    el_type = el.attributes().get('xsi:type')
+    if el_type and el_type.value == 'xsd:base64Binary':
+        value = base64.b64decode(value)
+        if not PY2:
+            value = value.decode('utf-8')
+    value = _uc(value)
+    return value
 
 
 """Convert string to unicode.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # debianbts_test.py - Unittests for debianbts.py.
 # Copyright (C) 2009  Bastian Venthur <venthur@debian.org>
@@ -282,6 +283,25 @@ class DebianBtsTestCase(unittest.TestCase):
         bug = bts.get_status(657408)[0]
         self.assertEqual(
             bug.affects, ['epiphany-browser-dev', 'libwebkit-dev'])
+
+    def test_base64_originator(self):
+        """field originator in bug status is sometimes base64-encoded"""
+        bug = bts.get_status(711111)[0]
+        if bts.PY2:
+            self.assertIsInstance(bug.originator, unicode)
+        else:
+            self.assertIsInstance(bug.originator, str)
+        self.assertTrue(bug.originator.endswith('gmail.com>'))
+        self.assertTrue('ł' in bug.originator)
+
+    def test_string_originator(self):
+        """test reading of bug status originator that is not base64-encoded"""
+        bug = bts.get_status(711112)[0]
+        if bts.PY2:
+            self.assertIsInstance(bug.originator, unicode)
+        else:
+            self.assertIsInstance(bug.originator, str)
+        self.assertTrue(bug.originator.endswith('debian.org>'))
 
 
 if __name__ == "__main__":
