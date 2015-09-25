@@ -1,7 +1,9 @@
-python-debianbts (2.3) UNRELEASED; urgency=medium
+python-debianbts (2.3) unstable; urgency=medium
 
   * Added logging to unit tests
   * Fixed some unittests
+  * Fix "base64-encoded strings" by merging pull request by Gaetano Guerriero.
+    (Closes: #799528) Thank you Gaetano!
 
  -- Bastian Venthur <venthur@debian.org>  Sun, 20 Sep 2015 15:29:19 +0200
 
