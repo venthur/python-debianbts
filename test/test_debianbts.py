@@ -253,8 +253,8 @@ class DebianBtsTestCase(unittest.TestCase):
         m = bts.get_status(474955)[0].mergedwith
         self.assertEqual(m, list())
 
-    def test_base64_originator(self):
-        """field originator in bug status is sometimes base64-encoded"""
+    def test_base64_buglog_fields(self):
+        """fields in bug status are sometimes base64-encoded"""
         bug = bts.get_status(711111)[0]
         if bts.PY2:
             self.assertIsInstance(bug.originator, unicode)
@@ -263,7 +263,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertTrue(bug.originator.endswith('gmail.com>'))
         self.assertTrue('ł' in bug.originator)
 
-    def test_string_originator(self):
+    def test_string_buglog_originator(self):
         """test reading of bug status originator that is not base64-encoded"""
         bug = bts.get_status(711112)[0]
         if bts.PY2:
@@ -303,10 +303,14 @@ class DebianBtsTestCase(unittest.TestCase):
             bug.affects, ['epiphany-browser-dev', 'libwebkit-dev'])
 
     def test_regression_799528(self):
-        """bug.originator is sometimes base64 encoded."""
-        # bug with base64 encoding
+        """fields of buglog are sometimes base64 encoded."""
+        # bug with base64 encoding originator
         [bug] = bts.get_status(711111)
         self.assertTrue('ł' in bug.originator)
+        # bug with base64 encoding subject
+        [bug] = bts.get_status(779005)
+        self.assertTrue('‘wnpp’ package' in bug.subject)
+
 
 if __name__ == "__main__":
     unittest.main()

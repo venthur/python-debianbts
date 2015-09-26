@@ -315,12 +315,10 @@ def _parse_status(bug_el):
     bug = Bugreport()
 
     # plain fields
-    for field in ('subject', 'msgid', 'package', 'severity',
+    for field in ('originator', 'subject', 'msgid', 'package', 'severity',
                   'owner', 'summary', 'location', 'source', 'pending',
                   'forwarded'):
-        setattr(bug, field, _uc(str(bug_el(field))))
-
-    bug.originator = _parse_string_el(bug_el('originator'))
+        setattr(bug, field, _parse_string_el(bug_el(field)))
 
     bug.date = datetime.utcfromtimestamp(float(bug_el('date')))
     bug.log_modified = datetime.utcfromtimestamp(float(bug_el('log_modified')))
