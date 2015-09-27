@@ -309,7 +309,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertTrue('ł' in bug.originator)
         # bug with base64 encoding subject
         [bug] = bts.get_status(779005)
-        self.assertTrue('‘wnpp’ package' in bug.subject)
+        self.assertTrue('‘' in bug.subject)
 
 
 if __name__ == "__main__":
