@@ -1,3 +1,10 @@
+python-debianbts (2.4) unstable; urgency=medium
+
+  * Fix "base64-encoded strings" merged patch by Gaetano that parses all
+    fields of Bugreport via _parse_string_el. (Closes: #799528)
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 27 Sep 2015 13:37:22 +0200
+
 python-debianbts (2.3) unstable; urgency=medium
 
   * Added logging to unit tests

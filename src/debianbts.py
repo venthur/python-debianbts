@@ -43,7 +43,7 @@ if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
 
 
-__version__ = '2.3'
+__version__ = '2.4'
 
 
 PY2 = sys.version_info.major == 2
