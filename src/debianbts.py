@@ -141,7 +141,7 @@ class Bugreport(object):
     def __lt__(self, other):
         """Compare a bugreport with another.
 
-        The more open and and urgent a bug is, the greater the bug is:
+        The more open and urgent a bug is, the greater the bug is:
 
             outstanding > resolved > archived
 
