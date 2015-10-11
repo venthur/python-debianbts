@@ -245,10 +245,9 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def testGetBugsSingleIntBug(self):
         """bugs parameter in get_bugs can be a list of int or a int"""
-        bugs = bts.get_bugs('bugs', 400040, 'archive', True)
-        self.assertEquals([400040], [400040])
-        bugs = bts.get_bugs('bugs', [400040], 'archive', True)
-        self.assertEquals([400040], [400040])
+        bugs1 = bts.get_bugs('bugs', 400040, 'archive', True)
+        bugs2 = bts.get_bugs('bugs', [400040], 'archive', True)
+        self.assertEquals(bugs1, bugs2)
 
     def test_mergedwith(self):
         """Mergedwith is always a list of int."""
