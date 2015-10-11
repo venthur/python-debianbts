@@ -305,7 +305,19 @@ def get_bugs(*key_value):
     # wrapping list
     if len(key_value) == 1 and isinstance(key_value[0], list):
         key_value = tuple(key_value[0])
-    reply = _soap_client_call('get_bugs', *key_value)
+
+    # pysimplesoap doesn't generate soap Arrays without using wsdl
+    # I build body by hand, converting list to array and using standard
+    # pysimplesoap marshalling for other types
+    method_el = SimpleXMLElement('<get_bugs></get_bugs>')
+    for arg_n, kv in enumerate(key_value):
+        arg_name = 'arg' + str(arg_n)
+        if isinstance(kv, (list, tuple)):
+            _build_int_array_el(arg_name, method_el, kv)
+        else:
+            method_el.marshall(arg_name, kv)
+
+    reply = soap_client.call('get_bugs', method_el)
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
 
