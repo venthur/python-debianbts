@@ -1,3 +1,13 @@
+python-debianbts (2.5) unstable; urgency=medium
+
+  * Fix "get_bugs(..., 'bugs', [123, 456], ...) triggers serverside
+    exception: The 'bugs' parameter ("HASH(0x315ced8)") to
+    Debbugs::Bugs::get_bugs was a 'hashref'" Merged modified version of patch
+    by Gaetano Guerriero. Thanks! (Closes: #801360)
+  * Changed docstrings to numpy standard
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 11 Oct 2015 15:48:42 +0200
+
 python-debianbts (2.4) unstable; urgency=medium
 
   * Fix "base64-encoded strings" merged patch by Gaetano that parses all
