@@ -18,7 +18,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-"""Query Debian's Bug Tracking System (BTS).
+"""
+Query Debian's Bug Tracking System (BTS).
 
 This module provides a layer between Python and Debian's BTS. It
 provides methods to query the BTS using the BTS' SOAP interface, and the
@@ -43,7 +44,7 @@ if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
 
 
-__version__ = '2.4'
+__version__ = '2.5'
 
 
 PY2 = sys.version_info.major == 2
@@ -63,35 +64,60 @@ class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
 
     A bugreport object provides all attributes provided by the SOAP
-    interface. Most of the attributs are strings, the others are marked.
+    interface. Most of the attributes are strings, the others are
+    marked.
 
-    * bug_num: The bugnumber (int)
-    * severity: Severity of the bugreport
-    * tags: List of tags of the bugreport (list of strings)
-    * subject:  The subject/title of the bugreport
-    * originator: Submitter of the bugreport
-    * mergedwith: List of bugnumbers this bug was merged with (list of
-      ints)
-    * package: Package of the bugreport
-    * source: Source package of the bugreport
-    * date: Date of bug creation (datetime)
-    * log_modified: Date of update of the bugreport (datetime)
-    * done: Is the bug fixed or not (bool)
-    * archived: Is the bug archived or not (bool)
-    * unarchived: Was the bug unarchived or not (bool)
-    * fixed_versions: List of versions, can be empty even if bug is
-      fixed (list of strings)
-    * found_versions: List of version numbers where bug was found (list
-      of strings)
-    * forwarded: A URL or email address
-    * blocks: List of bugnumbers this bug blocks (list of ints)
-    * blockedby: List of bugnumbers which block this bug (list of ints)
-    * pending: Either 'pending' or 'done'
-    * msgid: Message ID of the bugreport
-    * owner: Who took responsibility for fixing this bug
-    * location: Either 'db-h' or 'archive'
-    * affects: List of Packagenames (list of strings)
-    * summary: Arbitrary text
+    Attributes
+    ----------
+
+    bug_num : int
+        The bugnumber
+    severity : str
+        Severity of the bugreport
+    tags : list of strings
+        Tags of the bugreport
+    subject : str
+        The subject/title of the bugreport
+    originator : str
+        Submitter of the bugreport
+    mergedwith : list of ints
+        List of bugnumbers this bug was merged with
+    package : str
+        Package of the bugreport
+    source : str
+        Source package of the bugreport
+    date : datetime
+        Date of bug creation
+    log_modified : datetime
+        Date of update of the bugreport
+    done : boolean
+        Is the bug fixed or not
+    archived : bool
+        Is the bug archived or not
+    unarchived : bool
+        Was the bug unarchived or not
+    fixed_versions : list of strings
+        List of versions, can be empty even if bug is fixed
+    found_versions : list of strings
+        List of version numbers where bug was found
+    forwarded : str
+        A URL or email address
+    blocks: list of ints
+        List of bugnumbers this bug blocks
+    blockedby : list of int
+        List of bugnumbers which block this bug
+    pending : str
+        Either 'pending' or 'done'
+    msgid : str
+        Message ID of the bugreport
+    owner : str
+        Who took responsibility for fixing this bug
+    location : str
+        Either 'db-h' or 'archive'
+    affects : list of str
+        List of Packagenames
+    summary : str
+        Arbitrary text
     """
 
     def __init__(self):
@@ -192,7 +218,21 @@ class Bugreport(object):
 
 
 def get_status(*nrs):
-    """Returns a list of Bugreport objects."""
+    """Returns a list of Bugreport objects.
+
+    Given a list of bugnumbers this method returns a list of Bugreport
+    objects.
+
+    Parameters
+    ----------
+    nrs : int or list of ints
+        the bugnumbers
+
+    Returns
+    -------
+    bugs : list of Bugreport objects
+
+    """
     # If we called get_status with one single bug, we get a single bug,
     # if we called it with a list of bugs, we get a list,
     # No available bugreports returns an empty list
@@ -218,10 +258,20 @@ def get_status(*nrs):
 
 
 def get_usertag(email, *tags):
-    """Return a dictionary of "usertag" => buglist mappings.
+    """Get buglists by usertags.
 
-    If tags are given the dictionary is limited to the matching tags, if
-    no tags are given all available tags are returned.
+    Parameters
+    ----------
+    email : str
+    tags : tuple of strings
+        If tags are given the dictionary is limited to the matching
+        tags, if no tags are given all available tags are returned.
+
+    Returns
+    -------
+    mapping : dict
+        a mapping of useertag -> buglist
+
     """
     reply = _soap_client_call('get_usertag', email, *tags)
     map_el = reply('s-gensym3')
@@ -244,14 +294,24 @@ def get_usertag(email, *tags):
 
 
 def get_bug_log(nr):
-    """Return a list of Buglogs.
+    """Get Buglogs.
 
     A buglog is a dictionary with the following mappings:
-        "header" => string
-        "body" => string
-        "attachments" => list
-        "msg_num" => int
-        "message" => email.message.Message
+        * "header" => string
+        * "body" => string
+        * "attachments" => list
+        * "msg_num" => int
+        * "message" => email.message.Message
+
+    Parameters
+    ----------
+    nr : int
+        the bugnumber
+
+    Returns
+    -------
+    buglogs : list of dicts
+
     """
     reply = _soap_client_call('get_bug_log', nr)
     items_el = reply('soapenc:Array')
@@ -274,31 +334,60 @@ def get_bug_log(nr):
 
 
 def newest_bugs(amount):
-    """Returns a list of bugnumbers of the `amount` newest bugs."""
+    """Returns the newest bugs.
+
+    This method can be used to query the BTS for the n newest bugs.
+
+    Parameters
+    ----------
+    amount : int
+        the number of desired bugs. E.g. if `amount` is 10 the method
+        will return the 10 latest bugs.
+
+    Returns
+    -------
+    bugs : list of int
+        the bugnumbers
+
+    """
     reply = _soap_client_call('newest_bugs', amount)
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
 
 
 def get_bugs(*key_value):
-    """Returns a list of bugnumbers, that match the conditions given by
-    the key-value pair(s).
+    """Get list of bugs matching certain criteria.
+
+    The conditions are defined by key value pairs.
 
     Possible keys are:
-        "package": bugs for the given package
-        "submitter": bugs from the submitter
-        "maint": bugs belonging to a maintainer
-        "src": bugs belonging to a source package
-        "severity": bugs with a certain severity
-        "status": can be either "done", "forwarded", or "open"
-        "tag": see http://www.debian.org/Bugs/Developer#tags for
-            available tags
-        "owner": bugs which are assigned to `owner`
-        "bugs": takes list of bugnumbers, filters the list according to
-            given criteria
-        "correspondent": bugs where `correspondent` has sent a mail to
+        * "package": bugs for the given package
+        * "submitter": bugs from the submitter
+        * "maint": bugs belonging to a maintainer
+        * "src": bugs belonging to a source package
+        * "severity": bugs with a certain severity
+        * "status": can be either "done", "forwarded", or "open"
+        * "tag": see http://www.debian.org/Bugs/Developer#tags for
+           available tags
+        * "owner": bugs which are assigned to `owner`
+        * "bugs": takes single int or list of bugnumbers, filters the list
+           according to given criteria
+        * "correspondent": bugs where `correspondent` has sent a mail to
 
-    Example: get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
+    Arguments
+    ---------
+    key_value : str
+
+    Returns
+    -------
+    bugs : list of ints
+        the bugnumbers
+
+    Examples
+    --------
+    >>> get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
+    [12345, 23456]
+
     """
     # previous versions also accepted get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
     # if key_value is a list in a one elemented tuple, remove the
@@ -400,7 +489,8 @@ def _parse_string_el(el):
     return value
 
 
-"""Convert string to unicode.
+"""
+Convert string to unicode.
 
 This method only exists to unify the unicode conversion in this module.
 """
