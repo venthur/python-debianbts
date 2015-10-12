@@ -264,7 +264,7 @@ class DebianBtsTestCase(unittest.TestCase):
         m = bts.get_status(474955)[0].mergedwith
         self.assertEqual(m, list())
 
-    def test_base64_buglog_fields(self):
+    def test_base64_status_fields(self):
         """fields in bug status are sometimes base64-encoded"""
         bug = bts.get_status(711111)[0]
         if bts.PY2:
@@ -280,7 +280,7 @@ class DebianBtsTestCase(unittest.TestCase):
         body = buglog[1]['body']
         self.assertTrue('é' in body)
 
-    def test_string_buglog_originator(self):
+    def test_string_status_originator(self):
         """test reading of bug status originator that is not base64-encoded"""
         bug = bts.get_status(711112)[0]
         if bts.PY2:
