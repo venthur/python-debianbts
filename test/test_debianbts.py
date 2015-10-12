@@ -283,6 +283,14 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertIsInstance(bug.originator, str)
         self.assertTrue(bug.originator.endswith('debian.org>'))
 
+    def test_unicode_convertion_in_str(self):
+        """string representation must deal with unicode correctly."""
+        [bug] = bts.get_status(773321)
+        try:
+            bug.__str__()
+        except UnicodeEncodeError:
+            self.fail()
+
     def test_regression_588954(self):
         """Get_bug_log must convert the body correctly to unicode."""
         try:
