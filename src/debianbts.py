@@ -158,7 +158,7 @@ class Bugreport(object):
         # self.id = None
 
     def __unicode__(self):
-        s = '\n'.join('{}: {}'.format(key, str(value))
+        s = '\n'.join('{}: {}'.format(key, value)
                        for key, value in self.__dict__.items())
         return s + '\n'
 
