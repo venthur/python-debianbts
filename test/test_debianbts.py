@@ -274,6 +274,12 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertTrue(bug.originator.endswith('gmail.com>'))
         self.assertTrue('ł' in bug.originator)
 
+    def test_base64_buglog_body(self):
+        """buglog body is sometimes base64 encoded"""
+        buglog = bts.get_bug_log(773321)
+        body = buglog[1]['body']
+        self.assertTrue('é' in body)
+
     def test_string_buglog_originator(self):
         """test reading of bug status originator that is not base64-encoded"""
         bug = bts.get_status(711112)[0]
