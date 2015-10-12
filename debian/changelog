@@ -1,3 +1,11 @@
+python-debianbts (2.5.1) unstable; urgency=medium
+
+  * Applied patch by Gaetano fixing a bad import of the email module. Thanks
+    Gaetano!
+  * Use semver semantics for versioning from now on
+
+ -- Bastian Venthur <venthur@debian.org>  Mon, 12 Oct 2015 15:16:14 +0200
+
 python-debianbts (2.5) unstable; urgency=medium
 
   * Fix "get_bugs(..., 'bugs', [123, 456], ...) triggers serverside

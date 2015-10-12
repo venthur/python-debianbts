@@ -44,7 +44,11 @@ if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
 
 
-__version__ = '2.5'
+# please follow the semver semantics, i.e. MAJOR.MINOR.PATCH where
+# MAJOR: incompatible API changes
+# MINOR: add backwards-comptible functionality
+# PATCH: backwards-compatible bug fixes.
+__version__ = '2.5.1'
 
 
 PY2 = sys.version_info.major == 2
