@@ -30,7 +30,7 @@ Bugreport class which represents a bugreport from the BTS.
 from __future__ import division, unicode_literals, absolute_import, print_function
 
 import base64
-import email
+import email.feedparser
 from datetime import datetime
 import os
 import sys

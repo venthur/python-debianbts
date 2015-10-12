@@ -22,7 +22,7 @@
 from __future__ import division, unicode_literals, absolute_import, print_function
 
 import datetime
-import email
+import email.message
 import math
 import random
 import unittest
