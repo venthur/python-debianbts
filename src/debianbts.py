@@ -322,15 +322,15 @@ def get_bug_log(nr):
     buglogs = []
     for buglog_el in items_el.children():
         buglog = {}
-        buglog["header"] = _uc(str(buglog_el("header")))
-        buglog["body"] = _uc(str(buglog_el("body")))
+        buglog["header"] = _parse_string_el(buglog_el("header"))
+        buglog["body"] = _parse_string_el(buglog_el("body"))
         buglog["msg_num"] = int(buglog_el("msg_num"))
         # server always returns an empty attachments array ?
         buglog["attachments"] = []
 
         mail_parser = email.feedparser.FeedParser()
-        mail_parser.feed(str(buglog_el("header")))
-        mail_parser.feed(str(buglog_el("body")))
+        mail_parser.feed(buglog["header"])
+        mail_parser.feed(buglog["body"])
         buglog["message"] = mail_parser.close()
 
         buglogs.append(buglog)
