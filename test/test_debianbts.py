@@ -267,10 +267,7 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_base64_status_fields(self):
         """fields in bug status are sometimes base64-encoded"""
         bug = bts.get_status(711111)[0]
-        if bts.PY2:
-            self.assertIsInstance(bug.originator, unicode)
-        else:
-            self.assertIsInstance(bug.originator, str)
+        self._assert_unicode(bug.originator)
         self.assertTrue(bug.originator.endswith('gmail.com>'))
         self.assertTrue('ł' in bug.originator)
 
@@ -283,10 +280,7 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_string_status_originator(self):
         """test reading of bug status originator that is not base64-encoded"""
         bug = bts.get_status(711112)[0]
-        if bts.PY2:
-            self.assertIsInstance(bug.originator, unicode)
-        else:
-            self.assertIsInstance(bug.originator, str)
+        self._assert_unicode(bug.originator)
         self.assertTrue(bug.originator.endswith('debian.org>'))
 
     def test_unicode_convertion_in_str(self):
@@ -335,6 +329,14 @@ class DebianBtsTestCase(unittest.TestCase):
         # bug with base64 encoding subject
         [bug] = bts.get_status(779005)
         self.assertTrue('‘' in bug.subject)
+
+    def _assert_unicode(self, string):
+        """asserts for type of a unicode string, depending on python version"""
+        if bts.PY2:
+            self.assertIsInstance(string, unicode)
+        else:
+            self.assertIsInstance(string, str)
+
 
 
 if __name__ == "__main__":
