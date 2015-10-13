@@ -1,7 +1,9 @@
-python-debianbts (2.5.2) UNRELEASED; urgency=medium
+python-debianbts (2.5.2) unstable; urgency=medium
 
   * Applied patch by Gaetano, that fixes Bugreport.__str__ throwing unicode
     decode errors
+  * Fix bug where buglog body is sometimes not base64 decoded by applying
+    patch by Gaetano. (Closes: #801585, #801347)
 
  -- Bastian Venthur <venthur@debian.org>  Tue, 13 Oct 2015 09:46:08 +0200
 
