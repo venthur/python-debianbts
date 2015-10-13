@@ -48,7 +48,7 @@ if os.path.isdir(ca_path):
 # MAJOR: incompatible API changes
 # MINOR: add backwards-comptible functionality
 # PATCH: backwards-compatible bug fixes.
-__version__ = '2.5.1'
+__version__ = '2.5.2'
 
 
 PY2 = sys.version_info.major == 2
