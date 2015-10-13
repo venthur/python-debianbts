@@ -1,0 +1,2 @@
+* Gaetano Guerriero for helping to migrate from SOAPpy to PySimpleSOAP,
+  for helping to migrate from Python2 to Python3, and countless bugfixes!
