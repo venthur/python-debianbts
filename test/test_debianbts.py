@@ -49,12 +49,12 @@ class DebianBtsTestCase(unittest.TestCase):
         self.b2 = bts.Bugreport()
         self.b2.severity = 'normal'
 
-    def testGetUsertagEmpty(self):
+    def test_get_usertag_empty(self):
         """get_usertag should return empty dict if no bugs are found."""
         d = bts.get_usertag("thisisatest@debian.org")
         self.assertEqual(d, dict())
 
-    def testGetUsertag(self):
+    def test_get_usertag(self):
         """get_usertag should return dict with tag(s) and buglist(s)."""
         d = bts.get_usertag("debian-python@lists.debian.org")
         self.assertEqual(type(d), type(dict()))
@@ -64,7 +64,7 @@ class DebianBtsTestCase(unittest.TestCase):
             for bug in v:
                 self.assertEqual(type(bug), int)
 
-    def testGetUsertagFilters(self):
+    def test_get_usertag_filters(self):
         """get_usertag should return only requested tags"""
         tags = bts.get_usertag("debian-python@lists.debian.org")
         self.assertTrue(isinstance(tags, dict))
@@ -80,12 +80,12 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(set(filtered_tags[randomKey1]),
                           set(tags[randomKey1]))
 
-    def testGetBugsEmpty(self):
+    def test_get_bugs_empty(self):
         """get_bugs should return empty list if no matching bugs where found."""
         l = bts.get_bugs("package", "thisisatest")
         self.assertEqual(l, [])
 
-    def testGetBugs(self):
+    def test_get_bugs(self):
         """get_bugs should return list of bugnumbers."""
         l = bts.get_bugs("submitter", "venthur@debian.org")
         self.assertFalse(len(l) == 0)
@@ -93,7 +93,7 @@ class DebianBtsTestCase(unittest.TestCase):
         for i in l:
             self.assertEqual(type(i), type(int()))
 
-    def testGetBugsList(self):
+    def test_get_bugs_list(self):
         """previous versions of python-debianbts accepted malformed key-value lists."""
         l = bts.get_bugs('submitter', 'venthur@debian.org', 'severity', 'normal')
         l2 = bts.get_bugs(['submitter', 'venthur@debian.org', 'severity', 'normal'])
@@ -102,20 +102,20 @@ class DebianBtsTestCase(unittest.TestCase):
         l2.sort()
         self.assertEqual(l, l2)
 
-    def testNewestBugs(self):
+    def test_newest_bugs(self):
         """newest_bugs should return list of bugnumbers."""
         l = bts.newest_bugs(10)
         self.assertEqual(type(l), type([]))
         for i in l:
             self.assertEqual(type(i), type(int()))
 
-    def testNewestBugsAmount(self):
+    def test_newest_bugs_amount(self):
         """newest_bugs(amount) should return a list of len 'amount'. """
         for i in 0, 1, 10:
             l = bts.newest_bugs(i)
             self.assertEqual(len(l), i)
 
-    def testGetBugLog(self):
+    def test_get_bug_log(self):
         """get_bug_log should return the correct data types."""
         bl = bts.get_bug_log(223344)
         self.assertEqual(type(bl), type([]))
@@ -130,13 +130,13 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue("msg_num" in i)
             self.assertEqual(type(i["msg_num"]), type(int()))
 
-    def testGetBugLogWithAttachments(self):
+    def test_get_bug_log_with_attachments(self):
         """get_bug_log should include attachments"""
         buglogs = bts.get_bug_log(400000)
         for bl in buglogs:
             self.assertTrue("attachments" in bl)
 
-    def testBugLogMessage(self):
+    def test_bug_log_message(self):
         """dict returned by get_bug_log has a email.Message field"""
         buglogs = bts.get_bug_log(400012)
         for buglog in buglogs:
@@ -155,13 +155,13 @@ class DebianBtsTestCase(unittest.TestCase):
         self._assert_unicode(msg_payload)
         self.assertTrue('é' in msg_payload)
 
-    def testEmptyGetStatus(self):
+    def test_empty_get_status(self):
         """get_status should return empty list if bug doesn't exits"""
         bugs = bts.get_status(0)
         self.assertEqual(type(bugs), list)
         self.assertEqual(len(bugs), 0)
 
-    def testSampleGetStatus(self):
+    def test_sample_get_status(self):
         """test retrieving of a "known" bug status"""
         bugs = bts.get_status(486212)
         self.assertEqual(len(bugs), 1)
@@ -186,7 +186,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(bug.fixed_versions, ['reportbug-ng/1.0'])
         self.assertEqual(bug.affects, [])
 
-    def testBugStr(self):
+    def test_bug_str(self):
         """test string conversion of a Bugreport"""
         self.b2.package = 'foo-pkg'
         self.b2.bug_num = 12222
@@ -195,14 +195,14 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertTrue('bug_num: 12222\n' in s)
         self.assertTrue('package: foo-pkg\n' in s)
 
-    def testGetStatusAffects(self):
+    def test_get_status_affects(self):
         """test a bug with "affects" field"""
         bugs = bts.get_status(290501, 770490)
         self.assertEqual(len(bugs), 2)
         self.assertEqual(bugs[0].affects, [])
         self.assertEqual(bugs[1].affects, ['conkeror'])
 
-    def testStatusBatchesLargeBugCounts(self):
+    def test_status_batches_large_bug_counts(self):
         """get_status should perform requests in batches to reduce server load."""
         with mock.patch.object(bts.soap_client, 'call') as MockStatus:
             MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
@@ -211,7 +211,7 @@ class DebianBtsTestCase(unittest.TestCase):
             bts.get_status([722226] * int(nr))
             self.assertEqual(MockStatus.call_count, calls)
 
-    def testStatusBatchesMultipleArguments(self):
+    def test_status_batches_multiple_arguments(self):
         """get_status should batch multiple arguments into one request."""
         with mock.patch.object(bts.soap_client, 'call') as MockStatus:
             MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
@@ -225,7 +225,7 @@ class DebianBtsTestCase(unittest.TestCase):
             bts.get_status(*list(range(batch_size + 1)))
             self.assertEqual(MockStatus.call_count, calls)
 
-    def testComparison(self):
+    def test_comparison(self):
         """comparison of two bugs"""
         self.b1.archived = True
         self.b2.done = True
@@ -235,7 +235,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertFalse(self.b2 < self.b1)
         self.assertFalse(self.b2 <= self.b1)
 
-    def testComparisonEqual(self):
+    def test_comparison_equal(self):
         """comparison of two bug which are equal regarding their
         relative order"""
         self.b1.done = True
@@ -246,12 +246,12 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertFalse(self.b2 < self.b1)
         self.assertTrue(self.b2 <= self.b1)
 
-    def testGetBugsIntBugs(self):
+    def test_get_bugs_int_bugs(self):
         """It is possible to pass a list of bug number to get_bugs"""
         bugs = bts.get_bugs('bugs', [400010, 400012], 'archive', True)
         self.assertEquals(set(bugs), set((400010, 400012)))
 
-    def testGetBugsSingleIntBug(self):
+    def test_get_bugs_single_int_bug(self):
         """bugs parameter in get_bugs can be a list of int or a int"""
         bugs1 = bts.get_bugs('bugs', 400040, 'archive', True)
         bugs2 = bts.get_bugs('bugs', [400040], 'archive', True)
