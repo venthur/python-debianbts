@@ -459,8 +459,8 @@ def _build_soap_client():
 
 
 def _soap_client_call(method_name, *args):
-    # wrapper to work around pysimplesoap bug
-    # https://github.com/pysimplesoap/pysimplesoap/issues/31
+    """wrapper to work around a pysimplesoap bug
+    https://github.com/pysimplesoap/pysimplesoap/issues/31"""
     soap_client = _build_soap_client()
     soap_args = []
     for arg_n, arg in enumerate(args):
