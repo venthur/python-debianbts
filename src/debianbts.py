@@ -61,7 +61,6 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
 class Bugreport(object):
@@ -254,6 +253,7 @@ def get_status(*nrs):
         # without using wsdl
         method_el = SimpleXMLElement('<get_status></get_status>')
         _build_int_array_el('arg0', method_el, slice_)
+        soap_client = _build_soap_client()
         reply = soap_client.call('get_status', method_el)
         for bug_item_el in reply('s-gensym3').children() or []:
             bug_el = bug_item_el.children()[1]
@@ -410,6 +410,7 @@ def get_bugs(*key_value):
         else:
             method_el.marshall(arg_name, kv)
 
+    soap_client = _build_soap_client()
     reply = soap_client.call('get_bugs', method_el)
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
@@ -452,9 +453,15 @@ def _parse_status(bug_el):
     return bug
 
 
+def _build_soap_client():
+    """build a pysimplesoap SoapClient instance"""
+    return SoapClient(location=URL, namespace=NS, soap_ns='soap')
+
+
 def _soap_client_call(method_name, *args):
     # wrapper to work around pysimplesoap bug
     # https://github.com/pysimplesoap/pysimplesoap/issues/31
+    soap_client = _build_soap_client()
     soap_args = []
     for arg_n, arg in enumerate(args):
         soap_args.append(('arg' + str(arg_n), arg))
