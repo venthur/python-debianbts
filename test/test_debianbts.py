@@ -205,26 +205,30 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def test_status_batches_large_bug_counts(self):
         """get_status should perform requests in batches to reduce server load."""
-        with mock.patch.object(bts.soap_client, 'call') as MockStatus:
-            MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
+        with mock.patch.object(bts, '_build_soap_client') as mock_build_client:
+            mock_build_client.return_value = mock_client = mock.Mock()
+            mock_client.call.return_value = SimpleXMLElement(
+                '<a><s-gensym3/></a>')
             nr = bts.BATCH_SIZE + 10.0
             calls = int(math.ceil(nr / bts.BATCH_SIZE))
             bts.get_status([722226] * int(nr))
-            self.assertEqual(MockStatus.call_count, calls)
+            self.assertEqual(mock_client.call.call_count, calls)
 
     def test_status_batches_multiple_arguments(self):
         """get_status should batch multiple arguments into one request."""
-        with mock.patch.object(bts.soap_client, 'call') as MockStatus:
-            MockStatus.return_value = SimpleXMLElement('<a><s-gensym3/></a>')
+        with mock.patch.object(bts, '_build_soap_client') as mock_build_client:
+            mock_build_client.return_value = mock_client = mock.Mock()
+            mock_client.call.return_value = SimpleXMLElement(
+                '<a><s-gensym3/></a>')
             batch_size = bts.BATCH_SIZE
 
             calls = 1
             bts.get_status(*list(range(batch_size)))
-            self.assertEqual(MockStatus.call_count, calls)
+            self.assertEqual(mock_client.call.call_count, calls)
 
             calls += 2
             bts.get_status(*list(range(batch_size + 1)))
-            self.assertEqual(MockStatus.call_count, calls)
+            self.assertEqual(mock_client.call.call_count, calls)
 
     def test_comparison(self):
         """comparison of two bugs"""
