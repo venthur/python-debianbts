@@ -1,3 +1,10 @@
+python-debianbts (2.6.0) unstable; urgency=medium
+
+  * Gaetano made python-debianbts thread safe by dynamically creating
+    SoapClients instead of using a module-level one. (Closes: #801585)
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 15 Oct 2015 15:35:16 +0200
+
 python-debianbts (2.5.2) unstable; urgency=medium
 
   * Applied patch by Gaetano, that fixes Bugreport.__str__ throwing unicode
