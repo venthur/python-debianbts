@@ -48,7 +48,7 @@ if os.path.isdir(ca_path):
 # MAJOR: incompatible API changes
 # MINOR: add backwards-comptible functionality
 # PATCH: backwards-compatible bug fixes.
-__version__ = '2.5.2'
+__version__ = '2.6.0'
 
 
 PY2 = sys.version_info.major == 2
@@ -61,7 +61,6 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-soap_client = SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
 class Bugreport(object):
@@ -248,6 +247,7 @@ def get_status(*nrs):
         else:
             list_.append(nr)
     # Process the input in batches to avoid hitting resource limits on the BTS
+    soap_client = _build_soap_client()
     for i in range(0, len(list_), BATCH_SIZE):
         slice_ = list_[i:i + BATCH_SIZE]
         # I build body by hand, pysimplesoap doesn't generate soap Arrays
@@ -410,6 +410,7 @@ def get_bugs(*key_value):
         else:
             method_el.marshall(arg_name, kv)
 
+    soap_client = _build_soap_client()
     reply = soap_client.call('get_bugs', method_el)
     items_el = reply('soapenc:Array')
     return [int(item_el) for item_el in items_el.children() or []]
@@ -452,9 +453,24 @@ def _parse_status(bug_el):
     return bug
 
 
+def _build_soap_client():
+    """Factory method that creates a SoapClient.
+
+    For thread-safety we create SoapClients on demand instead of using a
+    module-level one.
+
+    Returns
+    -------
+    sc : SoapClient instance
+
+    """
+    return SoapClient(location=URL, namespace=NS, soap_ns='soap')
+
+
 def _soap_client_call(method_name, *args):
-    # wrapper to work around pysimplesoap bug
-    # https://github.com/pysimplesoap/pysimplesoap/issues/31
+    """wrapper to work around a pysimplesoap bug
+    https://github.com/pysimplesoap/pysimplesoap/issues/31"""
+    soap_client = _build_soap_client()
     soap_args = []
     for arg_n, arg in enumerate(args):
         soap_args.append(('arg' + str(arg_n), arg))
