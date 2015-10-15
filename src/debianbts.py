@@ -247,13 +247,13 @@ def get_status(*nrs):
         else:
             list_.append(nr)
     # Process the input in batches to avoid hitting resource limits on the BTS
+    soap_client = _build_soap_client()
     for i in range(0, len(list_), BATCH_SIZE):
         slice_ = list_[i:i + BATCH_SIZE]
         # I build body by hand, pysimplesoap doesn't generate soap Arrays
         # without using wsdl
         method_el = SimpleXMLElement('<get_status></get_status>')
         _build_int_array_el('arg0', method_el, slice_)
-        soap_client = _build_soap_client()
         reply = soap_client.call('get_status', method_el)
         for bug_item_el in reply('s-gensym3').children() or []:
             bug_el = bug_item_el.children()[1]
