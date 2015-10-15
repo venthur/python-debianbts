@@ -454,7 +454,16 @@ def _parse_status(bug_el):
 
 
 def _build_soap_client():
-    """build a pysimplesoap SoapClient instance"""
+    """Factory method that creates a SoapClient.
+
+    For thread-safety we create SoapClients on demand instead of using a
+    module-level one.
+
+    Returns
+    -------
+    sc : SoapClient instance
+
+    """
     return SoapClient(location=URL, namespace=NS, soap_ns='soap')
 
 
