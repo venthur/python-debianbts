@@ -46,7 +46,7 @@ if os.path.isdir(ca_path):
 
 # please follow the semver semantics, i.e. MAJOR.MINOR.PATCH where
 # MAJOR: incompatible API changes
-# MINOR: add backwards-comptible functionality
+# MINOR: add backwards-compatible functionality
 # PATCH: backwards-compatible bug fixes.
 __version__ = '2.6.0'
 
@@ -274,7 +274,7 @@ def get_usertag(email, *tags):
     Returns
     -------
     mapping : dict
-        a mapping of useertag -> buglist
+        a mapping of usertag -> buglist
 
     """
     reply = _soap_client_call('get_usertag', email, *tags)
