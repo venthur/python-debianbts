@@ -1,3 +1,9 @@
+python-debianbts (2.6.0~bpo8+1) jessie-backports; urgency=medium
+
+  * Rebuild for jessie-backports.
+
+ -- Pierre Rudloff <contact@rudloff.pro>  Mon, 25 Jan 2016 00:08:10 +0100
+
 python-debianbts (2.6.0) unstable; urgency=medium
 
   * Gaetano made python-debianbts thread safe by dynamically creating
