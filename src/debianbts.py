@@ -504,7 +504,7 @@ def _parse_string_el(el):
     if el_type and el_type.value == 'xsd:base64Binary':
         value = base64.b64decode(value)
         if not PY2:
-            value = value.decode('utf-8')
+            value = value.decode('utf-8', errors='replace')
     value = _uc(value)
     return value
 
