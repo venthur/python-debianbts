@@ -226,7 +226,7 @@ python-debianbts (1.0) unstable; urgency=low
   * get_bug_log now returns a dict instead of an object
   * removed HTMLStripper class -- we use SOAP for a while now
   * removed get_html_fulltext -- bugs.debian.org/bugnr does the trick too
-  * Major refactings
+  * Major refactorings
   * Added unittests
 
  -- Bastian Venthur <venthur@debian.org>  Sat, 10 Oct 2009 20:20:31 +0200

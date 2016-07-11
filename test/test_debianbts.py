@@ -297,7 +297,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self._assert_unicode(bug.originator)
         self.assertTrue(bug.originator.endswith('debian.org>'))
 
-    def test_unicode_convertion_in_str(self):
+    def test_unicode_conversion_in_str(self):
         """string representation must deal with unicode correctly."""
         [bug] = bts.get_status(773321)
         try:
