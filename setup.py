@@ -15,8 +15,9 @@ setup(
     author_email='venthur@debian.org',
     url='https://github.com/venthur/python-debianbts',
     license='GPL2',
-    package_dir = {'': 'src'},
-    py_modules = ['debianbts'],
+    package_dir={'': 'src'},
+    py_modules=['debianbts'],
+    install_requires=['pysimplesoap'],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
