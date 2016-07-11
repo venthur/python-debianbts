@@ -144,14 +144,14 @@ class DebianBtsTestCase(unittest.TestCase):
             self.assertTrue('message' in buglog)
             msg = buglog['message']
             self.assertIsInstance(msg, email.message.Message)
-            self.assertFalse(msg.is_multipart())
             self.assertTrue('Subject' in msg)
-            self._assert_unicode(msg.get_payload())
+            if not msg.is_multipart():
+                self._assert_unicode(msg.get_payload())
 
     def test_bug_log_message_unicode(self):
         """test parsing of bug_log mail with non ascii characters"""
         buglogs = bts.get_bug_log(773321)
-        buglog = buglogs[1]
+        buglog = buglogs[2]
         msg_payload = buglog['message'].get_payload()
         self._assert_unicode(msg_payload)
         self.assertTrue('é' in msg_payload)
@@ -287,7 +287,7 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_base64_buglog_body(self):
         """buglog body is sometimes base64 encoded"""
         buglog = bts.get_bug_log(773321)
-        body = buglog[1]['body']
+        body = buglog[2]['body']
         self._assert_unicode(buglog[1]['body'])
         self.assertTrue('é' in body)
 
