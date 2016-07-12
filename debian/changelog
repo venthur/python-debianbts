@@ -5,7 +5,7 @@ python-debianbts (2.6.1) unstable; urgency=medium
   * Adding pysimplesoap to install requirements in setup.py, thanks
     SimplicityGuy!
   * Replaced erroneous unicode values, thanks mprpic!
-  * Fixed some typos, thanks jkwilk!
+  * Fixed some typos, thanks jwilk!
 
  -- Bastian Venthur <venthur@debian.org>  Mon, 11 Jul 2016 10:50:39 +0200
 
