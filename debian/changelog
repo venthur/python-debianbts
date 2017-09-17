@@ -1,3 +1,11 @@
+python-debianbts (2.6.2) unstable; urgency=medium
+
+  * Fix "missing python3 dependency" applied patch by Adrian Bunk, thanks
+    Adrian! (Closes: #867423)
+  * Bumped standards version
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 17 Sep 2017 12:54:22 +0200
+
 python-debianbts (2.6.1) unstable; urgency=medium
 
   * Applied merged various pull requests:
