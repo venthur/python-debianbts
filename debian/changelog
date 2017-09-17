@@ -1,3 +1,10 @@
+python-debianbts (2.6.3) unstable; urgency=medium
+
+  * Fix "Please expose severity sorting dict" Applied patch by Chris Lamb,
+    thank you Chris! (Closes: #827853)
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 17 Sep 2017 13:17:39 +0200
+
 python-debianbts (2.6.2) unstable; urgency=medium
 
   * Fix "missing python3 dependency" applied patch by Adrian Bunk, thanks

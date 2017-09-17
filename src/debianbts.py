@@ -48,7 +48,7 @@ if os.path.isdir(ca_path):
 # MAJOR: incompatible API changes
 # MINOR: add backwards-compatible functionality
 # PATCH: backwards-compatible bug fixes.
-__version__ = '2.6.2'
+__version__ = '2.6.3'
 
 
 PY2 = sys.version_info.major == 2
@@ -61,7 +61,15 @@ BTS_URL = 'https://bugs.debian.org/'
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
-
+SEVERITIES = {
+    'critical': 7,
+    'grave': 6,
+    'serious': 5,
+    'important': 4,
+    'normal': 3,
+    'minor': 2,
+    'wishlist': 1,
+}
 
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
@@ -210,13 +218,7 @@ class Bugreport(object):
         else:
             # not done
             val = 20
-        val += {"critical": 7,
-                "grave": 6,
-                "serious": 5,
-                "important": 4,
-                "normal": 3,
-                "minor": 2,
-                "wishlist": 1}[self.severity]
+        val += SEVERITIES[self.severity]
         return val
 
 
