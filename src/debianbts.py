@@ -71,6 +71,7 @@ SEVERITIES = {
     'wishlist': 1,
 }
 
+
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
 
@@ -166,7 +167,7 @@ class Bugreport(object):
 
     def __unicode__(self):
         s = '\n'.join('{}: {}'.format(key, value)
-                       for key, value in self.__dict__.items())
+                      for key, value in self.__dict__.items())
         return s + '\n'
 
     if PY2:
@@ -468,6 +469,7 @@ if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
         pass
     else:
         _soap_client_kwargs['cacert'] = CA_CERTS
+
 
 def _build_soap_client():
     """Factory method that creates a SoapClient.
