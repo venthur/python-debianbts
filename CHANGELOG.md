@@ -4,6 +4,7 @@
 
 - Added Changelog
 - Updated packaging
+- Added basis for CLI
 - Added Travis CI
 - Replaced deprecated assertX methods
 - Some whitespace fixes
