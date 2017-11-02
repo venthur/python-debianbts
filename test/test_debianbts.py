@@ -37,7 +37,6 @@ from pysimplesoap.simplexml import SimpleXMLElement
 
 import debianbts as bts
 
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.NOTSET)
 
@@ -310,6 +309,12 @@ class DebianBtsTestCase(unittest.TestCase):
         try:
             bts.get_bug_log(582010)
         except UnicodeDecodeError:
+            self.fail()
+
+    def test_version(self):
+        try:
+            bts.__version__
+        except:
             self.fail()
 
     def test_regression_590073(self):
