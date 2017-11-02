@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 exec(open('./debianbts/version.py').read())
 
@@ -13,6 +13,11 @@ setup(
     license='GPL2',
     packages=['debianbts'],
     install_requires=['pysimplesoap'],
+    entry_points={
+        'console_scripts': [
+            'debianbts = debianbts.__main__:main'
+        ]
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
