@@ -204,7 +204,7 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def test_status_batches_large_bug_counts(self):
         """get_status should perform requests in batches to reduce server load."""
-        with mock.patch.object(bts, '_build_soap_client') as mock_build_client:
+        with mock.patch.object(bts.debianbts, '_build_soap_client') as mock_build_client:
             mock_build_client.return_value = mock_client = mock.Mock()
             mock_client.call.return_value = SimpleXMLElement(
                 '<a><s-gensym3/></a>')
@@ -215,7 +215,7 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def test_status_batches_multiple_arguments(self):
         """get_status should batch multiple arguments into one request."""
-        with mock.patch.object(bts, '_build_soap_client') as mock_build_client:
+        with mock.patch.object(bts.debianbts, '_build_soap_client') as mock_build_client:
             mock_build_client.return_value = mock_client = mock.Mock()
             mock_client.call.return_value = SimpleXMLElement(
                 '<a><s-gensym3/></a>')

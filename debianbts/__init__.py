@@ -1,2 +1,2 @@
 from debianbts.debianbts import *
-from debianbts.version import *
+from debianbts.version import __version__
