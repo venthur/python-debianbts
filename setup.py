@@ -1,23 +1,23 @@
-from distutils.core import setup
-import sys
+from setuptools import setup
 
-sys.path.insert(0, 'src')
-
-import debianbts
-
+exec(open('./debianbts/version.py').read())
 
 setup(
     name='python-debianbts',
-    version=debianbts.__version__,
+    version=__version__,
     description="Python interface to Debian's Bug Tracking System",
     keywords='debian, soap, bts',
     author='Bastian Venthur',
     author_email='venthur@debian.org',
     url='https://github.com/venthur/python-debianbts',
     license='GPL2',
-    package_dir={'': 'src'},
-    py_modules=['debianbts'],
+    packages=['debianbts'],
     install_requires=['pysimplesoap'],
+    entry_points={
+        'console_scripts': [
+            'debianbts = debianbts.__main__:main'
+        ]
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
