@@ -6,6 +6,7 @@
 - Updated packaging
 - Added basis for CLI
 - Added Travis CI
+- Prevent `None` prefix in `SOAPAction`
 - Replaced deprecated assertX methods
 - Some whitespace fixes
 
