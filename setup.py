@@ -1,10 +1,6 @@
-from distutils.core import setup
-import sys
-
-sys.path.insert(0, 'src')
+from setuptools import setup, find_packages
 
 import debianbts
-
 
 setup(
     name='python-debianbts',
@@ -15,8 +11,7 @@ setup(
     author_email='venthur@debian.org',
     url='https://github.com/venthur/python-debianbts',
     license='GPL2',
-    package_dir={'': 'src'},
-    py_modules=['debianbts'],
+    packages=['debianbts'],
     install_requires=['pysimplesoap'],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
