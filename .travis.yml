@@ -9,8 +9,6 @@ python:
   - "nightly"
 
 install:
-  # TODO: remove this once we fixed the packaging
-  - pip install pysimplesoap
   - pip install .
   - pip install nose
 

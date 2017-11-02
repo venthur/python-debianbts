@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-import debianbts
+exec(open('./debianbts/version.py').read())
 
 setup(
     name='python-debianbts',
-    version=debianbts.__version__,
+    version=__version__,
     description="Python interface to Debian's Bug Tracking System",
     keywords='debian, soap, bts',
     author='Bastian Venthur',
