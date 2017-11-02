@@ -3,6 +3,7 @@
 ## [unreleased]
 
 - Added Changelog
+- Added Travis CI
 - Replaced deprecated assertX methods
 - Some whitespace fixes
 
