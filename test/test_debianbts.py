@@ -77,9 +77,9 @@ class DebianBtsTestCase(unittest.TestCase):
 
         self.assertEqual(len(filtered_tags), 2)
         self.assertEqual(set(filtered_tags[randomKey0]),
-                          set(tags[randomKey0]))
+                         set(tags[randomKey0]))
         self.assertEqual(set(filtered_tags[randomKey1]),
-                          set(tags[randomKey1]))
+                         set(tags[randomKey1]))
 
     def test_get_bugs_empty(self):
         """get_bugs should return empty list if no matching bugs where found."""
@@ -179,7 +179,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(bug.location, 'archive')
         self.assertEqual(bug.source, 'reportbug-ng')
         self.assertEqual(bug.log_modified,
-                          datetime.datetime(2008, 8, 17, 7, 26, 22))
+                         datetime.datetime(2008, 8, 17, 7, 26, 22))
         self.assertEqual(bug.pending, 'done')
         self.assertEqual(bug.done, True)
         self.assertEqual(bug.archived, True)
@@ -391,7 +391,6 @@ class ThreadingTestCase(unittest.TestCase):
             self._thread_failed = True
             print('threaded get_bug_log() call failed '
                   'with exception {} {}'.format(type(exc), exc))
-
 
 
 if __name__ == "__main__":
