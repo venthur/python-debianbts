@@ -1,0 +1,18 @@
+language: python
+
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "nightly"
+
+install:
+  # TODO: remove this once we fixed the packaging
+  - pip install pysimplesoap
+  - pip install .
+  - pip install nose
+
+script:
+  - nosetests
