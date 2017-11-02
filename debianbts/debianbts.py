@@ -44,13 +44,6 @@ if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
 
 
-# please follow the semver semantics, i.e. MAJOR.MINOR.PATCH where
-# MAJOR: incompatible API changes
-# MINOR: add backwards-compatible functionality
-# PATCH: backwards-compatible bug fixes.
-__version__ = '2.6.3'
-
-
 PY2 = sys.version_info.major == 2
 
 # Setup the soap server
@@ -70,6 +63,7 @@ SEVERITIES = {
     'minor': 2,
     'wishlist': 1,
 }
+
 
 class Bugreport(object):
     """Represents a bugreport from Debian's Bug Tracking System.
@@ -166,7 +160,7 @@ class Bugreport(object):
 
     def __unicode__(self):
         s = '\n'.join('{}: {}'.format(key, value)
-                       for key, value in self.__dict__.items())
+                      for key, value in self.__dict__.items())
         return s + '\n'
 
     if PY2:
@@ -460,7 +454,7 @@ def _parse_status(bug_el):
 # check_hostname=True, but with an empty ssl context that prevents the
 # certificate verification. Passing `cacert` to httplib2 through pysimplesoap
 # permits to create a valid ssl context.
-_soap_client_kwargs = {'location': URL, 'namespace': NS, 'soap_ns': 'soap'}
+_soap_client_kwargs = {'location': URL, 'action': '', 'namespace': NS, 'soap_ns': 'soap'}
 if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
     try:
         from httplib2 import CA_CERTS
@@ -468,6 +462,7 @@ if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
         pass
     else:
         _soap_client_kwargs['cacert'] = CA_CERTS
+
 
 def _build_soap_client():
     """Factory method that creates a SoapClient.

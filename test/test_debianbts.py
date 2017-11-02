@@ -37,7 +37,6 @@ from pysimplesoap.simplexml import SimpleXMLElement
 
 import debianbts as bts
 
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.NOTSET)
 
@@ -77,9 +76,9 @@ class DebianBtsTestCase(unittest.TestCase):
 
         self.assertEqual(len(filtered_tags), 2)
         self.assertEqual(set(filtered_tags[randomKey0]),
-                          set(tags[randomKey0]))
+                         set(tags[randomKey0]))
         self.assertEqual(set(filtered_tags[randomKey1]),
-                          set(tags[randomKey1]))
+                         set(tags[randomKey1]))
 
     def test_get_bugs_empty(self):
         """get_bugs should return empty list if no matching bugs where found."""
@@ -179,7 +178,7 @@ class DebianBtsTestCase(unittest.TestCase):
         self.assertEqual(bug.location, 'archive')
         self.assertEqual(bug.source, 'reportbug-ng')
         self.assertEqual(bug.log_modified,
-                          datetime.datetime(2008, 8, 17, 7, 26, 22))
+                         datetime.datetime(2008, 8, 17, 7, 26, 22))
         self.assertEqual(bug.pending, 'done')
         self.assertEqual(bug.done, True)
         self.assertEqual(bug.archived, True)
@@ -205,7 +204,7 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def test_status_batches_large_bug_counts(self):
         """get_status should perform requests in batches to reduce server load."""
-        with mock.patch.object(bts, '_build_soap_client') as mock_build_client:
+        with mock.patch.object(bts.debianbts, '_build_soap_client') as mock_build_client:
             mock_build_client.return_value = mock_client = mock.Mock()
             mock_client.call.return_value = SimpleXMLElement(
                 '<a><s-gensym3/></a>')
@@ -216,7 +215,7 @@ class DebianBtsTestCase(unittest.TestCase):
 
     def test_status_batches_multiple_arguments(self):
         """get_status should batch multiple arguments into one request."""
-        with mock.patch.object(bts, '_build_soap_client') as mock_build_client:
+        with mock.patch.object(bts.debianbts, '_build_soap_client') as mock_build_client:
             mock_build_client.return_value = mock_client = mock.Mock()
             mock_client.call.return_value = SimpleXMLElement(
                 '<a><s-gensym3/></a>')
@@ -254,13 +253,13 @@ class DebianBtsTestCase(unittest.TestCase):
     def test_get_bugs_int_bugs(self):
         """It is possible to pass a list of bug number to get_bugs"""
         bugs = bts.get_bugs('bugs', [400010, 400012], 'archive', True)
-        self.assertEquals(set(bugs), set((400010, 400012)))
+        self.assertEqual(set(bugs), set((400010, 400012)))
 
     def test_get_bugs_single_int_bug(self):
         """bugs parameter in get_bugs can be a list of int or a int"""
         bugs1 = bts.get_bugs('bugs', 400040, 'archive', True)
         bugs2 = bts.get_bugs('bugs', [400040], 'archive', True)
-        self.assertEquals(bugs1, bugs2)
+        self.assertEqual(bugs1, bugs2)
 
     def test_mergedwith(self):
         """Mergedwith is always a list of int."""
@@ -310,6 +309,12 @@ class DebianBtsTestCase(unittest.TestCase):
         try:
             bts.get_bug_log(582010)
         except UnicodeDecodeError:
+            self.fail()
+
+    def test_version(self):
+        try:
+            bts.__version__
+        except:
             self.fail()
 
     def test_regression_590073(self):
@@ -391,7 +396,6 @@ class ThreadingTestCase(unittest.TestCase):
             self._thread_failed = True
             print('threaded get_bug_log() call failed '
                   'with exception {} {}'.format(type(exc), exc))
-
 
 
 if __name__ == "__main__":
