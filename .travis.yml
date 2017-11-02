@@ -16,4 +16,4 @@ install:
   - pip install nose
 
 script:
-  - nosetest
+  - nosetests
