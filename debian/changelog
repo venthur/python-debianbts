@@ -1,3 +1,9 @@
+python-debianbts (2.7.1) unstable; urgency=medium
+
+  * Fixed python_requires in setup.py
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 03 Nov 2017 13:10:49 +0100
+
 python-debianbts (2.7.0) unstable; urgency=medium
 
   * Applied patches by Ville Skyttä:

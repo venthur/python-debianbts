@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.7.1] - 2017-11-03
+
+* Fix python_requires
+
 ## [2.7.0] - 2017-11-03
 
 * Added Changelog
