@@ -8,6 +8,13 @@ by Debian's `reportbug` to query the Bug Tracking System and has currently
 Python-debianbts is Python2 and Python3 compatible.
 
 
+## Installing
+
+```bash
+pip install python-debianbts
+```
+
+
 ## Quickstart
 
 ```python
