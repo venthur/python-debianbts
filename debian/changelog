@@ -1,3 +1,15 @@
+python-debianbts (2.6.4) unstable; urgency=medium
+
+  * Applied patches by Ville Skyttä:
+      - Prevent None prefix in SOAPAction
+      - Replaced deprecated assert methods in tests
+      - Some whitespace fixes
+  * Bumped standards version
+  * Updated Python packaging (setup.py)
+  * Added Travis CI
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 03 Nov 2017 10:02:08 +0100
+
 python-debianbts (2.6.3) unstable; urgency=medium
 
   * Fix "Please expose severity sorting dict" Applied patch by Chris Lamb,
