@@ -6,6 +6,8 @@ setup(
     name='python-debianbts',
     version=__version__,
     description="Python interface to Debian's Bug Tracking System",
+
+    long_description="This package provides the debianbts module, which allows to query Debian's Bug Tracking System.",
     keywords='debian, soap, bts',
     author='Bastian Venthur',
     author_email='venthur@debian.org',
