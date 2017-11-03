@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.6.4] - 2017-11-03
+## [2.7.0] - 2017-11-03
 
 * Added Changelog
 * Updated packaging

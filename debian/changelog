@@ -1,4 +1,4 @@
-python-debianbts (2.6.4) unstable; urgency=medium
+python-debianbts (2.7.0) unstable; urgency=medium
 
   * Applied patches by Ville Skyttä:
       - Prevent None prefix in SOAPAction
