@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.7.2] - 2018-02-17
+
+* Minor fix in __main__.py
+
 ## [2.7.1] - 2017-11-03
 
 * Fix python_requires

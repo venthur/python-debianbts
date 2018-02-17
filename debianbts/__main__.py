@@ -13,4 +13,5 @@ def main():
     logger.warning('Not implemented yet, sorry!')
 
 
-main()
+if __name__ == '__main__':
+    main()

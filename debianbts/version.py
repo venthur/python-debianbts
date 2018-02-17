@@ -2,4 +2,4 @@
 # MAJOR: incompatible API changes
 # MINOR: add backwards-compatible functionality
 # PATCH: backwards-compatible bug fixes.
-__version__ = '2.7.1'
+__version__ = '2.7.2'

@@ -1,3 +1,9 @@
+python-debianbts (2.7.2) unstable; urgency=medium
+
+  * Minor fix in __main__.py
+
+ -- Bastian Venthur <venthur@debian.org>  Sat, 17 Feb 2018 15:37:37 +0100
+
 python-debianbts (2.7.1) unstable; urgency=medium
 
   * Fixed python_requires in setup.py
