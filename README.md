@@ -17,7 +17,7 @@ pip install python-debianbts
 
 ## Quickstart
 
-```python
+```pycon
 >>> import debianbts as bts
 
 >>> bts.get_bugs('package', 'python-debianbts')
