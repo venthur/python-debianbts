@@ -8,17 +8,13 @@
 all: lint test
 
 test:
-	nosetests
-#	pytest \
-#	    --cov=debianbts \
-#	    --cov-branch \
-#	    --cov-report=term-missing
+	nosetests \
+	    --with-coverage \
+	    --cover-branches \
+	    --cover-package=debianbts
 
 lint:
 	flake8 debianbts
-
-docs:
-	$(MAKE) -C docs html
 
 release:
 	python3 setup.py sdist bdist_wheel upload

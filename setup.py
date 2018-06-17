@@ -15,6 +15,7 @@ setup(
     license='GPL2',
     packages=['debianbts'],
     install_requires=[
+        # we have to pin the version here, as 16.2 seems to be broken
         'pysimplesoap==1.16'
     ],
     extras_require={
