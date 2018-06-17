@@ -15,6 +15,13 @@ setup(
     license='GPL2',
     packages=['debianbts'],
     install_requires=['pysimplesoap'],
+    extras_require={
+      'dev': [
+          'pytest',
+          'pytest-cov',
+          'flake8',
+      ]
+    },
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, <4',
     entry_points={
         'console_scripts': [
