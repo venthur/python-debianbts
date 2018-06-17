@@ -17,6 +17,7 @@ setup(
     install_requires=['pysimplesoap'],
     extras_require={
       'dev': [
+          'nose',
           'pytest',
           'pytest-cov',
           'flake8',

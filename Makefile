@@ -8,10 +8,11 @@
 all: lint test
 
 test:
-	pytest \
-	    --cov=debianbts \
-	    --cov-branch \
-	    --cov-report=term-missing
+	nose
+#	pytest \
+#	    --cov=debianbts \
+#	    --cov-branch \
+#	    --cov-report=term-missing
 
 lint:
 	flake8 debianbts
