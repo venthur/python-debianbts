@@ -1,4 +1,4 @@
 from __future__ import absolute_import
 
-from debianbts.debianbts import *
-from debianbts.version import __version__
+from debianbts.debianbts import * # noqa
+from debianbts.version import __version__ # noqa
