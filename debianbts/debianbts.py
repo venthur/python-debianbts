@@ -27,7 +27,8 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
-from __future__ import division, unicode_literals, absolute_import, print_function
+from __future__ import division, unicode_literals, absolute_import, \
+                       print_function
 
 import base64
 import email.feedparser
@@ -389,7 +390,8 @@ def get_bugs(*key_value):
     [12345, 23456]
 
     """
-    # previous versions also accepted get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
+    # previous versions also accepted
+    # get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
     # if key_value is a list in a one elemented tuple, remove the
     # wrapping list
     if len(key_value) == 1 and isinstance(key_value[0], list):
@@ -444,17 +446,25 @@ def _parse_status(bug_el):
     #                 str(bug_el('keywords')).split()]
     # bug.fixed = _parse_crappy_soap(tmp, "fixed")
     # bug.found = _parse_crappy_soap(tmp, "found")
-    # bug.found_date = [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
-    # bug.fixed_date = [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
+    # bug.found_date = \
+    #     [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
+    # bug.fixed_date = \
+    #     [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
     return bug
 
 
-# to support python 3.4.3, when using httplib2 as pysimplesoap transport we must
-# work around a bug in httplib2, which uses http.client.HTTPSConnection with
-# check_hostname=True, but with an empty ssl context that prevents the
-# certificate verification. Passing `cacert` to httplib2 through pysimplesoap
-# permits to create a valid ssl context.
-_soap_client_kwargs = {'location': URL, 'action': '', 'namespace': NS, 'soap_ns': 'soap'}
+# to support python 3.4.3, when using httplib2 as pysimplesoap transport
+# we must work around a bug in httplib2, which uses
+# http.client.HTTPSConnection with check_hostname=True, but with an
+# empty ssl context that prevents the certificate verification. Passing
+# `cacert` to httplib2 through pysimplesoap permits to create a valid
+# ssl context.
+_soap_client_kwargs = {
+    'location': URL,
+    'action': '',
+    'namespace': NS,
+    'soap_ns': 'soap'
+}
 if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
     try:
         from httplib2 import CA_CERTS

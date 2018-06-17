@@ -9,9 +9,8 @@ python:
   - "nightly"
 
 install:
-  - pip install .
-  - pip install nose
+  - pip install -e .['dev']
 
 script:
-  - nosetests
-  - debianbts
+  - make lint
+  - make test

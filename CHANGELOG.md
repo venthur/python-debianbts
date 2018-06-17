@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased] -
+
+* Added Makefile
+* Added flake8 to test
+* excluded version 1.16.2 pysimplesoap as it is buggy
+
 ## [2.7.2] - 2018-02-17
 
 * Minor fix in __main__.py

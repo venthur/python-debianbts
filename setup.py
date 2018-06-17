@@ -14,7 +14,17 @@ setup(
     url='https://github.com/venthur/python-debianbts',
     license='GPL2',
     packages=['debianbts'],
-    install_requires=['pysimplesoap'],
+    install_requires=[
+        # we have to pin the version here, as 1.16.2 seems to be broken
+        'pysimplesoap!=1.16.2'
+    ],
+    extras_require={
+      'dev': [
+          'nose',
+          'coverage',
+          'flake8',
+      ]
+    },
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, <4',
     entry_points={
         'console_scripts': [
