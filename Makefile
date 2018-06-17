@@ -8,7 +8,7 @@
 all: lint test
 
 test:
-	nose
+	nosetests
 #	pytest \
 #	    --cov=debianbts \
 #	    --cov-branch \
