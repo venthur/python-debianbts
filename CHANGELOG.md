@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] -
+## [2.7.3] - 2018-06-17
 
 * Added Makefile
 * Added flake8 to test
