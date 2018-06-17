@@ -14,12 +14,13 @@ setup(
     url='https://github.com/venthur/python-debianbts',
     license='GPL2',
     packages=['debianbts'],
-    install_requires=['pysimplesoap'],
+    install_requires=[
+        'pysimplesoap==1.16'
+    ],
     extras_require={
       'dev': [
           'nose',
-          'pytest',
-          'pytest-cov',
+          'coverage',
           'flake8',
       ]
     },
