@@ -28,7 +28,8 @@ pip install python-debianbts
  <debianbts.debianbts.Bugreport at 0x7f47080d80d0>]
 
 >>> for b in bts.get_status(803900, 787723):
-        print(b)
+...     print(b)
+...
 fixed_versions: [u'python-debianbts/1.13']
 blockedby: []
 done: True
