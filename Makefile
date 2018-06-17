@@ -1,7 +1,6 @@
 .PHONY: \
     test \
     lint \
-    docs \
     release \
     clean
 
