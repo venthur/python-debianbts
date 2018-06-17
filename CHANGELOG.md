@@ -5,6 +5,7 @@
 * Added Makefile
 * Added flake8 to test
 * excluded version 1.16.2 pysimplesoap as it is buggy
+  See: https://github.com/pysimplesoap/pysimplesoap/issues/167
 
 ## [2.7.2] - 2018-02-17
 
