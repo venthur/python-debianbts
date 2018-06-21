@@ -7,10 +7,10 @@
 all: lint test
 
 test:
-	nosetests \
-	    --with-coverage \
-	    --cover-branches \
-	    --cover-package=debianbts
+	pytest \
+	    --cov=debianbts \
+	    --cov-branch \
+	    --cov-report=term-missing
 
 lint:
 	flake8 debianbts
