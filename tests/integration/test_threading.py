@@ -1,16 +1,16 @@
-import unittest
 import threading
+import logging
 
 import debianbts as bts
 
+logger = logging.getLogger(__name__)
 
-class ThreadingTestCase(unittest.TestCase):
+
+class TestThreading(object):
     """this class tests that the module is thread safe"""
 
-    def setUp(self):
-        self._thread_failed = False
-
     def test_multithreading(self):
+        self._thread_failed = False
         threads = [
             threading.Thread(target=self._get_bugs_thread, args=(pkg,))
             for pkg in ('python3-gst-1.0', 'libsoxr0')
@@ -25,21 +25,18 @@ class ThreadingTestCase(unittest.TestCase):
         for thread in threads:
             thread.join()
 
-        if self._thread_failed:
-            self.fail('multithreaded calls failed')
+        assert not self._thread_failed
 
     def _get_bugs_thread(self, pkg):
         try:
-            bugs = bts.get_bugs('package', pkg)
+            bts.get_bugs('package', pkg)
         except Exception as exc:
             self._thread_failed = True
-            print('threaded get_bugs() call failed '
-                  'with exception {} {}'.format(type(exc), exc))
+            logger.exception('Threaded get_bugs() call failed.')
 
     def _get_bug_log_thread(self, bug_num):
         try:
-            bug_logs = bts.get_bug_log(bug_num)
+            bts.get_bug_log(bug_num)
         except Exception as exc:
             self._thread_failed = True
-            print('threaded get_bug_log() call failed '
-                  'with exception {} {}'.format(type(exc), exc))
+            logger.exception('Threaded get_bug_log() call failed.')
