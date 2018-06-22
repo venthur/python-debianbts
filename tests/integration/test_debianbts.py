@@ -42,17 +42,14 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-def b1():
-    bugreport = bts.Bugreport()
-    bugreport.severity = 'normal'
-    return bugreport
-
-
-@pytest.fixture
-def b2():
-    bugreport = bts.Bugreport()
-    bugreport.severity = 'normal'
-    return bugreport
+def create_bugreport():
+    def factory(**kwargs):
+        bugreport = bts.Bugreport()
+        bugreport.severity = 'normal'
+        for k, v in kwargs.items():
+            setattr(bugreport, k, v)
+        return bugreport
+    return factory
 
 
 def test_get_usertag_empty():
@@ -203,11 +200,10 @@ def test_sample_get_status():
     assert bug.affects == []
 
 
-def test_bug_str(b2):
+def test_bug_str(create_bugreport):
     """test string conversion of a Bugreport"""
-    b2.package = 'foo-pkg'
-    b2.bug_num = 12222
-    s = str(b2)
+    b1 = create_bugreport(package='foo-pkg', bug_num=12222)
+    s = str(b1)
     assert isinstance(s, str)  # byte string in py2, unicode in py3
     assert 'bug_num: 12222\n' in s
     assert 'package: foo-pkg\n' in s
@@ -250,10 +246,10 @@ def test_status_batches_multiple_arguments():
         assert mock_client.call.call_count == calls
 
 
-def test_comparison(b1, b2):
+def test_comparison(create_bugreport):
     """comparison of two bugs"""
-    b1.archived = True
-    b2.done = True
+    b1 = create_bugreport(archived=True)
+    b2 = create_bugreport(done=True)
     assert b2 > b1
     assert b2 >= b1
     assert b2 != b1
@@ -262,11 +258,11 @@ def test_comparison(b1, b2):
     assert not(b2 < b1)
 
 
-def test_comparison_equal(b1, b2):
+def test_comparison_equal(create_bugreport):
     """comparison of two bug which are equal regarding their
     relative order"""
-    b1.done = True
-    b2.done = True
+    b1 = create_bugreport(done=True)
+    b2 = create_bugreport(done=True)
     assert not(b2 > b1)
     assert b2 >= b1
     assert b2 == b1
