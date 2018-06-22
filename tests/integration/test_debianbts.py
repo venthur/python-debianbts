@@ -66,7 +66,7 @@ def test_get_usertag():
     d = bts.get_usertag("debian-python@lists.debian.org")
     assert isinstance(d, dict)
     for k, v in d.items():
-        assert isinstance(k, str)
+        assert is_unicode(k)
         assert isinstance(v, list)
         for bug in v:
             assert isinstance(bug, int)
@@ -136,9 +136,9 @@ def test_get_bug_log():
         assert "attachments" in i
         assert isinstance(i["attachments"], list)
         assert "body" in i
-        assert isinstance(i["body"], str)
+        assert is_unicode(i["body"])
         assert "header" in i
-        assert isinstance(i["header"], str)
+        assert is_unicode(i["header"])
         assert "msg_num" in i
         assert isinstance(i["msg_num"], int)
 
