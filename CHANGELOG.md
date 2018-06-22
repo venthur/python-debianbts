@@ -3,8 +3,10 @@
 ## [unreleased]
 
 * Dropped Python 3.3 support
-* Moved from nose to pytest
+* Moved from nose to pytest and updated the tests accordingly
+* Run linter on tests as well
 * Fixed several unicode related tests
+* Fixed several linter problems
 
 ## [2.7.3] - 2018-06-17
 
