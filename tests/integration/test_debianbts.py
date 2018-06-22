@@ -25,7 +25,6 @@ import datetime
 import email.message
 import math
 import random
-import unittest
 import logging
 try:
     import unittest.mock as mock
@@ -86,42 +85,47 @@ def test_get_usertag_filters():
 
 def test_get_bugs_empty():
     """get_bugs should return empty list if no matching bugs where found."""
-    l = bts.get_bugs("package", "thisisatest")
-    assert l == []
+    bugs = bts.get_bugs("package", "thisisatest")
+    assert bugs == []
 
 
 def test_get_bugs():
     """get_bugs should return list of bugnumbers."""
-    l = bts.get_bugs("submitter", "venthur@debian.org")
-    assert len(l) != 0
-    assert isinstance(l, list)
-    for i in l:
+    bugs = bts.get_bugs("submitter", "venthur@debian.org")
+    assert len(bugs) != 0
+    assert isinstance(bugs, list)
+    for i in bugs:
         assert isinstance(i, int)
 
 
 def test_get_bugs_list():
-    """previous versions of python-debianbts accepted malformed key-value lists."""
-    l = bts.get_bugs('submitter', 'venthur@debian.org', 'severity', 'normal')
-    l2 = bts.get_bugs(['submitter', 'venthur@debian.org', 'severity', 'normal'])
-    assert len(l) != 0
-    l.sort()
-    l2.sort()
-    assert l == l2
+    """older versions of python-debianbts accepted malformed key-val-lists."""
+    bugs = bts.get_bugs(
+            'submitter',
+            'venthur@debian.org',
+            'severity',
+            'normal')
+    bugs2 = bts.get_bugs(
+            ['submitter', 'venthur@debian.org', 'severity', 'normal'])
+    assert len(bugs) != 0
+    bugs.sort()
+    bugs2.sort()
+    assert bugs == bugs2
 
 
 def test_newest_bugs():
     """newest_bugs should return list of bugnumbers."""
-    l = bts.newest_bugs(10)
-    assert isinstance(l, list)
-    for i in l:
+    bugs = bts.newest_bugs(10)
+    assert isinstance(bugs, list)
+    for i in bugs:
         assert isinstance(i, int)
 
 
 def test_newest_bugs_amount():
     """newest_bugs(amount) should return a list of len 'amount'. """
     for i in 0, 1, 10:
-        l = bts.newest_bugs(i)
-        assert len(l) ==  i
+        bugs = bts.newest_bugs(i)
+        assert len(bugs) == i
 
 
 def test_get_bug_log():
@@ -217,33 +221,33 @@ def test_get_status_affects():
     assert bugs[1].affects == ['conkeror']
 
 
-def test_status_batches_large_bug_counts():
+@mock.patch.object(bts.debianbts, '_build_soap_client')
+def test_status_batches_large_bug_counts(mock_build_client):
     """get_status should perform requests in batches to reduce server load."""
-    with mock.patch.object(bts.debianbts, '_build_soap_client') as mock_build_client:
-        mock_build_client.return_value = mock_client = mock.Mock()
-        mock_client.call.return_value = SimpleXMLElement(
-            '<a><s-gensym3/></a>')
-        nr = bts.BATCH_SIZE + 10.0
-        calls = int(math.ceil(nr / bts.BATCH_SIZE))
-        bts.get_status([722226] * int(nr))
-        assert mock_client.call.call_count == calls
+    mock_build_client.return_value = mock_client = mock.Mock()
+    mock_client.call.return_value = SimpleXMLElement(
+        '<a><s-gensym3/></a>')
+    nr = bts.BATCH_SIZE + 10.0
+    calls = int(math.ceil(nr / bts.BATCH_SIZE))
+    bts.get_status([722226] * int(nr))
+    assert mock_client.call.call_count == calls
 
 
-def test_status_batches_multiple_arguments():
+@mock.patch.object(bts.debianbts, '_build_soap_client')
+def test_status_batches_multiple_arguments(mock_build_client):
     """get_status should batch multiple arguments into one request."""
-    with mock.patch.object(bts.debianbts, '_build_soap_client') as mock_build_client:
-        mock_build_client.return_value = mock_client = mock.Mock()
-        mock_client.call.return_value = SimpleXMLElement(
-            '<a><s-gensym3/></a>')
-        batch_size = bts.BATCH_SIZE
+    mock_build_client.return_value = mock_client = mock.Mock()
+    mock_client.call.return_value = SimpleXMLElement(
+        '<a><s-gensym3/></a>')
+    batch_size = bts.BATCH_SIZE
 
-        calls = 1
-        bts.get_status(*list(range(batch_size)))
-        assert mock_client.call.call_count == calls
+    calls = 1
+    bts.get_status(*list(range(batch_size)))
+    assert mock_client.call.call_count == calls
 
-        calls += 2
-        bts.get_status(*list(range(batch_size + 1)))
-        assert mock_client.call.call_count == calls
+    calls += 2
+    bts.get_status(*list(range(batch_size + 1)))
+    assert mock_client.call.call_count == calls
 
 
 def test_comparison(create_bugreport):
@@ -340,10 +344,7 @@ def test_regression_588954():
 
 
 def test_version():
-    try:
-        bts.__version__
-    except:
-        pytest.fail()
+    assert isinstance(bts.__version__, str)
 
 
 def test_regression_590073():
@@ -384,6 +385,6 @@ def test_regression_799528():
 def is_unicode(string):
     """asserts for type of a unicode string, depending on python version"""
     if bts.PY2:
-        return isinstance(string, unicode)
+        return isinstance(string, unicode) # noqa
     else:
         return isinstance(string, str)
