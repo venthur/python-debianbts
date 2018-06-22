@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+* Dropped Python 3.3 support
+* Moved from nose to pytest
+* Fixed several unicode related tests
+
 ## [2.7.3] - 2018-06-17
 
 * Added Makefile
