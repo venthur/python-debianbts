@@ -30,13 +30,13 @@ class TestThreading(object):
     def _get_bugs_thread(self, pkg):
         try:
             bts.get_bugs('package', pkg)
-        except Exception as exc:
+        except Exception:
             self._thread_failed = True
             logger.exception('Threaded get_bugs() call failed.')
 
     def _get_bug_log_thread(self, bug_num):
         try:
             bts.get_bug_log(bug_num)
-        except Exception as exc:
+        except Exception:
             self._thread_failed = True
             logger.exception('Threaded get_bug_log() call failed.')
