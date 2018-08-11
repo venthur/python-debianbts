@@ -327,6 +327,7 @@ def get_bug_log(nr):
 
         mail_parser = email.feedparser.FeedParser()
         mail_parser.feed(buglog["header"])
+        mail_parser.feed("\n\n")
         mail_parser.feed(buglog["body"])
         buglog["message"] = mail_parser.close()
 
