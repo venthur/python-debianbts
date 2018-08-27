@@ -23,7 +23,7 @@ pip install python-debianbts
 >>> bts.get_bugs('package', 'python-debianbts')
 [803900, 787723, 824111, 639458, 726878, 722226, 789047]
 
->>> bts.get_tatus(803900, 787723)
+>>> bts.get_status(803900, 787723)
 [<debianbts.debianbts.Bugreport at 0x7f47080d8c10>,
  <debianbts.debianbts.Bugreport at 0x7f47080d80d0>]
 
