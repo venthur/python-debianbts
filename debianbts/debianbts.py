@@ -481,7 +481,7 @@ def set_soap_proxy(proxy_arg):
 def get_soap_client_kwargs():
     return _soap_client_kwargs
 
-        
+
 def _build_soap_client():
     """Factory method that creates a SoapClient.
 
