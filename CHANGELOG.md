@@ -9,6 +9,7 @@
 * Run linter on tests as well
 * Fixed several unicode related tests
 * Fixed several linter problems
+* Improved parsing of emails on `get_bug_log`
 
 ## [2.7.3] - 2018-06-17
 
