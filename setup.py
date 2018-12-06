@@ -14,7 +14,7 @@ setup(
     author='Bastian Venthur',
     author_email='venthur@debian.org',
     url='https://github.com/venthur/python-debianbts',
-    license='GPL2',
+    license='MIT',
     packages=['debianbts'],
     install_requires=[
         # we have to pin the version here, as 1.16.2 seems to be broken
@@ -37,7 +37,7 @@ setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Bug Tracking",

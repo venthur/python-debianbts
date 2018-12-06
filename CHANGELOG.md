@@ -2,6 +2,8 @@
 
 ## [unreleased]
 
+* Changed license to MIT
+* Improved packaging
 * Dropped Python 3.3 support
 * Moved from nose to pytest and updated the tests accordingly
 * Run linter on tests as well
