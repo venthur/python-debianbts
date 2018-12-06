@@ -11,5 +11,4 @@ install:
   - pip install -e .['dev']
 
 script:
-  - make lint
-  - make test
+  - make

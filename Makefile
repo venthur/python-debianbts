@@ -7,13 +7,10 @@
 all: lint test
 
 test:
-	pytest \
-	    --cov=debianbts \
-	    --cov-branch \
-	    --cov-report=term-missing
+	pytest
 
 lint:
-	flake8 debianbts tests
+	flake8
 
 release:
 	python3 setup.py sdist bdist_wheel upload
