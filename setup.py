@@ -1,13 +1,15 @@
 from setuptools import setup
 
-exec(open('./debianbts/version.py').read())
+meta = {}
+exec(open('./debianbts/version.py').read(), meta)
+meta['long_description'] = open('./README.md').read()
 
 setup(
     name='python-debianbts',
-    version=__version__,
+    version=meta['__version__'],
     description="Python interface to Debian's Bug Tracking System",
-
-    long_description="This package provides the debianbts module, which allows to query Debian's Bug Tracking System.",
+    long_description=meta['long_description'],
+    long_description_content_type='text/markdown',
     keywords='debian, soap, bts',
     author='Bastian Venthur',
     author_email='venthur@debian.org',
@@ -34,12 +36,10 @@ setup(
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU General Public License (GPL)",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Topic :: Communications",
         "Topic :: Software Development :: Bug Tracking",
     ],
 )
