@@ -1,3 +1,18 @@
+python-debianbts (2.8.0) unstable; urgency=medium
+
+  * Added HTTP and HTTPS proxy support (set set_soap_proxy) thanks Kay
+    McCormick! (Closes: #914057)
+  * Re-licensed under MIT
+  * Improved Python packaging
+  * Dropped Python3.3 support
+  * Moved from nose to pytest and re-wrote the tests
+  * Run flake8 on tests as well
+  * Fixed several unicode related tests
+  * Fixed several linter problems
+  * Improved parsing of emails on `get_bug_log`
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 30 Dec 2018 14:17:54 +0100
+
 python-debianbts (2.7.2) unstable; urgency=medium
 
   * Minor fix in __main__.py

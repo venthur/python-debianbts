@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [2.8.0] - 2018-12-30
 
 * Added HTTP/S proxy support
 * Changed license to MIT
