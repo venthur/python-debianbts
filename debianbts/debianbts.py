@@ -458,6 +458,15 @@ if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
 
 
 def set_soap_proxy(proxy_arg):
+    """Set proxy for SOAP client.
+
+    You must use this method after import to set the proxy.
+
+    Parameters
+    ----------
+    proxy_arg : str
+
+    """
     _soap_client_kwargs['proxy'] = proxy_arg
 
 
