@@ -13,11 +13,13 @@ from __future__ import division, unicode_literals, absolute_import, \
                        print_function
 
 import base64
+from distutils.version import LooseVersion
 import email.feedparser
 from datetime import datetime
 import os
 import sys
 
+import pysimplesoap
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
 
@@ -28,6 +30,10 @@ if os.path.isdir(ca_path):
 
 
 PY2 = sys.version_info.major == 2
+
+
+PYSIMPLESOAP_1_16_2 = (LooseVersion(pysimplesoap.__version__) >=
+                       LooseVersion('1.16.2'))
 
 # Setup the soap server
 # Default values
@@ -488,14 +494,31 @@ def _build_soap_client():
     return SoapClient(**_soap_client_kwargs)
 
 
-def _soap_client_call(method_name, *args):
-    """wrapper to work around a pysimplesoap bug
-    https://github.com/pysimplesoap/pysimplesoap/issues/31"""
-    soap_client = _build_soap_client()
+def _convert_soap_method_args(*args):
+    """Convert arguments to be consumed by a SoapClient method
+
+    Soap client required a list of named arguments:
+    >>> _convert_soap_method_args('a', 1)
+    [('arg0', 'a'), ('arg1', 1)]
+
+    """
     soap_args = []
     for arg_n, arg in enumerate(args):
         soap_args.append(('arg' + str(arg_n), arg))
-    return getattr(soap_client, method_name)(soap_client, *soap_args)
+    return soap_args
+
+
+def _soap_client_call(method_name, *args):
+    """Wrapper to call SoapClient method"""
+    # a new client instance is built for threading issues
+    soap_client = _build_soap_client()
+    soap_args = _convert_soap_method_args(*args)
+    # if pysimplesoap version requires it, apply a workaround for
+    # https://github.com/pysimplesoap/pysimplesoap/issues/31
+    if PYSIMPLESOAP_1_16_2:
+        return getattr(soap_client, method_name)(*soap_args)
+    else:
+        return getattr(soap_client, method_name)(soap_client, *soap_args)
 
 
 def _build_int_array_el(el_name, parent, list_):
