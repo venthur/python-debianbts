@@ -8,5 +8,8 @@ export PYBUILD_NAME=debianbts
 # we support python3 only
 export PYBUILD_INSTALL_ARGS_python2=--install-scripts=/usr/share/debianbts
 
+# disable tests as they require internet connection
+export PYBUILD_DISABLE=test
+
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild

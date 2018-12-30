@@ -4,6 +4,7 @@ python-debianbts (2.8.0) unstable; urgency=medium
     McCormick! (Closes: #914057)
   * Re-licensed under MIT
   * Improved Python packaging
+  * debian/control, removed X-Python{2,3}-Version
   * Dropped Python3.3 support
   * Moved from nose to pytest and re-wrote the tests
   * Run flake8 on tests as well
