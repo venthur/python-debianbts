@@ -1,3 +1,9 @@
+python-debianbts (2.8.1) unstable; urgency=medium
+
+  * Fixed version
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 30 Dec 2018 15:11:37 +0100
+
 python-debianbts (2.8.0) unstable; urgency=medium
 
   * Added HTTP and HTTPS proxy support (set set_soap_proxy) thanks Kay

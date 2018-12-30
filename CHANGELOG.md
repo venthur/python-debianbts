@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.8.1] - 2018-12-30
+
+* Fixed version
+
 ## [2.8.0] - 2018-12-30
 
 * Added HTTP/S proxy support
