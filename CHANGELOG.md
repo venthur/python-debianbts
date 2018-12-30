@@ -2,6 +2,7 @@
 
 ## [unreleased]
 
+* Added HTTP/S proxy support
 * Changed license to MIT
 * Improved packaging
 * Dropped Python 3.3 support
