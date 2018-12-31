@@ -370,6 +370,13 @@ def test_regresssion_917165():
         pytest.fail()
 
 
+def test_regresssion_917258():
+    try:
+        bts.get_bug_log(541147)
+    except Exception:
+        pytest.fail()
+
+
 def is_unicode(string):
     """asserts for type of a unicode string, depending on python version"""
     if bts.PY2:
