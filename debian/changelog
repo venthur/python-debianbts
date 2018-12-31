@@ -1,3 +1,10 @@
+python-debianbts (2.8.2) unstable; urgency=medium
+
+  * Fix "incompatible with new pysimplesoap", thanks Gaetano Guerriero for the
+    quick patch! (Closes: #917165)
+
+ -- Bastian Venthur <venthur@debian.org>  Mon, 31 Dec 2018 15:34:02 +0100
+
 python-debianbts (2.8.1) unstable; urgency=medium
 
   * Fixed version

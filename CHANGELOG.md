@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.8.2] - 2018-12-31
+
+* Fixed compatibility with pysimplesoap 1.16.2 (patch by Gaetano Guerriero)
+
 ## [2.8.1] - 2018-12-30
 
 * Fixed version
