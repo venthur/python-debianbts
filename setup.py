@@ -17,7 +17,7 @@ setup(
     license='MIT',
     packages=['debianbts'],
     install_requires=[
-        'pysimplesoap>=1.16'
+        'pysimplesoap',
     ],
     extras_require={
       'dev': [
