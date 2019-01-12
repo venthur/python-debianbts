@@ -144,16 +144,10 @@ class Bugreport(object):
         # self.keywords = None
         # self.id = None
 
-    def __unicode__(self):
+    def __str__(self):
         s = '\n'.join('{}: {}'.format(key, value)
-                      for key, value in self.__dict__.items())
+                      for key, value in list(self.__dict__.items()))
         return s + '\n'
-
-    if PY2:
-        def __str__(self):
-            return self.__unicode__().encode('utf-8')
-    else:
-        __str__ = __unicode__
 
     def __lt__(self, other):
         """Compare a bugreport with another.
