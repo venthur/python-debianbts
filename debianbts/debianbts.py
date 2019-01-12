@@ -26,9 +26,6 @@ if os.path.isdir(ca_path):
     os.environ['SSL_CERT_DIR'] = ca_path
 
 
-PY2 = sys.version_info.major == 2
-
-
 PYSIMPLESOAP_1_16_2 = (LooseVersion(pysimplesoap.__version__) >=
                        LooseVersion('1.16.2'))
 
@@ -538,6 +535,5 @@ def _parse_string_el(el):
     el_type = el.attributes().get('xsi:type')
     if el_type and el_type.value == 'xsd:base64Binary':
         value = base64.b64decode(value)
-        if not PY2:
-            value = value.decode('utf-8', errors='replace')
+        value = value.decode('utf-8', errors='replace')
     return value

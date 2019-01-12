@@ -39,7 +39,7 @@ def test_get_usertag():
     d = bts.get_usertag("debian-python@lists.debian.org")
     assert isinstance(d, dict)
     for k, v in d.items():
-        assert is_unicode(k)
+        assert isinstance(k, str)
         assert isinstance(v, list)
         for bug in v:
             assert isinstance(bug, int)
@@ -114,9 +114,9 @@ def test_get_bug_log():
         assert "attachments" in i
         assert isinstance(i["attachments"], list)
         assert "body" in i
-        assert is_unicode(i["body"])
+        assert isinstance(i["body"], str)
         assert "header" in i
-        assert is_unicode(i["header"])
+        assert isinstance(i["header"], str)
         assert "msg_num" in i
         assert isinstance(i["msg_num"], int)
 
@@ -137,7 +137,7 @@ def test_bug_log_message():
         assert isinstance(msg, email.message.Message)
         assert 'Subject' in msg
         if not msg.is_multipart():
-            assert is_unicode(msg.get_payload())
+            assert isinstance(msg.get_payload(), str)
 
 
 def test_bug_log_message_unicode():
@@ -145,7 +145,7 @@ def test_bug_log_message_unicode():
     buglogs = bts.get_bug_log(773321)
     buglog = buglogs[2]
     msg_payload = buglog['message'].get_payload()
-    assert is_unicode(msg_payload)
+    assert isinstance(msg_payload, str)
     assert 'é' in msg_payload
 
 
@@ -283,7 +283,7 @@ def test_mergedwith():
 def test_base64_status_fields():
     """fields in bug status are sometimes base64-encoded"""
     bug = bts.get_status(711111)[0]
-    assert is_unicode(bug.originator)
+    assert isinstance(bug.originator, str)
     assert bug.originator.endswith('gmail.com>')
     assert 'ł' in bug.originator
 
@@ -292,14 +292,14 @@ def test_base64_buglog_body():
     """buglog body is sometimes base64 encoded"""
     buglog = bts.get_bug_log(773321)
     body = buglog[2]['body']
-    assert is_unicode(buglog[1]['body'])
+    assert isinstance(buglog[1]['body'], str)
     assert 'é' in body
 
 
 def test_string_status_originator():
     """test reading of bug status originator that is not base64-encoded"""
     bug = bts.get_status(711112)[0]
-    assert is_unicode(bug.originator)
+    assert isinstance(bug.originator, str)
     assert bug.originator.endswith('debian.org>')
 
 
@@ -371,11 +371,3 @@ def test_regresssion_917258():
         bts.get_bug_log(541147)
     except Exception:
         pytest.fail()
-
-
-def is_unicode(string):
-    """asserts for type of a unicode string, depending on python version"""
-    if bts.PY2:
-        return isinstance(string, unicode) # noqa
-    else:
-        return isinstance(string, str)
