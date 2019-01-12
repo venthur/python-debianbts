@@ -269,12 +269,12 @@ def get_usertag(email, *tags):
     type_attr = map_el.attributes().get('xsi:type')
     if type_attr and type_attr.value == 'apachens:Map':
         for usertag_el in map_el.children() or []:
-            tag = _uc(str(usertag_el('key')))
+            tag = str(usertag_el('key'))
             buglist_el = usertag_el('value')
             mapping[tag] = [int(bug) for bug in buglist_el.children() or []]
     else:
         for usertag_el in map_el.children() or []:
-            tag = _uc(usertag_el.get_name())
+            tag = usertag_el.get_name()
             mapping[tag] = [int(bug) for bug in usertag_el.children() or []]
     return mapping
 
@@ -412,7 +412,7 @@ def _parse_status(bug_el):
 
     bug.date = datetime.utcfromtimestamp(float(bug_el('date')))
     bug.log_modified = datetime.utcfromtimestamp(float(bug_el('log_modified')))
-    bug.tags = [_uc(tag) for tag in str(bug_el('tags')).split()]
+    bug.tags = [tag for tag in str(bug_el('tags')).split()]
     bug.done = _parse_bool(bug_el('done'))
     bug.archived = _parse_bool(bug_el('archived'))
     bug.unarchived = _parse_bool(bug_el('unarchived'))
@@ -421,14 +421,14 @@ def _parse_status(bug_el):
     bug.blockedby = [int(i) for i in str(bug_el('blockedby')).split()]
     bug.blocks = [int(i) for i in str(bug_el('blocks')).split()]
 
-    bug.found_versions = [_uc(str(el)) for el in
+    bug.found_versions = [str(el) for el in
                           bug_el('found_versions').children() or []]
-    bug.fixed_versions = [_uc(str(el)) for el in
+    bug.fixed_versions = [str(el) for el in
                           bug_el('fixed_versions').children() or []]
     affects = [_f for _f in str(bug_el('affects')).split(',') if _f]
-    bug.affects = [_uc(a).strip() for a in affects]
+    bug.affects = [a.strip() for a in affects]
     # Also available, but unused or broken
-    # bug.keywords = [_uc(keyword) for keyword in
+    # bug.keywords = [keyword for keyword in
     #                 str(bug_el('keywords')).split()]
     # bug.fixed = _parse_crappy_soap(tmp, "fixed")
     # bug.found = _parse_crappy_soap(tmp, "found")
@@ -546,18 +546,4 @@ def _parse_string_el(el):
         value = base64.b64decode(value)
         if not PY2:
             value = value.decode('utf-8', errors='replace')
-    value = _uc(value)
     return value
-
-
-"""
-Convert string to unicode.
-
-This method only exists to unify the unicode conversion in this module.
-"""
-if PY2:
-    def _uc(string):
-        return string.decode('utf-8', 'replace')
-else:
-    def _uc(string):
-        return string
