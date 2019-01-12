@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import division, unicode_literals, absolute_import
-
 import datetime
 import email.message
 import math

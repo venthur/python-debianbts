@@ -9,9 +9,6 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
-from __future__ import division, unicode_literals, absolute_import, \
-                       print_function
-
 import base64
 from distutils.version import LooseVersion
 import email.feedparser
