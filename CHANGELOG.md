@@ -1,5 +1,9 @@
 # Changelog
 
+## [unreleased]
+
+* Dropped Python2 support
+
 ## [2.8.2] - 2018-12-31
 
 * Fixed compatibility with pysimplesoap 1.16.2 (patch by Gaetano Guerriero)
