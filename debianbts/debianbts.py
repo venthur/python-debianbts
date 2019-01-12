@@ -143,7 +143,7 @@ class Bugreport(object):
 
     def __str__(self):
         s = '\n'.join('{}: {}'.format(key, value)
-                      for key, value in list(self.__dict__.items()))
+                      for key, value in self.__dict__.items())
         return s + '\n'
 
     def __lt__(self, other):
