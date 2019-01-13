@@ -4,12 +4,9 @@
 #export DH_VERBOSE=1
 
 export PYBUILD_NAME=debianbts
-# don't install the same binary in python2 and python3, this can be removed once
-# we support python3 only
-export PYBUILD_INSTALL_ARGS_python2=--install-scripts=/usr/share/debianbts
 
 # disable tests as they require internet connection
 export PYBUILD_DISABLE=test
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild
