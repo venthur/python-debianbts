@@ -5,7 +5,6 @@ from __future__ import division, unicode_literals, absolute_import
 import datetime
 import email.message
 import math
-import random
 import logging
 try:
     import unittest.mock as mock
@@ -53,8 +52,8 @@ def test_get_usertag_filters():
     """get_usertag should return only requested tags"""
     tags = bts.get_usertag("debian-python@lists.debian.org")
     assert isinstance(tags, dict)
-    randomKey0 = random.choice(list(tags.keys()))
-    randomKey1 = random.choice(list(tags.keys()))
+    randomKey0 = list(tags.keys())[0]
+    randomKey1 = list(tags.keys())[1]
 
     filtered_tags = bts.get_usertag(
         "debian-python@lists.debian.org", randomKey0, randomKey1)
@@ -69,8 +68,8 @@ def test_get_usertag_args(caplog):
     tags = bts.get_usertag("debian-python@lists.debian.org")
     assert len(tags) > 2
 
-    randomKey0 = random.choice(list(tags.keys()))
-    randomKey1 = random.choice(list(tags.keys()))
+    randomKey0 = list(tags.keys())[0]
+    randomKey1 = list(tags.keys())[1]
 
     # one tags
     tags = bts.get_usertag("debian-python@lists.debian.org",

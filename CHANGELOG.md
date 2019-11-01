@@ -18,6 +18,7 @@
   will be deprecation warnings.
 * Report coverage for tests as well
 * Updated a few tests to increase coverage
+* Removed randomness from some tests
 
 ## [2.9.0] - 2019-11-01
 
