@@ -1,6 +1,6 @@
 python-debianbts (2.9.0) unstable; urgency=medium
 
-  * Added done_by field to Bug Status
+  * Added done_by field to Bug Status (Closes: #943529)
 
  -- Bastian Venthur <venthur@debian.org>  Fri, 01 Nov 2019 12:32:15 +0100
 
