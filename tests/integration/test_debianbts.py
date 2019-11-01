@@ -179,6 +179,7 @@ def test_sample_get_status():
     assert bug.log_modified == datetime.datetime(2008, 8, 17, 7, 26, 22)
     assert bug.pending == 'done'
     assert bug.done
+    assert bug.done_by == 'Bastian Venthur <venthur@debian.org>'
     assert bug.archived
     assert bug.found_versions == ['reportbug-ng/0.2008.06.04']
     assert bug.fixed_versions == ['reportbug-ng/1.0']

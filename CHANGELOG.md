@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.9.0] - 2019-11-01
+
+* Added `done_by` field to Bug Status
+
+
 ## [2.8.2] - 2018-12-31
 
 * Fixed compatibility with pysimplesoap 1.16.2 (patch by Gaetano Guerriero)
