@@ -64,23 +64,63 @@ def test_get_usertag_filters():
     assert set(filtered_tags[randomKey1]) == set(tags[randomKey1])
 
 
-def test_get_bugs_empty():
+def test_get_usertag_args(caplog):
+    # no tags
+    tags = bts.get_usertag("debian-python@lists.debian.org")
+    assert len(tags) > 2
+
+    randomKey0 = random.choice(list(tags.keys()))
+    randomKey1 = random.choice(list(tags.keys()))
+
+    # one tags
+    tags = bts.get_usertag("debian-python@lists.debian.org",
+                           [randomKey0])
+    assert len(tags) == 1
+
+    # two tags
+    tags = bts.get_usertag("debian-python@lists.debian.org",
+                           [randomKey0, randomKey1])
+    assert len(tags) == 2
+
+    # deprecated positional arguments
+    tags = bts.get_usertag("debian-python@lists.debian.org",
+                           randomKey0, randomKey1)
+    assert len(tags) == 2
+    assert "deprecated" in caplog.text
+
+
+def test_get_bugs_empty(caplog):
     """get_bugs should return empty list if no matching bugs where found."""
-    bugs = bts.get_bugs("package", "thisisatest")
+    bugs = bts.get_bugs(package="thisisatest")
     assert bugs == []
 
+    bugs = bts.get_bugs("package", "thisisatest")
+    assert bugs == []
+    assert "deprecated" in caplog.text
 
-def test_get_bugs():
+
+def test_get_bugs(caplog):
     """get_bugs should return list of bugnumbers."""
-    bugs = bts.get_bugs("submitter", "venthur@debian.org")
+    bugs = bts.get_bugs(submitter="venthur@debian.org")
     assert len(bugs) != 0
     assert isinstance(bugs, list)
     for i in bugs:
         assert isinstance(i, int)
 
+    bugs = bts.get_bugs("submitter", "venthur@debian.org")
+    assert len(bugs) != 0
+    assert isinstance(bugs, list)
+    for i in bugs:
+        assert isinstance(i, int)
+    assert "deprecated" in caplog.text
 
-def test_get_bugs_list():
+
+def test_get_bugs_list(caplog):
     """older versions of python-debianbts accepted malformed key-val-lists."""
+    bugs = bts.get_bugs(submitter='venthur@debian.org',
+                        severity='normal')
+    assert len(bugs) != 0
+
     bugs = bts.get_bugs(
             'submitter',
             'venthur@debian.org',
@@ -92,6 +132,7 @@ def test_get_bugs_list():
     bugs.sort()
     bugs2.sort()
     assert bugs == bugs2
+    assert "deprecated" in caplog.text
 
 
 def test_newest_bugs():
@@ -158,6 +199,28 @@ def test_empty_get_status():
     bugs = bts.get_status(0)
     assert isinstance(bugs, list)
     assert len(bugs) == 0
+
+
+def test_get_status_params(caplog):
+    BUG = 223344
+    BUG2 = 334455
+
+    bugs = bts.get_status(BUG)
+    assert isinstance(bugs, list)
+    assert len(bugs) == 1
+
+    bugs = bts.get_status([BUG, BUG2])
+    assert isinstance(bugs, list)
+    assert len(bugs) == 2
+
+    bugs = bts.get_status((BUG, BUG2))
+    assert isinstance(bugs, list)
+    assert len(bugs) == 2
+
+    bugs = bts.get_status(BUG, BUG2)
+    assert isinstance(bugs, list)
+    assert len(bugs) == 2
+    assert "deprecated" in caplog.text
 
 
 def test_sample_get_status():
