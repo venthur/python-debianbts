@@ -86,6 +86,8 @@ class Bugreport(object):
         Date of update of the bugreport
     done : boolean
         Is the bug fixed or not
+    done_by : str or None
+        Name and Email or None
     archived : bool
         Is the bug archived or not
     unarchived : bool
