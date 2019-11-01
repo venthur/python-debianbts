@@ -1,9 +1,13 @@
 # Changelog
 
+## [unreleased]
+
+* Report coverage for tests as well
+* Updated a few tests to increase coverage
+
 ## [2.9.0] - 2019-11-01
 
 * Added `done_by` field to Bug Status
-
 
 ## [2.8.2] - 2018-12-31
 

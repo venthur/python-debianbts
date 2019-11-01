@@ -311,18 +311,12 @@ def test_string_status_originator():
 def test_unicode_conversion_in_str():
     """string representation must deal with unicode correctly."""
     [bug] = bts.get_status(773321)
-    try:
-        bug.__str__()
-    except UnicodeEncodeError:
-        pytest.fail()
+    bug.__str__()
 
 
 def test_regression_588954():
     """Get_bug_log must convert the body correctly to unicode."""
-    try:
-        bts.get_bug_log(582010)
-    except UnicodeDecodeError:
-        pytest.fail()
+    bts.get_bug_log(582010)
 
 
 def test_version():
@@ -331,21 +325,15 @@ def test_version():
 
 def test_regression_590073():
     """bug.blocks is sometimes a str sometimes an int."""
-    try:
-        # test the int case
-        # TODO: test the string case
-        bts.get_status(568657)
-    except TypeError:
-        pytest.fail()
+    # test the int case
+    # TODO: test the string case
+    bts.get_status(568657)
 
 
 def test_regression_590725():
     """bug.body utf sometimes contains invalid continuation bytes."""
-    try:
-        bts.get_bug_log(578363)
-        bts.get_bug_log(570825)
-    except UnicodeDecodeError:
-        pytest.fail()
+    bts.get_bug_log(578363)
+    bts.get_bug_log(570825)
 
 
 def test_regression_670446():
@@ -365,17 +353,11 @@ def test_regression_799528():
 
 
 def test_regresssion_917165():
-    try:
-        bts.get_bug_log(887978)
-    except Exception:
-        pytest.fail()
+    bts.get_bug_log(887978)
 
 
 def test_regresssion_917258():
-    try:
-        bts.get_bug_log(541147)
-    except Exception:
-        pytest.fail()
+    bts.get_bug_log(541147)
 
 
 def is_unicode(string):
