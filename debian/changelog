@@ -4,6 +4,28 @@ python-debianbts (3.0.0) UNRELEASED; urgency=medium
 
  -- Bastian Venthur <venthur@debian.org>  Sat, 12 Jan 2019 16:21:09 +0100
 
+python-debianbts (2.10.0) unstable; urgency=medium
+
+  * Modernized a few awkward method calls:
+    * Deprecated support for positional arguments in `get_status`, we use a
+      list of bugnumbers explicitly now: `get_status(123, 234, 345)` becomes
+      `get_status([123, 234, 345])`
+    * Deprecated support for positional arguments in `get_usertags`, we use a
+      list of tags explicitly now: 
+      `get_usertags('mail@example.com', 'foo', 'bar')` becomes
+      `get_usertags('mail@example.com', ['foo', 'bar'])`
+    * Deprecated support for positional arguments in `get_bugs`, we use
+      `kwargs` explicitly now: 
+      `get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')` becomes
+      `get_bugs(package='gtk-qt-engine', severity='normal')`
+    the old ways to call those methods will be supported for a while, but
+    there will be deprecation warnings.
+  * Report coverage for tests as well
+  * Updated a few tests to increase coverage
+  * Removed randomness from some tests
+
+ -- Bastian Venthur <venthur@debian.org>  Fri, 01 Nov 2019 19:16:58 +0100
+
 python-debianbts (2.9.0) unstable; urgency=medium
 
   * Added done_by field to Bug Status (Closes: #943529)

@@ -1,7 +1,6 @@
 import datetime
 import email.message
 import math
-import random
 import logging
 import unittest.mock as mock
 
@@ -46,8 +45,8 @@ def test_get_usertag_filters():
     """get_usertag should return only requested tags"""
     tags = bts.get_usertag("debian-python@lists.debian.org")
     assert isinstance(tags, dict)
-    randomKey0 = random.choice(list(tags.keys()))
-    randomKey1 = random.choice(list(tags.keys()))
+    randomKey0 = list(tags.keys())[0]
+    randomKey1 = list(tags.keys())[1]
 
     filtered_tags = bts.get_usertag(
         "debian-python@lists.debian.org", randomKey0, randomKey1)
@@ -57,23 +56,63 @@ def test_get_usertag_filters():
     assert set(filtered_tags[randomKey1]) == set(tags[randomKey1])
 
 
-def test_get_bugs_empty():
+def test_get_usertag_args(caplog):
+    # no tags
+    tags = bts.get_usertag("debian-python@lists.debian.org")
+    assert len(tags) > 2
+
+    randomKey0 = list(tags.keys())[0]
+    randomKey1 = list(tags.keys())[1]
+
+    # one tags
+    tags = bts.get_usertag("debian-python@lists.debian.org",
+                           [randomKey0])
+    assert len(tags) == 1
+
+    # two tags
+    tags = bts.get_usertag("debian-python@lists.debian.org",
+                           [randomKey0, randomKey1])
+    assert len(tags) == 2
+
+    # deprecated positional arguments
+    tags = bts.get_usertag("debian-python@lists.debian.org",
+                           randomKey0, randomKey1)
+    assert len(tags) == 2
+    assert "deprecated" in caplog.text
+
+
+def test_get_bugs_empty(caplog):
     """get_bugs should return empty list if no matching bugs where found."""
-    bugs = bts.get_bugs("package", "thisisatest")
+    bugs = bts.get_bugs(package="thisisatest")
     assert bugs == []
 
+    bugs = bts.get_bugs("package", "thisisatest")
+    assert bugs == []
+    assert "deprecated" in caplog.text
 
-def test_get_bugs():
+
+def test_get_bugs(caplog):
     """get_bugs should return list of bugnumbers."""
-    bugs = bts.get_bugs("submitter", "venthur@debian.org")
+    bugs = bts.get_bugs(submitter="venthur@debian.org")
     assert len(bugs) != 0
     assert isinstance(bugs, list)
     for i in bugs:
         assert isinstance(i, int)
 
+    bugs = bts.get_bugs("submitter", "venthur@debian.org")
+    assert len(bugs) != 0
+    assert isinstance(bugs, list)
+    for i in bugs:
+        assert isinstance(i, int)
+    assert "deprecated" in caplog.text
 
-def test_get_bugs_list():
+
+def test_get_bugs_list(caplog):
     """older versions of python-debianbts accepted malformed key-val-lists."""
+    bugs = bts.get_bugs(submitter='venthur@debian.org',
+                        severity='normal')
+    assert len(bugs) != 0
+
     bugs = bts.get_bugs(
             'submitter',
             'venthur@debian.org',
@@ -85,6 +124,7 @@ def test_get_bugs_list():
     bugs.sort()
     bugs2.sort()
     assert bugs == bugs2
+    assert "deprecated" in caplog.text
 
 
 def test_newest_bugs():
@@ -151,6 +191,28 @@ def test_empty_get_status():
     bugs = bts.get_status(0)
     assert isinstance(bugs, list)
     assert len(bugs) == 0
+
+
+def test_get_status_params(caplog):
+    BUG = 223344
+    BUG2 = 334455
+
+    bugs = bts.get_status(BUG)
+    assert isinstance(bugs, list)
+    assert len(bugs) == 1
+
+    bugs = bts.get_status([BUG, BUG2])
+    assert isinstance(bugs, list)
+    assert len(bugs) == 2
+
+    bugs = bts.get_status((BUG, BUG2))
+    assert isinstance(bugs, list)
+    assert len(bugs) == 2
+
+    bugs = bts.get_status(BUG, BUG2)
+    assert isinstance(bugs, list)
+    assert len(bugs) == 2
+    assert "deprecated" in caplog.text
 
 
 def test_sample_get_status():
@@ -304,18 +366,12 @@ def test_string_status_originator():
 def test_unicode_conversion_in_str():
     """string representation must deal with unicode correctly."""
     [bug] = bts.get_status(773321)
-    try:
-        bug.__str__()
-    except UnicodeEncodeError:
-        pytest.fail()
+    bug.__str__()
 
 
 def test_regression_588954():
     """Get_bug_log must convert the body correctly to unicode."""
-    try:
-        bts.get_bug_log(582010)
-    except UnicodeDecodeError:
-        pytest.fail()
+    bts.get_bug_log(582010)
 
 
 def test_version():
@@ -324,21 +380,15 @@ def test_version():
 
 def test_regression_590073():
     """bug.blocks is sometimes a str sometimes an int."""
-    try:
-        # test the int case
-        # TODO: test the string case
-        bts.get_status(568657)
-    except TypeError:
-        pytest.fail()
+    # test the int case
+    # TODO: test the string case
+    bts.get_status(568657)
 
 
 def test_regression_590725():
     """bug.body utf sometimes contains invalid continuation bytes."""
-    try:
-        bts.get_bug_log(578363)
-        bts.get_bug_log(570825)
-    except UnicodeDecodeError:
-        pytest.fail()
+    bts.get_bug_log(578363)
+    bts.get_bug_log(570825)
 
 
 def test_regression_670446():
@@ -358,14 +408,8 @@ def test_regression_799528():
 
 
 def test_regresssion_917165():
-    try:
-        bts.get_bug_log(887978)
-    except Exception:
-        pytest.fail()
+    bts.get_bug_log(887978)
 
 
 def test_regresssion_917258():
-    try:
-        bts.get_bug_log(541147)
-    except Exception:
-        pytest.fail()
+    bts.get_bug_log(541147)

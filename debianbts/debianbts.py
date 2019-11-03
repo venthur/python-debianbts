@@ -15,10 +15,15 @@ import email.feedparser
 from datetime import datetime
 import os
 import sys
+import logging
 
 import pysimplesoap
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
+
+
+logger = logging.getLogger(__name__)
+
 
 # Support running from Debian infrastructure
 ca_path = '/etc/ssl/ca-debian'
@@ -195,7 +200,7 @@ class Bugreport(object):
         return val
 
 
-def get_status(*nrs):
+def get_status(nrs, *additional):
     """Returns a list of Bugreport objects.
 
     Given a list of bugnumbers this method returns a list of Bugreport
@@ -204,27 +209,31 @@ def get_status(*nrs):
     Parameters
     ----------
     nrs : int or list of ints
-        the bugnumbers
+        The bugnumbers
+    additional : int
+        Deprecated! The remaining positional arguments are treated as
+        bugnumbers. This is deprecated since 2.10.0, please use the
+        `nrs` parameter instead.
 
     Returns
     -------
     bugs : list of Bugreport objects
 
     """
-    # If we called get_status with one single bug, we get a single bug,
-    # if we called it with a list of bugs, we get a list,
-    # No available bugreports returns an empty list
-    bugs = []
-    list_ = []
-    for nr in nrs:
-        if isinstance(nr, list):
-            list_.extend(nr)
-        else:
-            list_.append(nr)
-    # Process the input in batches to avoid hitting resource limits on the BTS
+    if not isinstance(nrs, (list, tuple)):
+        nrs = [nrs]
+    # backward compatible with <= 2.10.0
+    if additional:
+        logger.warning('Calling get_status with bugnumbers as positional'
+                       ' arguments is deprecated, please use a list instead.')
+        nrs.extend(additional)
+
+    # Process the input in batches to avoid hitting resource limits on
+    # the BTS
     soap_client = _build_soap_client()
-    for i in range(0, len(list_), BATCH_SIZE):
-        slice_ = list_[i:i + BATCH_SIZE]
+    bugs = []
+    for i in range(0, len(nrs), BATCH_SIZE):
+        slice_ = nrs[i:i + BATCH_SIZE]
         # I build body by hand, pysimplesoap doesn't generate soap Arrays
         # without using wsdl
         method_el = SimpleXMLElement('<get_status></get_status>')
@@ -236,15 +245,19 @@ def get_status(*nrs):
     return bugs
 
 
-def get_usertag(email, *tags):
+def get_usertag(email, tags=None, *moretags):
     """Get buglists by usertags.
 
     Parameters
     ----------
     email : str
-    tags : tuple of strings
+    tags : list of strings
         If tags are given the dictionary is limited to the matching
         tags, if no tags are given all available tags are returned.
+    moretags : str
+        Deprecated! The remaining positional arguments are treated as
+        tags. This is deprecated since 2.10.0, please use the `tags`
+        parameter instead.
 
     Returns
     -------
@@ -252,6 +265,16 @@ def get_usertag(email, *tags):
         a mapping of usertag -> buglist
 
     """
+    if tags is None:
+        tags = []
+    # backward compatible with <= 2.10.0
+    if not isinstance(tags, (list, tuple)):
+        tags = [tags]
+    if moretags:
+        logger.warning('Calling get_getusertag with tags as positional'
+                       ' arguments is deprecated, please use a list instead.')
+        tags.extend(moretags)
+
     reply = _soap_client_call('get_usertag', email, *tags)
     map_el = reply('s-gensym3')
     mapping = {}
@@ -335,28 +358,31 @@ def newest_bugs(amount):
     return [int(item_el) for item_el in items_el.children() or []]
 
 
-def get_bugs(*key_value):
+def get_bugs(*key_value, **kwargs):
     """Get list of bugs matching certain criteria.
 
-    The conditions are defined by key value pairs.
-
-    Possible keys are:
-        * "package": bugs for the given package
-        * "submitter": bugs from the submitter
-        * "maint": bugs belonging to a maintainer
-        * "src": bugs belonging to a source package
-        * "severity": bugs with a certain severity
-        * "status": can be either "done", "forwarded", or "open"
-        * "tag": see http://www.debian.org/Bugs/Developer#tags for
-           available tags
-        * "owner": bugs which are assigned to `owner`
-        * "bugs": takes single int or list of bugnumbers, filters the list
-           according to given criteria
-        * "correspondent": bugs where `correspondent` has sent a mail to
+    The conditions are defined by the keyword arguments.
 
     Arguments
     ---------
     key_value : str
+        Deprecated! The positional arguments are treated as key-values.
+        This is deprecated since 2.10.0, please use the `kwargs`
+        parameters instead.
+    kwargs :
+        Possible keywords are:
+            * "package": bugs for the given package
+            * "submitter": bugs from the submitter
+            * "maint": bugs belonging to a maintainer
+            * "src": bugs belonging to a source package
+            * "severity": bugs with a certain severity
+            * "status": can be either "done", "forwarded", or "open"
+            * "tag": see http://www.debian.org/Bugs/Developer#tags for
+               available tags
+            * "owner": bugs which are assigned to `owner`
+            * "bugs": takes single int or list of bugnumbers, filters the list
+               according to given criteria
+            * "correspondent": bugs where `correspondent` has sent a mail to
 
     Returns
     -------
@@ -365,10 +391,16 @@ def get_bugs(*key_value):
 
     Examples
     --------
-    >>> get_bugs('package', 'gtk-qt-engine', 'severity', 'normal')
+    >>> get_bugs(package='gtk-qt-engine', severity='normal')
     [12345, 23456]
 
     """
+    # flatten kwargs to list:
+    # {'foo': 'bar', 'baz': 1} -> ['foo', 'bar','baz', 1]
+    args = []
+    for k, v in kwargs.items():
+        args.extend([k, v])
+
     # previous versions also accepted
     # get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
     # if key_value is a list in a one elemented tuple, remove the
@@ -376,11 +408,16 @@ def get_bugs(*key_value):
     if len(key_value) == 1 and isinstance(key_value[0], list):
         key_value = tuple(key_value[0])
 
+    if key_value:
+        logger.warning('Calling get_bugs with positional arguments is'
+                       ' deprecated, please use keyword arguments instead.')
+        args.extend(key_value)
+
     # pysimplesoap doesn't generate soap Arrays without using wsdl
     # I build body by hand, converting list to array and using standard
     # pysimplesoap marshalling for other types
     method_el = SimpleXMLElement('<get_bugs></get_bugs>')
-    for arg_n, kv in enumerate(key_value):
+    for arg_n, kv in enumerate(args):
         arg_name = 'arg' + str(arg_n)
         if isinstance(kv, (list, tuple)):
             _build_int_array_el(arg_name, method_el, kv)
