@@ -1,8 +1,8 @@
-python-debianbts (3.0.0) UNRELEASED; urgency=medium
+python-debianbts (3.0.0) unstable; urgency=medium
 
-  * Dropped Python2 support!
+  * Dropped Python2 support. (Closes: #937692)
 
- -- Bastian Venthur <venthur@debian.org>  Sat, 12 Jan 2019 16:21:09 +0100
+ -- Bastian Venthur <venthur@debian.org>  Tue, 12 Nov 2019 17:30:10 +0100
 
 python-debianbts (2.10.0) unstable; urgency=medium
 

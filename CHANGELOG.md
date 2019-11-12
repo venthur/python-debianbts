@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [3.0.0] - 2019-11-12
 
 * Dropped Python2 support
 
