@@ -444,7 +444,7 @@ def _parse_status(bug_el):
     bug.log_modified = datetime.utcfromtimestamp(float(bug_el('log_modified')))
     bug.tags = [tag for tag in str(bug_el('tags')).split()]
     bug.done = _parse_bool(bug_el('done'))
-    bug.done_by = str(bug_el('done')) if bug.done else None
+    bug.done_by = _parse_string_el(bug_el('done')) if bug.done else None
     bug.archived = _parse_bool(bug_el('archived'))
     bug.unarchived = _parse_bool(bug_el('unarchived'))
     bug.bug_num = int(bug_el('bug_num'))

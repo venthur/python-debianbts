@@ -241,6 +241,17 @@ def test_sample_get_status():
     assert bug.affects == []
 
 
+def test_done_by_decoding():
+    """Done by is properly base64 decoded when needed."""
+    # no base64 encoding
+    bug = bts.get_status(486212)[0]
+    assert bug.done_by == 'Bastian Venthur <venthur@debian.org>'
+
+    # base64 encoding
+    bug = bts.get_status(938128)[0]
+    assert bug.done_by == 'Ondřej Nový <onovy@debian.org>'
+
+
 def test_bug_str(create_bugreport):
     """test string conversion of a Bugreport"""
     b1 = create_bugreport(package='foo-pkg', bug_num=12222)
