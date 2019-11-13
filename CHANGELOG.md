@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [3.0.1] - 2019-11-13
 
 * Re-organized tests
 * Fixed base64 decoding for `done_by`

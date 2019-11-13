@@ -1,3 +1,10 @@
+python-debianbts (3.0.1) unstable; urgency=medium
+
+  * Fixed base64 decoding for `done_by`
+  * Re-organized tests
+
+ -- Bastian Venthur <venthur@debian.org>  Wed, 13 Nov 2019 16:43:55 +0100
+
 python-debianbts (3.0.0) unstable; urgency=medium
 
   * Dropped Python2 support. (Closes: #937692)
