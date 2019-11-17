@@ -1,6 +1,6 @@
 python-debianbts (3.0.2) unstable; urgency=medium
 
-  * Source-only upload (no changes)
+  * Source-only upload (Closes: #944690)
 
  -- Bastian Venthur <venthur@debian.org>  Sun, 17 Nov 2019 13:31:53 +0100
 
