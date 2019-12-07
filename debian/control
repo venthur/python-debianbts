@@ -4,8 +4,8 @@ Priority: optional
 Maintainer: Bastian Venthur <venthur@debian.org>
 Build-Depends: debhelper-compat (= 12), dh-python, python3 (>= 3.4), python3-pysimplesoap, python3-setuptools
 Standards-Version: 4.1.1.0
-Vcs-Git: git://github.com/venthur/python-debianbts.git
-Vcs-Browser: http://github.com/venthur/python-debianbts
+Vcs-Git: https://github.com/venthur/python-debianbts.git
+Vcs-Browser: https://github.com/venthur/python-debianbts
 
 Package: python3-debianbts
 Architecture: all
