@@ -15,14 +15,10 @@ import email.feedparser
 from datetime import datetime
 import os
 import sys
-import logging
 
 import pysimplesoap
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
-
-
-logger = logging.getLogger(__name__)
 
 
 # Support running from Debian infrastructure
@@ -224,8 +220,9 @@ def get_status(nrs, *additional):
         nrs = [nrs]
     # backward compatible with <= 2.10.0
     if additional:
-        logger.warning('Calling get_status with bugnumbers as positional'
-                       ' arguments is deprecated, please use a list instead.')
+        warnings.warn('Calling get_status with bugnumbers as positional'
+                      ' arguments is deprecated, please use a list instead.',
+                      DeprecationWarning)
         nrs.extend(additional)
 
     # Process the input in batches to avoid hitting resource limits on
@@ -271,8 +268,9 @@ def get_usertag(email, tags=None, *moretags):
     if not isinstance(tags, (list, tuple)):
         tags = [tags]
     if moretags:
-        logger.warning('Calling get_getusertag with tags as positional'
-                       ' arguments is deprecated, please use a list instead.')
+        warnings.warn('Calling get_getusertag with tags as positional'
+                      ' arguments is deprecated, please use a list instead.',
+                      DeprecationWarning)
         tags.extend(moretags)
 
     reply = _soap_client_call('get_usertag', email, *tags)
@@ -409,8 +407,9 @@ def get_bugs(*key_value, **kwargs):
         key_value = tuple(key_value[0])
 
     if key_value:
-        logger.warning('Calling get_bugs with positional arguments is'
-                       ' deprecated, please use keyword arguments instead.')
+        warnings.warn('Calling get_bugs with positional arguments is'
+                      ' deprecated, please use keyword arguments instead.',
+                      DeprecationWarning)
         args.extend(key_value)
 
     # pysimplesoap doesn't generate soap Arrays without using wsdl
