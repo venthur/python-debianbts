@@ -436,9 +436,9 @@ def test_regression_799528():
     assert '‘' in bug.subject
 
 
-def test_regresssion_917165():
+def test_regression_917165():
     bts.get_bug_log(887978)
 
 
-def test_regresssion_917258():
+def test_regression_917258():
     bts.get_bug_log(541147)
