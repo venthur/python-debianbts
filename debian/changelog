@@ -1,11 +1,12 @@
 python-debianbts (3.0.3) UNRELEASED; urgency=medium
 
+  [ Debian Janitor ]
   * Trim trailing whitespace.
   * Bump debhelper from old 9 to 12.
   * Set debhelper-compat version in Build-Depends.
   * Use secure URI in Vcs control header.
 
- -- Debian Janitor <janitor@jelmer.uk>  Sat, 07 Dec 2019 18:32:54 +0000
+ -- Bastian Venthur <venthur@debian.org>  Fri, 18 Dec 2020 09:20:45 +0100
 
 python-debianbts (3.0.2) unstable; urgency=medium
 
