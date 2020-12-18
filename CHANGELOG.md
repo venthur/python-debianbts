@@ -3,6 +3,7 @@
 ## [unreleased]
 
 * Document and test the `archive` kwarg of `get_bugs`
+* Migrated from TravisCI to GitHub workflows
 
 
 ## [3.0.1] - 2019-11-13
