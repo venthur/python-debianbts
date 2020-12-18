@@ -324,15 +324,33 @@ def test_comparison_equal(create_bugreport):
 
 def test_get_bugs_int_bugs():
     """It is possible to pass a list of bug number to get_bugs"""
-    bugs = bts.get_bugs('bugs', [400010, 400012], 'archive', True)
+    bugs = bts.get_bugs('bugs', [400010, 400012], 'archive', '1')
     assert set(bugs) == set((400010, 400012))
 
 
 def test_get_bugs_single_int_bug():
     """bugs parameter in get_bugs can be a list of int or a int"""
-    bugs1 = bts.get_bugs('bugs', 400040, 'archive', True)
-    bugs2 = bts.get_bugs('bugs', [400040], 'archive', True)
+    bugs1 = bts.get_bugs('bugs', 400040, 'archive', '1')
+    bugs2 = bts.get_bugs('bugs', [400040], 'archive', '1')
     assert bugs1 == bugs2
+
+
+def test_get_bugs_archived():
+    """archive tristate."""
+    # the parameter is rather undocumented. with trial and error i found
+    # out that it takes a string with those three values. everything
+    # else will be interpreted as "1"
+    bugs_unarchived = bts.get_bugs(src='python-debianbgs', archive='0')
+    bugs_archived = bts.get_bugs(src='python-debianbgs', archive='1')
+    bugs_both = bts.get_bugs(src='python-debianbgs', archive='both')
+    assert len(bugs_both) == len(bugs_unarchived) + len(bugs_archived)
+
+
+def test_get_bugs_archived_default():
+    """Return un-archived bugs by default."""
+    bugs_unarchived = bts.get_bugs(src='python-debianbgs', archive='0')
+    bugs_default = bts.get_bugs(src='python-debianbgs')
+    assert len(bugs_default) == len(bugs_unarchived)
 
 
 def test_mergedwith():

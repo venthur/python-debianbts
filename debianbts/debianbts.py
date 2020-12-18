@@ -383,6 +383,9 @@ def get_bugs(*key_value, **kwargs):
             * "bugs": takes single int or list of bugnumbers, filters the list
                according to given criteria
             * "correspondent": bugs where `correspondent` has sent a mail to
+            * "archive": takes a string: "0" (unarchived), "1"
+              (archived) or "both" (un- and archived). if omitted, only
+              returns un-archived bugs.
 
     Returns
     -------

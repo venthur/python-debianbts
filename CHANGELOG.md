@@ -1,5 +1,10 @@
 # Changelog
 
+## [unreleased]
+
+* Document and test the `archive` kwarg of `get_bugs`
+
+
 ## [3.0.1] - 2019-11-13
 
 * Re-organized tests

@@ -1,5 +1,8 @@
 python-debianbts (3.0.3) UNRELEASED; urgency=medium
 
+  [ Bastian Venthur ]
+  * Document and test the `archive` kwarg of `get_bugs`
+
   [ Debian Janitor ]
   * Trim trailing whitespace.
   * Bump debhelper from old 9 to 12.
