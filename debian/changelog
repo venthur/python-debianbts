@@ -1,7 +1,10 @@
-python-debianbts (3.0.3) UNRELEASED; urgency=medium
+python-debianbts (3.1.0) unstable; urgency=medium
 
   [ Bastian Venthur ]
   * Document and test the `archive` kwarg of `get_bugs`
+  * Changed from FeedParser to BytesFeedParser with STMP policy in
+    `get_bug_logs`
+  * Migrated from TravisCI to GitHub workflows
 
   [ Debian Janitor ]
   * Trim trailing whitespace.

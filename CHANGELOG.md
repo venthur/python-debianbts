@@ -1,7 +1,9 @@
 # Changelog
 
-## [unreleased]
+## [3.1.0] - 2020-12-18
 
+* Changed from FeedParser to BytesFeedParser with STMP policy in
+  `get_bug_logs`
 * Document and test the `archive` kwarg of `get_bugs`
 * Migrated from TravisCI to GitHub workflows
 
