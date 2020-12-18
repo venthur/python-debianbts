@@ -12,6 +12,7 @@ Bugreport class which represents a bugreport from the BTS.
 import base64
 from distutils.version import LooseVersion
 import email.feedparser
+import email.policy
 from datetime import datetime
 import os
 import sys
@@ -326,10 +327,12 @@ def get_bug_log(nr):
         # server always returns an empty attachments array ?
         buglog["attachments"] = []
 
-        mail_parser = email.feedparser.FeedParser()
-        mail_parser.feed(buglog["header"])
-        mail_parser.feed("\n\n")
-        mail_parser.feed(buglog["body"])
+        mail_parser = email.feedparser.BytesFeedParser(
+            policy=email.policy.SMTP
+        )
+        mail_parser.feed(buglog["header"].encode())
+        mail_parser.feed("\n\n".encode())
+        mail_parser.feed(buglog["body"].encode())
         buglog["message"] = mail_parser.close()
 
         buglogs.append(buglog)
