@@ -1,5 +1,9 @@
 # Changelog
 
+## [unreleased] - yyyy-mm-dd
+
+* Added sphinx documentation
+
 ## [3.2.0] - 2021-08-07
 
 * Allow to change the default SOAP location
