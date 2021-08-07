@@ -14,18 +14,15 @@ setup(
     author='Bastian Venthur',
     author_email='venthur@debian.org',
     url='https://github.com/venthur/python-debianbts',
+    project_urls={
+        'Documentation': 'https://python-debianbts.readthedocs.io/',
+        'Source': 'https://github.com/venthur/python-debianbts',
+    },
     license='MIT',
     packages=['debianbts'],
     install_requires=[
         'pysimplesoap',
     ],
-    extras_require={
-      'dev': [
-          'pytest',
-          'pytest-cov',
-          'flake8',
-      ]
-    },
     python_requires='>=3.4, <4',
     entry_points={
         'console_scripts': [
