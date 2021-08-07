@@ -4,6 +4,7 @@
 
 * Added sphinx documentation
 * Updated build system
+* Use pytest-xdist to speed up testing
 
 ## [3.2.0] - 2021-08-07
 
