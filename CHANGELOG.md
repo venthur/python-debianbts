@@ -1,12 +1,15 @@
 # Changelog
 
+## [3.2.0] - 2021-08-07
+
+* Allow to change the default SOAP location
+
 ## [3.1.0] - 2020-12-18
 
 * Changed from FeedParser to BytesFeedParser with STMP policy in
   `get_bug_logs`
 * Document and test the `archive` kwarg of `get_bugs`
 * Migrated from TravisCI to GitHub workflows
-
 
 ## [3.0.1] - 2019-11-13
 

@@ -510,6 +510,19 @@ def set_soap_proxy(proxy_arg):
     _soap_client_kwargs['proxy'] = proxy_arg
 
 
+def set_soap_location(url):
+    """Set location URL for SOAP client
+
+    You may use this method after import to override the default URL.
+
+    Parameters
+    ----------
+    url : str
+
+    """
+    _soap_client_kwargs['location'] = url
+
+
 def get_soap_client_kwargs():
     return _soap_client_kwargs
 
