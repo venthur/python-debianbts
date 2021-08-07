@@ -8,4 +8,7 @@ dist/
 .coverage
 htmlcov/
 
+docs/api
+docs/_build
+
 venv/
