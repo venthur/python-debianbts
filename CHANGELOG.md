@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] - yyyy-mm-dd
+## [3.2.1] - 2022-04-04
 
 * Added sphinx documentation
 * Updated build system
