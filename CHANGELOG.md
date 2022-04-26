@@ -1,5 +1,9 @@
 # Changelog
 
+## [unreleased] -
+
+* test against Python 3.10
+
 ## [3.2.1] - 2022-04-04
 
 * Added sphinx documentation
