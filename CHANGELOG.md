@@ -4,6 +4,7 @@
 
 * test against Python 3.10
 * reformatted code
+* updated dependencies
 
 ## [3.2.1] - 2022-04-04
 
