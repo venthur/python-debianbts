@@ -3,6 +3,7 @@
 ## [unreleased] -
 
 * test against Python 3.10
+* reformatted code
 
 ## [3.2.1] - 2022-04-04
 
