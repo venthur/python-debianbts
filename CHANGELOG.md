@@ -5,6 +5,7 @@
 * test against Python 3.10
 * reformatted code
 * updated dependencies
+* added dependabot github action
 
 ## [3.2.1] - 2022-04-04
 
