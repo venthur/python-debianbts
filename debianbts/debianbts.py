@@ -27,9 +27,9 @@ logger = logging.getLogger(__name__)
 
 
 # Support running from Debian infrastructure
-ca_path = '/etc/ssl/ca-debian'
+ca_path = "/etc/ssl/ca-debian"
 if os.path.isdir(ca_path):
-    os.environ['SSL_CERT_DIR'] = ca_path
+    os.environ["SSL_CERT_DIR"] = ca_path
 
 
 PYSIMPLESOAP_1_16_2 = (LooseVersion(pysimplesoap.__version__) >=
@@ -37,20 +37,20 @@ PYSIMPLESOAP_1_16_2 = (LooseVersion(pysimplesoap.__version__) >=
 
 # Setup the soap server
 # Default values
-URL = 'https://bugs.debian.org/cgi-bin/soap.cgi'
-NS = 'Debbugs/SOAP/V1'
-BTS_URL = 'https://bugs.debian.org/'
+URL = "https://bugs.debian.org/cgi-bin/soap.cgi"
+NS = "Debbugs/SOAP/V1"
+BTS_URL = "https://bugs.debian.org/"
 # Max number of bugs to send in a single get_status request
 BATCH_SIZE = 500
 
 SEVERITIES = {
-    'critical': 7,
-    'grave': 6,
-    'serious': 5,
-    'important': 4,
-    'normal': 3,
-    'minor': 2,
-    'wishlist': 1,
+    "critical": 7,
+    "grave": 6,
+    "serious": 5,
+    "important": 4,
+    "normal": 3,
+    "minor": 2,
+    "wishlist": 1,
 }
 
 
@@ -150,9 +150,11 @@ class Bugreport(object):
         # self.id = None
 
     def __str__(self):
-        s = '\n'.join('{}: {}'.format(key, value)
-                      for key, value in self.__dict__.items())
-        return s + '\n'
+        s = "\n".join(
+            "{}: {}".format(key, value)
+            for key, value in self.__dict__.items()
+        )
+        return s + "\n"
 
     def __lt__(self, other):
         """Compare a bugreport with another.
@@ -225,8 +227,10 @@ def get_status(nrs, *additional):
         nrs = [nrs]
     # backward compatible with <= 2.10.0
     if additional:
-        logger.warning('Calling get_status with bugnumbers as positional'
-                       ' arguments is deprecated, please use a list instead.')
+        logger.warning(
+            "Calling get_status with bugnumbers as positional"
+            " arguments is deprecated, please use a list instead."
+        )
         nrs.extend(additional)
 
     # Process the input in batches to avoid hitting resource limits on
@@ -237,10 +241,10 @@ def get_status(nrs, *additional):
         slice_ = nrs[i:i + BATCH_SIZE]
         # I build body by hand, pysimplesoap doesn't generate soap Arrays
         # without using wsdl
-        method_el = SimpleXMLElement('<get_status></get_status>')
-        _build_int_array_el('arg0', method_el, slice_)
-        reply = soap_client.call('get_status', method_el)
-        for bug_item_el in reply('s-gensym3').children() or []:
+        method_el = SimpleXMLElement("<get_status></get_status>")
+        _build_int_array_el("arg0", method_el, slice_)
+        reply = soap_client.call("get_status", method_el)
+        for bug_item_el in reply("s-gensym3").children() or []:
             bug_el = bug_item_el.children()[1]
             bugs.append(_parse_status(bug_el))
     return bugs
@@ -272,22 +276,24 @@ def get_usertag(email, tags=None, *moretags):
     if not isinstance(tags, (list, tuple)):
         tags = [tags]
     if moretags:
-        logger.warning('Calling get_getusertag with tags as positional'
-                       ' arguments is deprecated, please use a list instead.')
+        logger.warning(
+            "Calling get_getusertag with tags as positional"
+            " arguments is deprecated, please use a list instead."
+        )
         tags.extend(moretags)
 
-    reply = _soap_client_call('get_usertag', email, *tags)
-    map_el = reply('s-gensym3')
+    reply = _soap_client_call("get_usertag", email, *tags)
+    map_el = reply("s-gensym3")
     mapping = {}
     # element <s-gensys3> in response can have standard type
     # xsi:type=apachens:Map (example, for email debian-python@lists.debian.org)
     # OR no type, in this case keys are the names of child elements and
     # the array is contained in the child elements
-    type_attr = map_el.attributes().get('xsi:type')
-    if type_attr and type_attr.value == 'apachens:Map':
+    type_attr = map_el.attributes().get("xsi:type")
+    if type_attr and type_attr.value == "apachens:Map":
         for usertag_el in map_el.children() or []:
-            tag = str(usertag_el('key'))
-            buglist_el = usertag_el('value')
+            tag = str(usertag_el("key"))
+            buglist_el = usertag_el("value")
             mapping[tag] = [int(bug) for bug in buglist_el.children() or []]
     else:
         for usertag_el in map_el.children() or []:
@@ -316,8 +322,8 @@ def get_bug_log(nr):
     buglogs : list of dicts
 
     """
-    reply = _soap_client_call('get_bug_log', nr)
-    items_el = reply('soapenc:Array')
+    reply = _soap_client_call("get_bug_log", nr)
+    items_el = reply("soapenc:Array")
     buglogs = []
     for buglog_el in items_el.children():
         buglog = {}
@@ -356,8 +362,8 @@ def newest_bugs(amount):
         the bugnumbers
 
     """
-    reply = _soap_client_call('newest_bugs', amount)
-    items_el = reply('soapenc:Array')
+    reply = _soap_client_call("newest_bugs", amount)
+    items_el = reply("soapenc:Array")
     return [int(item_el) for item_el in items_el.children() or []]
 
 
@@ -415,24 +421,26 @@ def get_bugs(*key_value, **kwargs):
         key_value = tuple(key_value[0])
 
     if key_value:
-        logger.warning('Calling get_bugs with positional arguments is'
-                       ' deprecated, please use keyword arguments instead.')
+        logger.warning(
+            "Calling get_bugs with positional arguments is"
+            " deprecated, please use keyword arguments instead."
+        )
         args.extend(key_value)
 
     # pysimplesoap doesn't generate soap Arrays without using wsdl
     # I build body by hand, converting list to array and using standard
     # pysimplesoap marshalling for other types
-    method_el = SimpleXMLElement('<get_bugs></get_bugs>')
+    method_el = SimpleXMLElement("<get_bugs></get_bugs>")
     for arg_n, kv in enumerate(args):
-        arg_name = 'arg' + str(arg_n)
+        arg_name = "arg" + str(arg_n)
         if isinstance(kv, (list, tuple)):
             _build_int_array_el(arg_name, method_el, kv)
         else:
             method_el.marshall(arg_name, kv)
 
     soap_client = _build_soap_client()
-    reply = soap_client.call('get_bugs', method_el)
-    items_el = reply('soapenc:Array')
+    reply = soap_client.call("get_bugs", method_el)
+    items_el = reply("soapenc:Array")
     return [int(item_el) for item_el in items_el.children() or []]
 
 
@@ -441,28 +449,42 @@ def _parse_status(bug_el):
     bug = Bugreport()
 
     # plain fields
-    for field in ('originator', 'subject', 'msgid', 'package', 'severity',
-                  'owner', 'summary', 'location', 'source', 'pending',
-                  'forwarded'):
+    for field in (
+        "originator",
+        "subject",
+        "msgid",
+        "package",
+        "severity",
+        "owner",
+        "summary",
+        "location",
+        "source",
+        "pending",
+        "forwarded",
+    ):
         setattr(bug, field, _parse_string_el(bug_el(field)))
 
-    bug.date = datetime.utcfromtimestamp(float(bug_el('date')))
-    bug.log_modified = datetime.utcfromtimestamp(float(bug_el('log_modified')))
-    bug.tags = [tag for tag in str(bug_el('tags')).split()]
-    bug.done = _parse_bool(bug_el('done'))
-    bug.done_by = _parse_string_el(bug_el('done')) if bug.done else None
-    bug.archived = _parse_bool(bug_el('archived'))
-    bug.unarchived = _parse_bool(bug_el('unarchived'))
-    bug.bug_num = int(bug_el('bug_num'))
-    bug.mergedwith = [int(i) for i in str(bug_el('mergedwith')).split()]
-    bug.blockedby = [int(i) for i in str(bug_el('blockedby')).split()]
-    bug.blocks = [int(i) for i in str(bug_el('blocks')).split()]
+    bug.date = datetime.utcfromtimestamp(float(bug_el("date")))
+    bug.log_modified = datetime.utcfromtimestamp(
+        float(bug_el("log_modified"))
+    )
+    bug.tags = [tag for tag in str(bug_el("tags")).split()]
+    bug.done = _parse_bool(bug_el("done"))
+    bug.done_by = _parse_string_el(bug_el("done")) if bug.done else None
+    bug.archived = _parse_bool(bug_el("archived"))
+    bug.unarchived = _parse_bool(bug_el("unarchived"))
+    bug.bug_num = int(bug_el("bug_num"))
+    bug.mergedwith = [int(i) for i in str(bug_el("mergedwith")).split()]
+    bug.blockedby = [int(i) for i in str(bug_el("blockedby")).split()]
+    bug.blocks = [int(i) for i in str(bug_el("blocks")).split()]
 
-    bug.found_versions = [str(el) for el in
-                          bug_el('found_versions').children() or []]
-    bug.fixed_versions = [str(el) for el in
-                          bug_el('fixed_versions').children() or []]
-    affects = [_f for _f in str(bug_el('affects')).split(',') if _f]
+    bug.found_versions = [
+        str(el) for el in bug_el("found_versions").children() or []
+    ]
+    bug.fixed_versions = [
+        str(el) for el in bug_el("fixed_versions").children() or []
+    ]
+    affects = [_f for _f in str(bug_el("affects")).split(",") if _f]
     bug.affects = [a.strip() for a in affects]
     # Also available, but unused or broken
     # bug.keywords = [keyword for keyword in
@@ -483,10 +505,10 @@ def _parse_status(bug_el):
 # `cacert` to httplib2 through pysimplesoap permits to create a valid
 # ssl context.
 _soap_client_kwargs = {
-    'location': URL,
-    'action': '',
-    'namespace': NS,
-    'soap_ns': 'soap'
+    "location": URL,
+    "action": "",
+    "namespace": NS,
+    "soap_ns": "soap",
 }
 if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
     try:
@@ -494,7 +516,7 @@ if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
     except ImportError:
         pass
     else:
-        _soap_client_kwargs['cacert'] = CA_CERTS
+        _soap_client_kwargs["cacert"] = CA_CERTS
 
 
 def set_soap_proxy(proxy_arg):
@@ -507,7 +529,7 @@ def set_soap_proxy(proxy_arg):
     proxy_arg : str
 
     """
-    _soap_client_kwargs['proxy'] = proxy_arg
+    _soap_client_kwargs["proxy"] = proxy_arg
 
 
 def set_soap_location(url):
@@ -520,7 +542,7 @@ def set_soap_location(url):
     url : str
 
     """
-    _soap_client_kwargs['location'] = url
+    _soap_client_kwargs["location"] = url
 
 
 def get_soap_client_kwargs():
@@ -551,7 +573,7 @@ def _convert_soap_method_args(*args):
     """
     soap_args = []
     for arg_n, arg in enumerate(args):
-        soap_args.append(('arg' + str(arg_n), arg))
+        soap_args.append(("arg" + str(arg_n), arg))
     return soap_args
 
 
@@ -572,27 +594,28 @@ def _build_int_array_el(el_name, parent, list_):
     """build a soapenc:Array made of ints called `el_name` as a child
     of `parent`"""
     el = parent.add_child(el_name)
-    el.add_attribute('xmlns:soapenc',
-                     'http://schemas.xmlsoap.org/soap/encoding/')
-    el.add_attribute('xsi:type', 'soapenc:Array')
-    el.add_attribute('soapenc:arrayType', 'xsd:int[{:d}]'.format(len(list_)))
+    el.add_attribute(
+        "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/"
+    )
+    el.add_attribute("xsi:type", "soapenc:Array")
+    el.add_attribute("soapenc:arrayType", "xsd:int[{:d}]".format(len(list_)))
     for item in list_:
-        item_el = el.add_child('item', str(item))
-        item_el.add_attribute('xsi:type', 'xsd:int')
+        item_el = el.add_child("item", str(item))
+        item_el.add_attribute("xsi:type", "xsd:int")
     return el
 
 
 def _parse_bool(el):
     """parse a boolean value from a xml element"""
     value = str(el)
-    return not value.strip() in ('', '0')
+    return not value.strip() in ("", "0")
 
 
 def _parse_string_el(el):
     """read a string element, maybe encoded in base64"""
     value = str(el)
-    el_type = el.attributes().get('xsi:type')
-    if el_type and el_type.value == 'xsd:base64Binary':
+    el_type = el.attributes().get("xsi:type")
+    if el_type and el_type.value == "xsd:base64Binary":
         value = base64.b64decode(value)
-        value = value.decode('utf-8', errors='replace')
+        value = value.decode("utf-8", errors="replace")
     return value

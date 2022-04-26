@@ -17,10 +17,11 @@ logger = logging.getLogger(__name__)
 def create_bugreport():
     def factory(**kwargs):
         bugreport = bts.Bugreport()
-        bugreport.severity = 'normal'
+        bugreport.severity = "normal"
         for k, v in kwargs.items():
             setattr(bugreport, k, v)
         return bugreport
+
     return factory
 
 
@@ -49,7 +50,8 @@ def test_get_usertag_filters():
     randomKey1 = list(tags.keys())[1]
 
     filtered_tags = bts.get_usertag(
-        "debian-python@lists.debian.org", randomKey0, randomKey1)
+        "debian-python@lists.debian.org", randomKey0, randomKey1
+    )
 
     assert len(filtered_tags) == 2
     assert set(filtered_tags[randomKey0]) == set(tags[randomKey0])
@@ -65,18 +67,19 @@ def test_get_usertag_args(caplog):
     randomKey1 = list(tags.keys())[1]
 
     # one tags
-    tags = bts.get_usertag("debian-python@lists.debian.org",
-                           [randomKey0])
+    tags = bts.get_usertag("debian-python@lists.debian.org", [randomKey0])
     assert len(tags) == 1
 
     # two tags
-    tags = bts.get_usertag("debian-python@lists.debian.org",
-                           [randomKey0, randomKey1])
+    tags = bts.get_usertag(
+        "debian-python@lists.debian.org", [randomKey0, randomKey1]
+    )
     assert len(tags) == 2
 
     # deprecated positional arguments
-    tags = bts.get_usertag("debian-python@lists.debian.org",
-                           randomKey0, randomKey1)
+    tags = bts.get_usertag(
+        "debian-python@lists.debian.org", randomKey0, randomKey1
+    )
     assert len(tags) == 2
     assert "deprecated" in caplog.text
 
@@ -109,17 +112,15 @@ def test_get_bugs(caplog):
 
 def test_get_bugs_list(caplog):
     """older versions of python-debianbts accepted malformed key-val-lists."""
-    bugs = bts.get_bugs(submitter='venthur@debian.org',
-                        severity='normal')
+    bugs = bts.get_bugs(submitter="venthur@debian.org", severity="normal")
     assert len(bugs) != 0
 
     bugs = bts.get_bugs(
-            'submitter',
-            'venthur@debian.org',
-            'severity',
-            'normal')
+        "submitter", "venthur@debian.org", "severity", "normal"
+    )
     bugs2 = bts.get_bugs(
-            ['submitter', 'venthur@debian.org', 'severity', 'normal'])
+        ["submitter", "venthur@debian.org", "severity", "normal"]
+    )
     assert len(bugs) != 0
     bugs.sort()
     bugs2.sort()
@@ -136,7 +137,7 @@ def test_newest_bugs():
 
 
 def test_newest_bugs_amount():
-    """newest_bugs(amount) should return a list of len 'amount'. """
+    """newest_bugs(amount) should return a list of len 'amount'."""
     for i in 0, 1, 10:
         bugs = bts.newest_bugs(i)
         assert len(bugs) == i
@@ -169,10 +170,10 @@ def test_bug_log_message():
     """dict returned by get_bug_log has a email.Message field"""
     buglogs = bts.get_bug_log(400012)
     for buglog in buglogs:
-        assert 'message' in buglog
-        msg = buglog['message']
+        assert "message" in buglog
+        msg = buglog["message"]
         assert isinstance(msg, email.message.Message)
-        assert 'Subject' in msg
+        assert "Subject" in msg
         if not msg.is_multipart():
             assert isinstance(msg.get_payload(), str)
 
@@ -181,9 +182,9 @@ def test_bug_log_message_unicode():
     """test parsing of bug_log mail with non ascii characters"""
     buglogs = bts.get_bug_log(773321)
     buglog = buglogs[2]
-    msg_payload = buglog['message'].get_payload()
+    msg_payload = buglog["message"].get_payload()
     assert isinstance(msg_payload, str)
-    assert 'é' in msg_payload
+    assert "é" in msg_payload
 
 
 def test_empty_get_status():
@@ -222,22 +223,22 @@ def test_sample_get_status():
     bug = bugs[0]
     assert bug.bug_num == 486212
     assert bug.date == datetime.datetime(2008, 6, 14, 10, 30, 2)
-    assert bug.subject.startswith('[reportbug-ng] segm')
-    assert bug.package == 'reportbug-ng'
-    assert bug.severity == 'normal'
-    assert bug.tags == ['help']
+    assert bug.subject.startswith("[reportbug-ng] segm")
+    assert bug.package == "reportbug-ng"
+    assert bug.severity == "normal"
+    assert bug.tags == ["help"]
     assert bug.blockedby == []
     assert bug.blocks == []
-    assert bug.summary == ''
-    assert bug.location == 'archive'
-    assert bug.source == 'reportbug-ng'
+    assert bug.summary == ""
+    assert bug.location == "archive"
+    assert bug.source == "reportbug-ng"
     assert bug.log_modified == datetime.datetime(2008, 8, 17, 7, 26, 22)
-    assert bug.pending == 'done'
+    assert bug.pending == "done"
     assert bug.done
-    assert bug.done_by == 'Bastian Venthur <venthur@debian.org>'
+    assert bug.done_by == "Bastian Venthur <venthur@debian.org>"
     assert bug.archived
-    assert bug.found_versions == ['reportbug-ng/0.2008.06.04']
-    assert bug.fixed_versions == ['reportbug-ng/1.0']
+    assert bug.found_versions == ["reportbug-ng/0.2008.06.04"]
+    assert bug.fixed_versions == ["reportbug-ng/1.0"]
     assert bug.affects == []
 
 
@@ -245,20 +246,20 @@ def test_done_by_decoding():
     """Done by is properly base64 decoded when needed."""
     # no base64 encoding
     bug = bts.get_status(486212)[0]
-    assert bug.done_by == 'Bastian Venthur <venthur@debian.org>'
+    assert bug.done_by == "Bastian Venthur <venthur@debian.org>"
 
     # base64 encoding
     bug = bts.get_status(938128)[0]
-    assert bug.done_by == 'Ondřej Nový <onovy@debian.org>'
+    assert bug.done_by == "Ondřej Nový <onovy@debian.org>"
 
 
 def test_bug_str(create_bugreport):
     """test string conversion of a Bugreport"""
-    b1 = create_bugreport(package='foo-pkg', bug_num=12222)
+    b1 = create_bugreport(package="foo-pkg", bug_num=12222)
     s = str(b1)
     assert isinstance(s, str)  # byte string in py2, unicode in py3
-    assert 'bug_num: 12222\n' in s
-    assert 'package: foo-pkg\n' in s
+    assert "bug_num: 12222\n" in s
+    assert "package: foo-pkg\n" in s
 
 
 def test_get_status_affects():
@@ -266,27 +267,25 @@ def test_get_status_affects():
     bugs = bts.get_status(290501, 770490)
     assert len(bugs) == 2
     assert bugs[0].affects == []
-    assert bugs[1].affects == ['conkeror']
+    assert bugs[1].affects == ["conkeror"]
 
 
-@mock.patch.object(bts.debianbts, '_build_soap_client')
+@mock.patch.object(bts.debianbts, "_build_soap_client")
 def test_status_batches_large_bug_counts(mock_build_client):
     """get_status should perform requests in batches to reduce server load."""
     mock_build_client.return_value = mock_client = mock.Mock()
-    mock_client.call.return_value = SimpleXMLElement(
-        '<a><s-gensym3/></a>')
+    mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
     nr = bts.BATCH_SIZE + 10.0
     calls = int(math.ceil(nr / bts.BATCH_SIZE))
     bts.get_status([722226] * int(nr))
     assert mock_client.call.call_count == calls
 
 
-@mock.patch.object(bts.debianbts, '_build_soap_client')
+@mock.patch.object(bts.debianbts, "_build_soap_client")
 def test_status_batches_multiple_arguments(mock_build_client):
     """get_status should batch multiple arguments into one request."""
     mock_build_client.return_value = mock_client = mock.Mock()
-    mock_client.call.return_value = SimpleXMLElement(
-        '<a><s-gensym3/></a>')
+    mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
     batch_size = bts.BATCH_SIZE
 
     calls = 1
@@ -305,9 +304,9 @@ def test_comparison(create_bugreport):
     assert b2 > b1
     assert b2 >= b1
     assert b2 != b1
-    assert not(b2 == b1)
-    assert not(b2 <= b1)
-    assert not(b2 < b1)
+    assert not (b2 == b1)
+    assert not (b2 <= b1)
+    assert not (b2 < b1)
 
 
 def test_comparison_equal(create_bugreport):
@@ -315,23 +314,23 @@ def test_comparison_equal(create_bugreport):
     relative order"""
     b1 = create_bugreport(done=True)
     b2 = create_bugreport(done=True)
-    assert not(b2 > b1)
+    assert not (b2 > b1)
     assert b2 >= b1
     assert b2 == b1
-    assert not(b2 < b1)
+    assert not (b2 < b1)
     assert b2 <= b1
 
 
 def test_get_bugs_int_bugs():
     """It is possible to pass a list of bug number to get_bugs"""
-    bugs = bts.get_bugs('bugs', [400010, 400012], 'archive', '1')
+    bugs = bts.get_bugs("bugs", [400010, 400012], "archive", "1")
     assert set(bugs) == set((400010, 400012))
 
 
 def test_get_bugs_single_int_bug():
     """bugs parameter in get_bugs can be a list of int or a int"""
-    bugs1 = bts.get_bugs('bugs', 400040, 'archive', '1')
-    bugs2 = bts.get_bugs('bugs', [400040], 'archive', '1')
+    bugs1 = bts.get_bugs("bugs", 400040, "archive", "1")
+    bugs2 = bts.get_bugs("bugs", [400040], "archive", "1")
     assert bugs1 == bugs2
 
 
@@ -340,16 +339,16 @@ def test_get_bugs_archived():
     # the parameter is rather undocumented. with trial and error i found
     # out that it takes a string with those three values. everything
     # else will be interpreted as "1"
-    bugs_unarchived = bts.get_bugs(src='python-debianbgs', archive='0')
-    bugs_archived = bts.get_bugs(src='python-debianbgs', archive='1')
-    bugs_both = bts.get_bugs(src='python-debianbgs', archive='both')
+    bugs_unarchived = bts.get_bugs(src="python-debianbgs", archive="0")
+    bugs_archived = bts.get_bugs(src="python-debianbgs", archive="1")
+    bugs_both = bts.get_bugs(src="python-debianbgs", archive="both")
     assert len(bugs_both) == len(bugs_unarchived) + len(bugs_archived)
 
 
 def test_get_bugs_archived_default():
     """Return un-archived bugs by default."""
-    bugs_unarchived = bts.get_bugs(src='python-debianbgs', archive='0')
-    bugs_default = bts.get_bugs(src='python-debianbgs')
+    bugs_unarchived = bts.get_bugs(src="python-debianbgs", archive="0")
+    bugs_default = bts.get_bugs(src="python-debianbgs")
     assert len(bugs_default) == len(bugs_unarchived)
 
 
@@ -373,23 +372,23 @@ def test_base64_status_fields():
     """fields in bug status are sometimes base64-encoded"""
     bug = bts.get_status(711111)[0]
     assert isinstance(bug.originator, str)
-    assert bug.originator.endswith('gmail.com>')
-    assert 'ł' in bug.originator
+    assert bug.originator.endswith("gmail.com>")
+    assert "ł" in bug.originator
 
 
 def test_base64_buglog_body():
     """buglog body is sometimes base64 encoded"""
     buglog = bts.get_bug_log(773321)
-    body = buglog[2]['body']
-    assert isinstance(buglog[1]['body'], str)
-    assert 'é' in body
+    body = buglog[2]["body"]
+    assert isinstance(buglog[1]["body"], str)
+    assert "é" in body
 
 
 def test_string_status_originator():
     """test reading of bug status originator that is not base64-encoded"""
     bug = bts.get_status(711112)[0]
     assert isinstance(bug.originator, str)
-    assert bug.originator.endswith('debian.org>')
+    assert bug.originator.endswith("debian.org>")
 
 
 def test_unicode_conversion_in_str():
@@ -423,17 +422,17 @@ def test_regression_590725():
 def test_regression_670446():
     """affects should be split by ','"""
     bug = bts.get_status(657408)[0]
-    assert bug.affects == ['epiphany-browser-dev', 'libwebkit-dev']
+    assert bug.affects == ["epiphany-browser-dev", "libwebkit-dev"]
 
 
 def test_regression_799528():
     """fields of buglog are sometimes base64 encoded."""
     # bug with base64 encoding originator
     [bug] = bts.get_status(711111)
-    assert 'ł' in bug.originator
+    assert "ł" in bug.originator
     # bug with base64 encoding subject
     [bug] = bts.get_status(779005)
-    assert '‘' in bug.subject
+    assert "‘" in bug.subject
 
 
 def test_regression_917165():
