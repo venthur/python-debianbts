@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] -
+## [3.2.2] - 2022-06-26
 
 * test against Python 3.10
 * reformatted code
