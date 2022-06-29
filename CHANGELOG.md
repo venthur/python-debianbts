@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.3] - 2022-06-29
+
+* bumped version to allow for source-only upload in debian (no changes)
+
 ## [3.2.2] - 2022-06-26
 
 * test against Python 3.10
