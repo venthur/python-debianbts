@@ -5,6 +5,7 @@ python-debianbts (3.2.5) UNRELEASED; urgency=medium
     + Build-Depends: Drop versioned constraint on python3.
 
   [ Bastian Venthur ]
+  * dropped python 3.6 support
   * updated dev-requirements
 
  -- Bastian Venthur <venthur@debian.org>  Wed, 02 Nov 2022 19:27:33 +0100

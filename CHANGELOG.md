@@ -1,9 +1,10 @@
 # Changelog
 
-## [3.2.4] - 2022-06-29
+## [3.2.4] - 2022-11-02
 
 * scrubbed obsolete constraints since debian/buster
 * updated dev-requirements
+* dropped python 3.6 support
 
 ## [3.2.3] - 2022-06-29
 
