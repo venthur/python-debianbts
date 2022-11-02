@@ -1,4 +1,4 @@
-python-debianbts (3.2.4) UNRELEASED; urgency=medium
+python-debianbts (3.2.4) unstable; urgency=medium
 
   [ Debian Janitor ]
   * Remove constraints unnecessary since buster (oldstable):
