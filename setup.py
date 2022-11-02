@@ -23,7 +23,7 @@ setup(
     install_requires=[
         "pysimplesoap",
     ],
-    python_requires=">=3.4, <4",
+    python_requires=">=3.7, <4",
     entry_points={"console_scripts": ["debianbts = debianbts.__main__:main"]},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
