@@ -1,9 +1,13 @@
-python-debianbts (3.2.4) UNRELEASED; urgency=medium
+python-debianbts (3.2.5) UNRELEASED; urgency=medium
 
+  [ Debian Janitor ]
   * Remove constraints unnecessary since buster (oldstable):
     + Build-Depends: Drop versioned constraint on python3.
 
- -- Debian Janitor <janitor@jelmer.uk>  Thu, 20 Oct 2022 00:28:53 -0000
+  [ Bastian Venthur ]
+  * updated dev-requirements
+
+ -- Bastian Venthur <venthur@debian.org>  Wed, 02 Nov 2022 19:27:33 +0100
 
 python-debianbts (3.2.3) unstable; urgency=medium
 

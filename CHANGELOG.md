@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.2.4] - 2022-06-29
+
+* scrubbed obsolete constraints since debian/buster
+* updated dev-requirements
+
 ## [3.2.3] - 2022-06-29
 
 * bumped version to allow for source-only upload in debian (no changes)
