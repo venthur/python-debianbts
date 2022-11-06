@@ -9,6 +9,8 @@ Bugreport class which represents a bugreport from the BTS.
 """
 
 
+from __future__ import annotations
+
 import base64
 from distutils.version import LooseVersion
 import email.feedparser
@@ -16,6 +18,7 @@ import email.policy
 from datetime import datetime
 import os
 import logging
+from typing import Any, Iterable
 
 import pysimplesoap
 from pysimplesoap.client import SoapClient
@@ -115,29 +118,29 @@ class Bugreport(object):
         Arbitrary text
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.originator = None
-        self.date = None
+        self.date: datetime | None = None
         self.subject = None
         self.msgid = None
         self.package = None
-        self.tags = None
-        self.done = None
+        self.tags: list[str] | None = None
+        self.done: bool | None = None
         self.forwarded = None
-        self.mergedwith = None
+        self.mergedwith: list[int] | None = None
         self.severity = None
         self.owner = None
-        self.found_versions = None
-        self.fixed_versions = None
-        self.blocks = None
-        self.blockedby = None
-        self.unarchived = None
+        self.found_versions: list[str] | None = None
+        self.fixed_versions: list[str] | None = None
+        self.blocks: list[int] | None = None
+        self.blockedby: list[int] | None = None
+        self.unarchived: bool | None = None
         self.summary = None
-        self.affects = None
-        self.log_modified = None
+        self.affects: list[str] | None = None
+        self.log_modified: datetime | None = None
         self.location = None
-        self.archived = None
-        self.bug_num = None
+        self.archived: bool | None = None
+        self.bug_num: int | None = None
         self.source = None
         self.pending = None
         # The ones below are also there but not used
@@ -148,14 +151,14 @@ class Bugreport(object):
         # self.keywords = None
         # self.id = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = "\n".join(
             "{}: {}".format(key, value)
             for key, value in self.__dict__.items()
         )
         return s + "\n"
 
-    def __lt__(self, other):
+    def __lt__(self, other: Bugreport) -> bool:
         """Compare a bugreport with another.
 
         The more open and urgent a bug is, the greater the bug is:
@@ -173,22 +176,22 @@ class Bugreport(object):
         """
         return self._get_value() < other._get_value()
 
-    def __le__(self, other):
+    def __le__(self, other: Bugreport) -> bool:
         return not self.__gt__(other)
 
-    def __gt__(self, other):
+    def __gt__(self, other: Bugreport) -> bool:
         return self._get_value() > other._get_value()
 
-    def __ge__(self, other):
+    def __ge__(self, other: Bugreport) -> bool:
         return not self.__lt__(other)
 
-    def __eq__(self, other):
+    def __eq__(self, other: Bugreport) -> bool:
         return self._get_value() == other._get_value()
 
-    def __ne__(self, other):
+    def __ne__(self, other: Bugreport) -> bool:
         return not self.__eq__(other)
 
-    def _get_value(self):
+    def _get_value(self) -> int:
         if self.archived:
             # archived and done
             val = 0
@@ -202,7 +205,11 @@ class Bugreport(object):
         return val
 
 
-def get_status(nrs, *additional):
+def get_status(
+    nrs: int | list[int] | tuple[int],
+    *additional: list[int],
+) -> list[Bugreport]:
+
     """Returns a list of Bugreport objects.
 
     Given a list of bugnumbers this method returns a list of Bugreport
@@ -210,9 +217,9 @@ def get_status(nrs, *additional):
 
     Parameters
     ----------
-    nrs : int or list of ints
+    nrs :
         The bugnumbers
-    additional : int
+    additional :
         Deprecated! The remaining positional arguments are treated as
         bugnumbers. This is deprecated since 2.10.0, please use the
         `nrs` parameter instead.
@@ -249,16 +256,20 @@ def get_status(nrs, *additional):
     return bugs
 
 
-def get_usertag(email, tags=None, *moretags):
+def get_usertag(
+    email: str,
+    tags: None | list[str] | tuple[str] = None,
+    *moretags: list[str] | None,
+) -> dict[str, list[int]]:
     """Get buglists by usertags.
 
     Parameters
     ----------
-    email : str
+    email :
     tags : list of strings
         If tags are given the dictionary is limited to the matching
         tags, if no tags are given all available tags are returned.
-    moretags : str
+    moretags :
         Deprecated! The remaining positional arguments are treated as
         tags. This is deprecated since 2.10.0, please use the `tags`
         parameter instead.
@@ -301,7 +312,9 @@ def get_usertag(email, tags=None, *moretags):
     return mapping
 
 
-def get_bug_log(nr):
+def get_bug_log(
+    nr: int
+) -> list[dict[str, str | list[Any] | int | email.message.Message]]:
     """Get Buglogs.
 
     A buglog is a dictionary with the following mappings:
@@ -313,7 +326,7 @@ def get_bug_log(nr):
 
     Parameters
     ----------
-    nr : int
+    nr :
         the bugnumber
 
     Returns
@@ -344,14 +357,14 @@ def get_bug_log(nr):
     return buglogs
 
 
-def newest_bugs(amount):
+def newest_bugs(amount: int) -> list[int]:
     """Returns the newest bugs.
 
     This method can be used to query the BTS for the n newest bugs.
 
     Parameters
     ----------
-    amount : int
+    amount :
         the number of desired bugs. E.g. if `amount` is 10 the method
         will return the 10 latest bugs.
 
@@ -366,14 +379,14 @@ def newest_bugs(amount):
     return [int(item_el) for item_el in items_el.children() or []]
 
 
-def get_bugs(*key_value, **kwargs):
+def get_bugs(*key_value: list[str] | None, **kwargs: str) -> list[int]:
     """Get list of bugs matching certain criteria.
 
     The conditions are defined by the keyword arguments.
 
     Arguments
     ---------
-    key_value : str
+    key_value :
         Deprecated! The positional arguments are treated as key-values.
         This is deprecated since 2.10.0, please use the `kwargs`
         parameters instead.
@@ -443,7 +456,7 @@ def get_bugs(*key_value, **kwargs):
     return [int(item_el) for item_el in items_el.children() or []]
 
 
-def _parse_status(bug_el):
+def _parse_status(bug_el: SimpleXMLElement) -> Bugreport:
     """Return a bugreport object from a given status xml element"""
     bug = Bugreport()
 
@@ -505,37 +518,37 @@ _soap_client_kwargs = {
 }
 
 
-def set_soap_proxy(proxy_arg):
+def set_soap_proxy(proxy_arg: str) -> None:
     """Set proxy for SOAP client.
 
     You must use this method after import to set the proxy.
 
     Parameters
     ----------
-    proxy_arg : str
+    proxy_arg :
 
     """
     _soap_client_kwargs["proxy"] = proxy_arg
 
 
-def set_soap_location(url):
+def set_soap_location(url: str) -> None:
     """Set location URL for SOAP client
 
     You may use this method after import to override the default URL.
 
     Parameters
     ----------
-    url : str
+    url :
 
     """
     _soap_client_kwargs["location"] = url
 
 
-def get_soap_client_kwargs():
+def get_soap_client_kwargs() -> dict[str, str]:
     return _soap_client_kwargs
 
 
-def _build_soap_client():
+def _build_soap_client() -> SoapClient:
     """Factory method that creates a SoapClient.
 
     For thread-safety we create SoapClients on demand instead of using a
@@ -549,7 +562,7 @@ def _build_soap_client():
     return SoapClient(**_soap_client_kwargs)
 
 
-def _convert_soap_method_args(*args):
+def _convert_soap_method_args(*args: Iterable[Any]) -> list[tuple[str, Any]]:
     """Convert arguments to be consumed by a SoapClient method
 
     Soap client required a list of named arguments:
@@ -563,7 +576,7 @@ def _convert_soap_method_args(*args):
     return soap_args
 
 
-def _soap_client_call(method_name, *args):
+def _soap_client_call(method_name: str, *args: Any) -> Any:
     """Wrapper to call SoapClient method"""
     # a new client instance is built for threading issues
     soap_client = _build_soap_client()
@@ -576,7 +589,11 @@ def _soap_client_call(method_name, *args):
         return getattr(soap_client, method_name)(soap_client, *soap_args)
 
 
-def _build_int_array_el(el_name, parent, list_):
+def _build_int_array_el(
+    el_name: str,
+    parent: SimpleXMLElement,
+    list_: list[Any],
+) -> SimpleXMLElement:
     """build a soapenc:Array made of ints called `el_name` as a child
     of `parent`"""
     el = parent.add_child(el_name)
@@ -591,17 +608,17 @@ def _build_int_array_el(el_name, parent, list_):
     return el
 
 
-def _parse_bool(el):
+def _parse_bool(el: SimpleXMLElement) -> bool:
     """parse a boolean value from a xml element"""
     value = str(el)
     return not value.strip() in ("", "0")
 
 
-def _parse_string_el(el):
+def _parse_string_el(el: SimpleXMLElement) -> str:
     """read a string element, maybe encoded in base64"""
     value = str(el)
     el_type = el.attributes().get("xsi:type")
     if el_type and el_type.value == "xsd:base64Binary":
-        value = base64.b64decode(value)
-        value = value.decode("utf-8", errors="replace")
+        tmp = base64.b64decode(value)
+        value = tmp.decode("utf-8", errors="replace")
     return value

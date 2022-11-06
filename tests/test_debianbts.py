@@ -25,13 +25,13 @@ def create_bugreport():
     return factory
 
 
-def test_get_usertag_empty():
+def test_get_usertag_empty() -> None:
     """get_usertag should return empty dict if no bugs are found."""
     d = bts.get_usertag("thisisatest@debian.org")
     assert d == dict()
 
 
-def test_get_usertag():
+def test_get_usertag() -> None:
     """get_usertag should return dict with tag(s) and buglist(s)."""
     d = bts.get_usertag("debian-python@lists.debian.org")
     assert isinstance(d, dict)
@@ -42,7 +42,7 @@ def test_get_usertag():
             assert isinstance(bug, int)
 
 
-def test_get_usertag_filters():
+def test_get_usertag_filters() -> None:
     """get_usertag should return only requested tags"""
     tags = bts.get_usertag("debian-python@lists.debian.org")
     assert isinstance(tags, dict)
@@ -58,7 +58,7 @@ def test_get_usertag_filters():
     assert set(filtered_tags[randomKey1]) == set(tags[randomKey1])
 
 
-def test_get_usertag_args(caplog):
+def test_get_usertag_args(caplog) -> None:
     # no tags
     tags = bts.get_usertag("debian-python@lists.debian.org")
     assert len(tags) > 2
@@ -84,7 +84,7 @@ def test_get_usertag_args(caplog):
     assert "deprecated" in caplog.text
 
 
-def test_get_bugs_empty(caplog):
+def test_get_bugs_empty(caplog) -> None:
     """get_bugs should return empty list if no matching bugs where found."""
     bugs = bts.get_bugs(package="thisisatest")
     assert bugs == []
@@ -94,7 +94,7 @@ def test_get_bugs_empty(caplog):
     assert "deprecated" in caplog.text
 
 
-def test_get_bugs(caplog):
+def test_get_bugs(caplog) -> None:
     """get_bugs should return list of bugnumbers."""
     bugs = bts.get_bugs(submitter="venthur@debian.org")
     assert len(bugs) != 0
@@ -110,7 +110,7 @@ def test_get_bugs(caplog):
     assert "deprecated" in caplog.text
 
 
-def test_get_bugs_list(caplog):
+def test_get_bugs_list(caplog) -> None:
     """older versions of python-debianbts accepted malformed key-val-lists."""
     bugs = bts.get_bugs(submitter="venthur@debian.org", severity="normal")
     assert len(bugs) != 0
@@ -128,7 +128,7 @@ def test_get_bugs_list(caplog):
     assert "deprecated" in caplog.text
 
 
-def test_newest_bugs():
+def test_newest_bugs() -> None:
     """newest_bugs should return list of bugnumbers."""
     bugs = bts.newest_bugs(10)
     assert isinstance(bugs, list)
@@ -136,14 +136,14 @@ def test_newest_bugs():
         assert isinstance(i, int)
 
 
-def test_newest_bugs_amount():
+def test_newest_bugs_amount() -> None:
     """newest_bugs(amount) should return a list of len 'amount'."""
     for i in 0, 1, 10:
         bugs = bts.newest_bugs(i)
         assert len(bugs) == i
 
 
-def test_get_bug_log():
+def test_get_bug_log() -> None:
     """get_bug_log should return the correct data types."""
     bl = bts.get_bug_log(223344)
     assert isinstance(bl, list)
@@ -159,14 +159,14 @@ def test_get_bug_log():
         assert isinstance(i["msg_num"], int)
 
 
-def test_get_bug_log_with_attachments():
+def test_get_bug_log_with_attachments() -> None:
     """get_bug_log should include attachments"""
     buglogs = bts.get_bug_log(400000)
     for bl in buglogs:
         assert "attachments" in bl
 
 
-def test_bug_log_message():
+def test_bug_log_message() -> None:
     """dict returned by get_bug_log has a email.Message field"""
     buglogs = bts.get_bug_log(400012)
     for buglog in buglogs:
@@ -178,7 +178,7 @@ def test_bug_log_message():
             assert isinstance(msg.get_payload(), str)
 
 
-def test_bug_log_message_unicode():
+def test_bug_log_message_unicode() -> None:
     """test parsing of bug_log mail with non ascii characters"""
     buglogs = bts.get_bug_log(773321)
     buglog = buglogs[2]
@@ -187,14 +187,14 @@ def test_bug_log_message_unicode():
     assert "é" in msg_payload
 
 
-def test_empty_get_status():
+def test_empty_get_status() -> None:
     """get_status should return empty list if bug doesn't exits"""
     bugs = bts.get_status(0)
     assert isinstance(bugs, list)
     assert len(bugs) == 0
 
 
-def test_get_status_params(caplog):
+def test_get_status_params(caplog) -> None:
     BUG = 223344
     BUG2 = 334455
 
@@ -216,7 +216,7 @@ def test_get_status_params(caplog):
     assert "deprecated" in caplog.text
 
 
-def test_sample_get_status():
+def test_sample_get_status() -> None:
     """test retrieving of a "known" bug status"""
     bugs = bts.get_status(486212)
     assert len(bugs) == 1
@@ -242,7 +242,7 @@ def test_sample_get_status():
     assert bug.affects == []
 
 
-def test_done_by_decoding():
+def test_done_by_decoding() -> None:
     """Done by is properly base64 decoded when needed."""
     # no base64 encoding
     bug = bts.get_status(486212)[0]
@@ -253,7 +253,7 @@ def test_done_by_decoding():
     assert bug.done_by == "Ondřej Nový <onovy@debian.org>"
 
 
-def test_bug_str(create_bugreport):
+def test_bug_str(create_bugreport) -> None:
     """test string conversion of a Bugreport"""
     b1 = create_bugreport(package="foo-pkg", bug_num=12222)
     s = str(b1)
@@ -262,7 +262,7 @@ def test_bug_str(create_bugreport):
     assert "package: foo-pkg\n" in s
 
 
-def test_get_status_affects():
+def test_get_status_affects() -> None:
     """test a bug with "affects" field"""
     bugs = bts.get_status(290501, 770490)
     assert len(bugs) == 2
@@ -271,7 +271,7 @@ def test_get_status_affects():
 
 
 @mock.patch.object(bts.debianbts, "_build_soap_client")
-def test_status_batches_large_bug_counts(mock_build_client):
+def test_status_batches_large_bug_counts(mock_build_client) -> None:
     """get_status should perform requests in batches to reduce server load."""
     mock_build_client.return_value = mock_client = mock.Mock()
     mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
@@ -282,7 +282,7 @@ def test_status_batches_large_bug_counts(mock_build_client):
 
 
 @mock.patch.object(bts.debianbts, "_build_soap_client")
-def test_status_batches_multiple_arguments(mock_build_client):
+def test_status_batches_multiple_arguments(mock_build_client) -> None:
     """get_status should batch multiple arguments into one request."""
     mock_build_client.return_value = mock_client = mock.Mock()
     mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
@@ -297,7 +297,7 @@ def test_status_batches_multiple_arguments(mock_build_client):
     assert mock_client.call.call_count == calls
 
 
-def test_comparison(create_bugreport):
+def test_comparison(create_bugreport) -> None:
     """comparison of two bugs"""
     b1 = create_bugreport(archived=True)
     b2 = create_bugreport(done=True)
@@ -309,7 +309,7 @@ def test_comparison(create_bugreport):
     assert not (b2 < b1)
 
 
-def test_comparison_equal(create_bugreport):
+def test_comparison_equal(create_bugreport) -> None:
     """comparison of two bug which are equal regarding their
     relative order"""
     b1 = create_bugreport(done=True)
@@ -321,20 +321,20 @@ def test_comparison_equal(create_bugreport):
     assert b2 <= b1
 
 
-def test_get_bugs_int_bugs():
+def test_get_bugs_int_bugs() -> None:
     """It is possible to pass a list of bug number to get_bugs"""
     bugs = bts.get_bugs("bugs", [400010, 400012], "archive", "1")
     assert set(bugs) == set((400010, 400012))
 
 
-def test_get_bugs_single_int_bug():
+def test_get_bugs_single_int_bug() -> None:
     """bugs parameter in get_bugs can be a list of int or a int"""
     bugs1 = bts.get_bugs("bugs", 400040, "archive", "1")
     bugs2 = bts.get_bugs("bugs", [400040], "archive", "1")
     assert bugs1 == bugs2
 
 
-def test_get_bugs_archived():
+def test_get_bugs_archived() -> None:
     """archive tristate."""
     # the parameter is rather undocumented. with trial and error i found
     # out that it takes a string with those three values. everything
@@ -345,14 +345,14 @@ def test_get_bugs_archived():
     assert len(bugs_both) == len(bugs_unarchived) + len(bugs_archived)
 
 
-def test_get_bugs_archived_default():
+def test_get_bugs_archived_default() -> None:
     """Return un-archived bugs by default."""
     bugs_unarchived = bts.get_bugs(src="python-debianbgs", archive="0")
     bugs_default = bts.get_bugs(src="python-debianbgs")
     assert len(bugs_default) == len(bugs_unarchived)
 
 
-def test_mergedwith():
+def test_mergedwith() -> None:
     """Mergedwith is always a list of int."""
     # this one is merged with two other bugs
     m = bts.get_status(486212)[0].mergedwith
@@ -368,7 +368,7 @@ def test_mergedwith():
     assert m == list()
 
 
-def test_base64_status_fields():
+def test_base64_status_fields() -> None:
     """fields in bug status are sometimes base64-encoded"""
     bug = bts.get_status(711111)[0]
     assert isinstance(bug.originator, str)
@@ -376,7 +376,7 @@ def test_base64_status_fields():
     assert "ł" in bug.originator
 
 
-def test_base64_buglog_body():
+def test_base64_buglog_body() -> None:
     """buglog body is sometimes base64 encoded"""
     buglog = bts.get_bug_log(773321)
     body = buglog[2]["body"]
@@ -384,48 +384,48 @@ def test_base64_buglog_body():
     assert "é" in body
 
 
-def test_string_status_originator():
+def test_string_status_originator() -> None:
     """test reading of bug status originator that is not base64-encoded"""
     bug = bts.get_status(711112)[0]
     assert isinstance(bug.originator, str)
     assert bug.originator.endswith("debian.org>")
 
 
-def test_unicode_conversion_in_str():
+def test_unicode_conversion_in_str() -> None:
     """string representation must deal with unicode correctly."""
     [bug] = bts.get_status(773321)
     bug.__str__()
 
 
-def test_regression_588954():
+def test_regression_588954() -> None:
     """Get_bug_log must convert the body correctly to unicode."""
     bts.get_bug_log(582010)
 
 
-def test_version():
+def test_version() -> None:
     assert isinstance(bts.__version__, str)
 
 
-def test_regression_590073():
+def test_regression_590073() -> None:
     """bug.blocks is sometimes a str sometimes an int."""
     # test the int case
     # TODO: test the string case
     bts.get_status(568657)
 
 
-def test_regression_590725():
+def test_regression_590725() -> None:
     """bug.body utf sometimes contains invalid continuation bytes."""
     bts.get_bug_log(578363)
     bts.get_bug_log(570825)
 
 
-def test_regression_670446():
+def test_regression_670446() -> None:
     """affects should be split by ','"""
     bug = bts.get_status(657408)[0]
     assert bug.affects == ["epiphany-browser-dev", "libwebkit-dev"]
 
 
-def test_regression_799528():
+def test_regression_799528() -> None:
     """fields of buglog are sometimes base64 encoded."""
     # bug with base64 encoding originator
     [bug] = bts.get_status(711111)
@@ -435,9 +435,9 @@ def test_regression_799528():
     assert "‘" in bug.subject
 
 
-def test_regression_917165():
+def test_regression_917165() -> None:
     bts.get_bug_log(887978)
 
 
-def test_regression_917258():
+def test_regression_917258() -> None:
     bts.get_bug_log(541147)

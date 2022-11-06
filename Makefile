@@ -16,7 +16,7 @@ endif
 VERSION = $(shell python3 setup.py --version)
 
 
-all: lint test
+all: lint mypy test
 
 
 $(VENV): requirements.txt requirements-dev.txt setup.py
@@ -29,6 +29,10 @@ $(VENV): requirements.txt requirements-dev.txt setup.py
 .PHONY: test
 test: $(VENV)
 	$(BIN)/pytest
+
+.PHONY: mypy
+mypy: $(VENV)
+	$(BIN)/mypy
 
 .PHONY: lint
 lint: $(VENV)
