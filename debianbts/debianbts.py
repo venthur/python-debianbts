@@ -10,14 +10,12 @@ Bugreport class which represents a bugreport from the BTS.
 
 
 import base64
-from distutils.version import LooseVersion
 import email.feedparser
 import email.policy
 from datetime import datetime
 import os
 import logging
 
-import pysimplesoap
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
 
@@ -30,9 +28,6 @@ ca_path = "/etc/ssl/ca-debian"
 if os.path.isdir(ca_path):
     os.environ["SSL_CERT_DIR"] = ca_path
 
-
-PYSIMPLESOAP_1_16_2 = (LooseVersion(pysimplesoap.__version__) >=
-                       LooseVersion('1.16.2'))
 
 # Setup the soap server
 # Default values
@@ -526,12 +521,7 @@ def _soap_client_call(method_name, *args):
     # a new client instance is built for threading issues
     soap_client = _build_soap_client()
     soap_args = _convert_soap_method_args(*args)
-    # if pysimplesoap version requires it, apply a workaround for
-    # https://github.com/pysimplesoap/pysimplesoap/issues/31
-    if PYSIMPLESOAP_1_16_2:
-        return getattr(soap_client, method_name)(*soap_args)
-    else:
-        return getattr(soap_client, method_name)(soap_client, *soap_args)
+    return getattr(soap_client, method_name)(*soap_args)
 
 
 def _build_int_array_el(el_name, parent, list_):
