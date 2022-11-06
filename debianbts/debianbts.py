@@ -51,7 +51,7 @@ SEVERITIES = {
 }
 
 
-class Bugreport(object):
+class Bugreport:
     """Represents a bugreport from Debian's Bug Tracking System.
 
     A bugreport object provides all attributes provided by the SOAP
@@ -114,30 +114,31 @@ class Bugreport(object):
     """
 
     def __init__(self) -> None:
-        self.originator = None
-        self.date: datetime | None = None
-        self.subject = None
-        self.msgid = None
-        self.package = None
-        self.tags: list[str] | None = None
-        self.done: bool | None = None
-        self.forwarded = None
-        self.mergedwith: list[int] | None = None
-        self.severity = None
-        self.owner = None
-        self.found_versions: list[str] | None = None
-        self.fixed_versions: list[str] | None = None
-        self.blocks: list[int] | None = None
-        self.blockedby: list[int] | None = None
-        self.unarchived: bool | None = None
-        self.summary = None
-        self.affects: list[str] | None = None
-        self.log_modified: datetime | None = None
-        self.location = None
-        self.archived: bool | None = None
-        self.bug_num: int | None = None
-        self.source = None
-        self.pending = None
+        self.originator: str
+        self.date: datetime
+        self.subject: str
+        self.msgid: str
+        self.package: str
+        self.tags: list[str]
+        self.done: bool
+        self.done_by: str
+        self.forwarded: str
+        self.mergedwith: list[int]
+        self.severity: str
+        self.owner: str
+        self.found_versions: list[str]
+        self.fixed_versions: list[str]
+        self.blocks: list[int]
+        self.blockedby: list[int]
+        self.unarchived: bool
+        self.summary: str
+        self.affects: list[str]
+        self.log_modified: datetime
+        self.location: str
+        self.archived: bool
+        self.bug_num: int
+        self.source: str
+        self.pending: str
         # The ones below are also there but not used
         # self.fixed = None
         # self.found = None
@@ -180,10 +181,14 @@ class Bugreport(object):
     def __ge__(self, other: Bugreport) -> bool:
         return not self.__lt__(other)
 
-    def __eq__(self, other: Bugreport) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Bugreport):
+            return NotImplemented
         return self._get_value() == other._get_value()
 
-    def __ne__(self, other: Bugreport) -> bool:
+    def __ne__(self, other: object) -> bool:
+        if not isinstance(other, Bugreport):
+            return NotImplemented
         return not self.__eq__(other)
 
     def _get_value(self) -> int:
@@ -306,7 +311,7 @@ def get_bug_log(
     items_el = reply("soapenc:Array")
     buglogs = []
     for buglog_el in items_el.children():
-        buglog = {}
+        buglog: dict[str, str | list[Any] | int | email.message.Message] = {}
         buglog["header"] = _parse_string_el(buglog_el("header"))
         buglog["body"] = _parse_string_el(buglog_el("body"))
         buglog["msg_num"] = int(buglog_el("msg_num"))
@@ -539,7 +544,7 @@ def _soap_client_call(method_name: str, *args: Any) -> Any:
 def _build_int_array_el(
     el_name: str,
     parent: SimpleXMLElement,
-    list_: list[Any],
+    list_: Iterable[Any],
 ) -> SimpleXMLElement:
     """build a soapenc:Array made of ints called `el_name` as a child
     of `parent`"""

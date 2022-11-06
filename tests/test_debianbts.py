@@ -3,21 +3,23 @@ import email.message
 import math
 import logging
 import unittest.mock as mock
+from typing import Callable, Any
 
 import pytest
-
+from pytest import LogCaptureFixture
 from pysimplesoap.simplexml import SimpleXMLElement
+from pysimplesoap.client import SoapClient
 
 import debianbts as bts
+from debianbts import Bugreport
 
 logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-def create_bugreport():
-    def factory(**kwargs):
+def create_bugreport() -> Callable[..., Bugreport]:
+    def factory(**kwargs: Any) -> Bugreport:
         bugreport = bts.Bugreport()
-        bugreport.severity = "normal"
         for k, v in kwargs.items():
             setattr(bugreport, k, v)
         return bugreport
@@ -42,7 +44,7 @@ def test_get_usertag() -> None:
             assert isinstance(bug, int)
 
 
-def test_get_usertag_args(caplog) -> None:
+def test_get_usertag_args(caplog: LogCaptureFixture) -> None:
     # no tags
     tags = bts.get_usertag("debian-python@lists.debian.org")
     assert len(tags) > 2
@@ -61,13 +63,13 @@ def test_get_usertag_args(caplog) -> None:
     assert len(tags) == 2
 
 
-def test_get_bugs_empty(caplog) -> None:
+def test_get_bugs_empty(caplog: LogCaptureFixture) -> None:
     """get_bugs should return empty list if no matching bugs where found."""
     bugs = bts.get_bugs(package="thisisatest")
     assert bugs == []
 
 
-def test_get_bugs(caplog) -> None:
+def test_get_bugs(caplog: LogCaptureFixture) -> None:
     """get_bugs should return list of bugnumbers."""
     bugs = bts.get_bugs(submitter="venthur@debian.org")
     assert len(bugs) != 0
@@ -142,7 +144,7 @@ def test_empty_get_status() -> None:
     assert len(bugs) == 0
 
 
-def test_get_status_params(caplog) -> None:
+def test_get_status_params(caplog: LogCaptureFixture) -> None:
     BUG = 223344
     BUG2 = 334455
 
@@ -196,7 +198,9 @@ def test_done_by_decoding() -> None:
     assert bug.done_by == "Ondřej Nový <onovy@debian.org>"
 
 
-def test_bug_str(create_bugreport) -> None:
+def test_bug_str(
+    create_bugreport: Callable[..., Bugreport],
+) -> None:
     """test string conversion of a Bugreport"""
     b1 = create_bugreport(package="foo-pkg", bug_num=12222)
     s = str(b1)
@@ -214,7 +218,9 @@ def test_get_status_affects() -> None:
 
 
 @mock.patch.object(bts.debianbts, "_build_soap_client")
-def test_status_batches_large_bug_counts(mock_build_client) -> None:
+def test_status_batches_large_bug_counts(
+    mock_build_client: Callable[[], SoapClient],
+) -> None:
     """get_status should perform requests in batches to reduce server load."""
     mock_build_client.return_value = mock_client = mock.Mock()
     mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
@@ -225,7 +231,9 @@ def test_status_batches_large_bug_counts(mock_build_client) -> None:
 
 
 @mock.patch.object(bts.debianbts, "_build_soap_client")
-def test_status_batches_multiple_arguments(mock_build_client) -> None:
+def test_status_batches_multiple_arguments(
+    mock_build_client: Callable[[], SoapClient],
+) -> None:
     """get_status should batch multiple arguments into one request."""
     mock_build_client.return_value = mock_client = mock.Mock()
     mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
@@ -240,10 +248,10 @@ def test_status_batches_multiple_arguments(mock_build_client) -> None:
     assert mock_client.call.call_count == calls
 
 
-def test_comparison(create_bugreport) -> None:
+def test_comparison(create_bugreport: Callable[..., Bugreport]) -> None:
     """comparison of two bugs"""
-    b1 = create_bugreport(archived=True)
-    b2 = create_bugreport(done=True)
+    b1 = create_bugreport(severity="normal", archived=True)
+    b2 = create_bugreport(severity="normal", archived=False, done=True)
     assert b2 > b1
     assert b2 >= b1
     assert b2 != b1
@@ -252,11 +260,11 @@ def test_comparison(create_bugreport) -> None:
     assert not (b2 < b1)
 
 
-def test_comparison_equal(create_bugreport) -> None:
+def test_comparison_equal(create_bugreport: Callable[..., Bugreport]) -> None:
     """comparison of two bug which are equal regarding their
     relative order"""
-    b1 = create_bugreport(done=True)
-    b2 = create_bugreport(done=True)
+    b1 = create_bugreport(severity="normal", archived=False, done=True)
+    b2 = create_bugreport(severity="normal", archived=False, done=True)
     assert not (b2 > b1)
     assert b2 >= b1
     assert b2 == b1
