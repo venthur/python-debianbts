@@ -202,7 +202,7 @@ class Bugreport(object):
         return val
 
 
-def get_status(nrs, *additional):
+def get_status(nrs):
     """Returns a list of Bugreport objects.
 
     Given a list of bugnumbers this method returns a list of Bugreport
@@ -212,10 +212,6 @@ def get_status(nrs, *additional):
     ----------
     nrs : int or list of ints
         The bugnumbers
-    additional : int
-        Deprecated! The remaining positional arguments are treated as
-        bugnumbers. This is deprecated since 2.10.0, please use the
-        `nrs` parameter instead.
 
     Returns
     -------
@@ -224,13 +220,6 @@ def get_status(nrs, *additional):
     """
     if not isinstance(nrs, (list, tuple)):
         nrs = [nrs]
-    # backward compatible with <= 2.10.0
-    if additional:
-        logger.warning(
-            "Calling get_status with bugnumbers as positional"
-            " arguments is deprecated, please use a list instead."
-        )
-        nrs.extend(additional)
 
     # Process the input in batches to avoid hitting resource limits on
     # the BTS
@@ -249,7 +238,7 @@ def get_status(nrs, *additional):
     return bugs
 
 
-def get_usertag(email, tags=None, *moretags):
+def get_usertag(email, tags=None):
     """Get buglists by usertags.
 
     Parameters
@@ -258,10 +247,6 @@ def get_usertag(email, tags=None, *moretags):
     tags : list of strings
         If tags are given the dictionary is limited to the matching
         tags, if no tags are given all available tags are returned.
-    moretags : str
-        Deprecated! The remaining positional arguments are treated as
-        tags. This is deprecated since 2.10.0, please use the `tags`
-        parameter instead.
 
     Returns
     -------
@@ -271,15 +256,6 @@ def get_usertag(email, tags=None, *moretags):
     """
     if tags is None:
         tags = []
-    # backward compatible with <= 2.10.0
-    if not isinstance(tags, (list, tuple)):
-        tags = [tags]
-    if moretags:
-        logger.warning(
-            "Calling get_getusertag with tags as positional"
-            " arguments is deprecated, please use a list instead."
-        )
-        tags.extend(moretags)
 
     reply = _soap_client_call("get_usertag", email, *tags)
     map_el = reply("s-gensym3")
@@ -366,17 +342,13 @@ def newest_bugs(amount):
     return [int(item_el) for item_el in items_el.children() or []]
 
 
-def get_bugs(*key_value, **kwargs):
+def get_bugs(**kwargs):
     """Get list of bugs matching certain criteria.
 
     The conditions are defined by the keyword arguments.
 
     Arguments
     ---------
-    key_value : str
-        Deprecated! The positional arguments are treated as key-values.
-        This is deprecated since 2.10.0, please use the `kwargs`
-        parameters instead.
     kwargs :
         Possible keywords are:
             * "package": bugs for the given package
@@ -411,20 +383,6 @@ def get_bugs(*key_value, **kwargs):
     args = []
     for k, v in kwargs.items():
         args.extend([k, v])
-
-    # previous versions also accepted
-    # get_bugs(['package', 'gtk-qt-engine', 'severity', 'normal'])
-    # if key_value is a list in a one elemented tuple, remove the
-    # wrapping list
-    if len(key_value) == 1 and isinstance(key_value[0], list):
-        key_value = tuple(key_value[0])
-
-    if key_value:
-        logger.warning(
-            "Calling get_bugs with positional arguments is"
-            " deprecated, please use keyword arguments instead."
-        )
-        args.extend(key_value)
 
     # pysimplesoap doesn't generate soap Arrays without using wsdl
     # I build body by hand, converting list to array and using standard

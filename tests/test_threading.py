@@ -29,7 +29,7 @@ class TestThreading(object):
 
     def _get_bugs_thread(self, pkg):
         try:
-            bts.get_bugs("package", pkg)
+            bts.get_bugs(package=pkg)
         except Exception:
             self._thread_failed = True
             logger.exception("Threaded get_bugs() call failed.")

@@ -42,22 +42,6 @@ def test_get_usertag():
             assert isinstance(bug, int)
 
 
-def test_get_usertag_filters():
-    """get_usertag should return only requested tags"""
-    tags = bts.get_usertag("debian-python@lists.debian.org")
-    assert isinstance(tags, dict)
-    randomKey0 = list(tags.keys())[0]
-    randomKey1 = list(tags.keys())[1]
-
-    filtered_tags = bts.get_usertag(
-        "debian-python@lists.debian.org", randomKey0, randomKey1
-    )
-
-    assert len(filtered_tags) == 2
-    assert set(filtered_tags[randomKey0]) == set(tags[randomKey0])
-    assert set(filtered_tags[randomKey1]) == set(tags[randomKey1])
-
-
 def test_get_usertag_args(caplog):
     # no tags
     tags = bts.get_usertag("debian-python@lists.debian.org")
@@ -76,22 +60,11 @@ def test_get_usertag_args(caplog):
     )
     assert len(tags) == 2
 
-    # deprecated positional arguments
-    tags = bts.get_usertag(
-        "debian-python@lists.debian.org", randomKey0, randomKey1
-    )
-    assert len(tags) == 2
-    assert "deprecated" in caplog.text
-
 
 def test_get_bugs_empty(caplog):
     """get_bugs should return empty list if no matching bugs where found."""
     bugs = bts.get_bugs(package="thisisatest")
     assert bugs == []
-
-    bugs = bts.get_bugs("package", "thisisatest")
-    assert bugs == []
-    assert "deprecated" in caplog.text
 
 
 def test_get_bugs(caplog):
@@ -101,31 +74,6 @@ def test_get_bugs(caplog):
     assert isinstance(bugs, list)
     for i in bugs:
         assert isinstance(i, int)
-
-    bugs = bts.get_bugs("submitter", "venthur@debian.org")
-    assert len(bugs) != 0
-    assert isinstance(bugs, list)
-    for i in bugs:
-        assert isinstance(i, int)
-    assert "deprecated" in caplog.text
-
-
-def test_get_bugs_list(caplog):
-    """older versions of python-debianbts accepted malformed key-val-lists."""
-    bugs = bts.get_bugs(submitter="venthur@debian.org", severity="normal")
-    assert len(bugs) != 0
-
-    bugs = bts.get_bugs(
-        "submitter", "venthur@debian.org", "severity", "normal"
-    )
-    bugs2 = bts.get_bugs(
-        ["submitter", "venthur@debian.org", "severity", "normal"]
-    )
-    assert len(bugs) != 0
-    bugs.sort()
-    bugs2.sort()
-    assert bugs == bugs2
-    assert "deprecated" in caplog.text
 
 
 def test_newest_bugs():
@@ -210,11 +158,6 @@ def test_get_status_params(caplog):
     assert isinstance(bugs, list)
     assert len(bugs) == 2
 
-    bugs = bts.get_status(BUG, BUG2)
-    assert isinstance(bugs, list)
-    assert len(bugs) == 2
-    assert "deprecated" in caplog.text
-
 
 def test_sample_get_status():
     """test retrieving of a "known" bug status"""
@@ -264,7 +207,7 @@ def test_bug_str(create_bugreport):
 
 def test_get_status_affects():
     """test a bug with "affects" field"""
-    bugs = bts.get_status(290501, 770490)
+    bugs = bts.get_status([290501, 770490])
     assert len(bugs) == 2
     assert bugs[0].affects == []
     assert bugs[1].affects == ["conkeror"]
@@ -289,11 +232,11 @@ def test_status_batches_multiple_arguments(mock_build_client):
     batch_size = bts.BATCH_SIZE
 
     calls = 1
-    bts.get_status(*list(range(batch_size)))
+    bts.get_status(list(range(batch_size)))
     assert mock_client.call.call_count == calls
 
     calls += 2
-    bts.get_status(*list(range(batch_size + 1)))
+    bts.get_status(list(range(batch_size + 1)))
     assert mock_client.call.call_count == calls
 
 
@@ -323,14 +266,14 @@ def test_comparison_equal(create_bugreport):
 
 def test_get_bugs_int_bugs():
     """It is possible to pass a list of bug number to get_bugs"""
-    bugs = bts.get_bugs("bugs", [400010, 400012], "archive", "1")
+    bugs = bts.get_bugs(bugs=[400010, 400012], archive="1")
     assert set(bugs) == set((400010, 400012))
 
 
 def test_get_bugs_single_int_bug():
     """bugs parameter in get_bugs can be a list of int or a int"""
-    bugs1 = bts.get_bugs("bugs", 400040, "archive", "1")
-    bugs2 = bts.get_bugs("bugs", [400040], "archive", "1")
+    bugs1 = bts.get_bugs(bugs=400040, archive="1")
+    bugs2 = bts.get_bugs(bugs=[400040], archive="1")
     assert bugs1 == bugs2
 
 
