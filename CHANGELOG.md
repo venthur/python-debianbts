@@ -5,6 +5,8 @@
 * scrubbed obsolete constraints since debian/buster
 * updated dev-requirements
 * dropped python 3.6 support
+* removed obsolete code to fix issue with pysimplesoap with httplib2 for python
+  versions < 3.4
 
 ## [3.2.3] - 2022-06-29
 

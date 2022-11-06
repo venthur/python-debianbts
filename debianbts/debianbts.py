@@ -15,7 +15,6 @@ import email.feedparser
 import email.policy
 from datetime import datetime
 import os
-import sys
 import logging
 
 import pysimplesoap
@@ -498,25 +497,12 @@ def _parse_status(bug_el):
     return bug
 
 
-# to support python 3.4.3, when using httplib2 as pysimplesoap transport
-# we must work around a bug in httplib2, which uses
-# http.client.HTTPSConnection with check_hostname=True, but with an
-# empty ssl context that prevents the certificate verification. Passing
-# `cacert` to httplib2 through pysimplesoap permits to create a valid
-# ssl context.
 _soap_client_kwargs = {
     "location": URL,
     "action": "",
     "namespace": NS,
     "soap_ns": "soap",
 }
-if sys.version_info.major == 3 and sys.version_info < (3, 4, 3):
-    try:
-        from httplib2 import CA_CERTS
-    except ImportError:
-        pass
-    else:
-        _soap_client_kwargs["cacert"] = CA_CERTS
 
 
 def set_soap_proxy(proxy_arg):
