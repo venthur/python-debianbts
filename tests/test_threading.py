@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class TestThreading(object):
     """this class tests that the module is thread safe"""
 
-    def test_multithreading(self):
+    def test_multithreading(self) -> None:
         self._thread_failed = False
         threads = [
             threading.Thread(target=self._get_bugs_thread, args=(pkg,))
@@ -27,14 +27,14 @@ class TestThreading(object):
 
         assert not self._thread_failed
 
-    def _get_bugs_thread(self, pkg):
+    def _get_bugs_thread(self, pkg: str) -> None:
         try:
             bts.get_bugs(package=pkg)
         except Exception:
             self._thread_failed = True
             logger.exception("Threaded get_bugs() call failed.")
 
-    def _get_bug_log_thread(self, bug_num):
+    def _get_bug_log_thread(self, bug_num: int) -> None:
         try:
             bts.get_bug_log(bug_num)
         except Exception:

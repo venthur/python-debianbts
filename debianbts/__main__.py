@@ -7,7 +7,7 @@ logging.basicConfig(
 )
 
 
-def main():
+def main() -> None:
     logger.warning("Not implemented yet, sorry!")
 
 
