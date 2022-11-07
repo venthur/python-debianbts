@@ -8,7 +8,6 @@ from typing import Callable, Any
 import pytest
 from pytest import LogCaptureFixture
 from pysimplesoap.simplexml import SimpleXMLElement
-from pysimplesoap.client import SoapClient
 
 import debianbts as bts
 from debianbts import Bugreport
@@ -132,7 +131,9 @@ def test_bug_log_message_unicode() -> None:
     """test parsing of bug_log mail with non ascii characters"""
     buglogs = bts.get_bug_log(773321)
     buglog = buglogs[2]
-    msg_payload = buglog["message"].get_payload()
+    msg = buglog["message"]
+    assert isinstance(msg, email.message.Message)
+    msg_payload = msg.get_payload()
     assert isinstance(msg_payload, str)
     assert "é" in msg_payload
 
@@ -219,7 +220,7 @@ def test_get_status_affects() -> None:
 
 @mock.patch.object(bts.debianbts, "_build_soap_client")
 def test_status_batches_large_bug_counts(
-    mock_build_client: Callable[[], SoapClient],
+    mock_build_client: Any,
 ) -> None:
     """get_status should perform requests in batches to reduce server load."""
     mock_build_client.return_value = mock_client = mock.Mock()
@@ -232,7 +233,7 @@ def test_status_batches_large_bug_counts(
 
 @mock.patch.object(bts.debianbts, "_build_soap_client")
 def test_status_batches_multiple_arguments(
-    mock_build_client: Callable[[], SoapClient],
+    mock_build_client: Any,
 ) -> None:
     """get_status should batch multiple arguments into one request."""
     mock_build_client.return_value = mock_client = mock.Mock()
@@ -330,9 +331,11 @@ def test_base64_status_fields() -> None:
 def test_base64_buglog_body() -> None:
     """buglog body is sometimes base64 encoded"""
     buglog = bts.get_bug_log(773321)
-    body = buglog[2]["body"]
-    assert isinstance(buglog[1]["body"], str)
-    assert "é" in body
+    body1 = buglog[1]["body"]
+    body2 = buglog[2]["body"]
+    assert isinstance(body1, str)
+    assert isinstance(body2, str)
+    assert "é" in body2
 
 
 def test_string_status_originator() -> None:

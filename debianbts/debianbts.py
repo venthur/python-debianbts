@@ -121,7 +121,7 @@ class Bugreport:
         self.package: str
         self.tags: list[str]
         self.done: bool
-        self.done_by: str
+        self.done_by: str | None
         self.forwarded: str
         self.mergedwith: list[int]
         self.severity: str
@@ -206,7 +206,7 @@ class Bugreport:
 
 
 def get_status(
-    nrs: int | list[int] | tuple[int],
+    nrs: int | list[int] | tuple[int, ...],
 ) -> list[Bugreport]:
     """Returns a list of Bugreport objects.
 
@@ -223,15 +223,18 @@ def get_status(
     bugs : list of Bugreport objects
 
     """
+    numbers: list[int]
     if not isinstance(nrs, (list, tuple)):
-        nrs = [nrs]
+        numbers = [nrs]
+    else:
+        numbers = list(nrs)
 
     # Process the input in batches to avoid hitting resource limits on
     # the BTS
     soap_client = _build_soap_client()
     bugs = []
-    for i in range(0, len(nrs), BATCH_SIZE):
-        slice_ = nrs[i:i + BATCH_SIZE]
+    for i in range(0, len(numbers), BATCH_SIZE):
+        slice_ = numbers[i:i + BATCH_SIZE]
         # I build body by hand, pysimplesoap doesn't generate soap Arrays
         # without using wsdl
         method_el = SimpleXMLElement("<get_status></get_status>")
@@ -245,7 +248,7 @@ def get_status(
 
 def get_usertag(
     email: str,
-    tags: None | list[str] | tuple[str] = None,
+    tags: None | list[str] | tuple[str, ...] = None,
 ) -> dict[str, list[int]]:
     """Get buglists by usertags.
 
@@ -312,19 +315,27 @@ def get_bug_log(
     buglogs = []
     for buglog_el in items_el.children():
         buglog: dict[str, str | list[Any] | int | email.message.Message] = {}
-        buglog["header"] = _parse_string_el(buglog_el("header"))
-        buglog["body"] = _parse_string_el(buglog_el("body"))
-        buglog["msg_num"] = int(buglog_el("msg_num"))
+        header = _parse_string_el(buglog_el("header"))
+        body = _parse_string_el(buglog_el("body"))
+        msg_num = int(buglog_el("msg_num"))
         # server always returns an empty attachments array ?
-        buglog["attachments"] = []
+        attachments: list[Any] = []
 
         mail_parser = email.feedparser.BytesFeedParser(
             policy=email.policy.SMTP
         )
-        mail_parser.feed(buglog["header"].encode())
+        mail_parser.feed(header.encode())
         mail_parser.feed("\n\n".encode())
-        mail_parser.feed(buglog["body"].encode())
-        buglog["message"] = mail_parser.close()
+        mail_parser.feed(body.encode())
+        message = mail_parser.close()
+
+        buglog = {
+            'header': header,
+            'body': body,
+            'msg_num': msg_num,
+            'attachments': attachments,
+            'message': message,
+        }
 
         buglogs.append(buglog)
     return buglogs
@@ -353,7 +364,7 @@ def newest_bugs(amount: int) -> list[int]:
 
 
 def get_bugs(
-    **kwargs: str,
+    **kwargs: str | int | list[int],
 ) -> list[int]:
     """Get list of bugs matching certain criteria.
 
@@ -544,7 +555,7 @@ def _soap_client_call(method_name: str, *args: Any) -> Any:
 def _build_int_array_el(
     el_name: str,
     parent: SimpleXMLElement,
-    list_: Iterable[Any],
+    list_: list[Any],
 ) -> SimpleXMLElement:
     """build a soapenc:Array made of ints called `el_name` as a child
     of `parent`"""
