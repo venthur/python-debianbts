@@ -1,13 +1,18 @@
 # Changelog
 
+## [unreleased]
+
+* removed support for positional arguments in `get_status`, `get_usertags` and
+  `get_bugs` (deprecated since 2.10.0 (2019-11))
+* removed obsolete code to fix issue with pysimplesoap with httplib2 for python
+  versions < 3.4
+* removed support for ancient versions of pysimplesoap < 1.16.2
+
 ## [3.2.4] - 2022-11-02
 
 * scrubbed obsolete constraints since debian/buster
 * updated dev-requirements
 * dropped python 3.6 support
-* removed obsolete code to fix issue with pysimplesoap with httplib2 for python
-  versions < 3.4
-* removed support for ancient versions of pysimplesoap < 1.16.2
 
 ## [3.2.3] - 2022-06-29
 
