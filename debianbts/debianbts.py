@@ -3,9 +3,9 @@
 """
 Query Debian's Bug Tracking System (BTS).
 
-This module provides a layer between Python and Debian's BTS. It
-provides methods to query the BTS using the BTS' SOAP interface, and the
-Bugreport class which represents a bugreport from the BTS.
+This module provides a layer between Python and Debian's BTS. It provides
+methods to query the BTS using the BTS' SOAP interface, and the Bugreport class
+which represents a bugreport from the BTS.
 """
 
 
@@ -54,24 +54,22 @@ SEVERITIES = {
 class Bugreport:
     """Represents a bugreport from Debian's Bug Tracking System.
 
-    A bugreport object provides all attributes provided by the SOAP
-    interface. Most of the attributes are strings, the others are
-    marked.
+    A bugreport object provides all attributes provided by the SOAP interface.
+    Most of the attributes are strings, the others are marked.
 
     Attributes
     ----------
-
     bug_num : int
         The bugnumber
     severity : str
         Severity of the bugreport
-    tags : list of strings
+    tags : list[str]
         Tags of the bugreport
     subject : str
         The subject/title of the bugreport
     originator : str
         Submitter of the bugreport
-    mergedwith : list of ints
+    mergedwith : list[int]
         List of bugnumbers this bug was merged with
     package : str
         Package of the bugreport
@@ -83,21 +81,21 @@ class Bugreport:
         Date of update of the bugreport
     done : boolean
         Is the bug fixed or not
-    done_by : str or None
+    done_by : str | None
         Name and Email or None
     archived : bool
         Is the bug archived or not
     unarchived : bool
         Was the bug unarchived or not
-    fixed_versions : list of strings
+    fixed_versions : list[str]
         List of versions, can be empty even if bug is fixed
-    found_versions : list of strings
+    found_versions : list[str]
         List of version numbers where bug was found
     forwarded : str
         A URL or email address
-    blocks: list of ints
+    blocks: list[int]
         List of bugnumbers this bug blocks
-    blockedby : list of int
+    blockedby : list[int]
         List of bugnumbers which block this bug
     pending : str
         Either 'pending' or 'done'
@@ -107,7 +105,7 @@ class Bugreport:
         Who took responsibility for fixing this bug
     location : str
         Either 'db-h' or 'archive'
-    affects : list of str
+    affects : list[str]
         List of Packagenames
     summary : str
         Arbitrary text
@@ -163,11 +161,11 @@ class Bugreport:
 
             critical > grave > serious > important > normal > minor > wishlist.
 
-        Openness always beats urgency, eg an archived bug is *always*
-        smaller than an outstanding bug.
+        Openness always beats urgency, eg an archived bug is *always* smaller
+        than an outstanding bug.
 
-        This sorting is useful for displaying bugreports in a list and
-        sorting them in a useful way.
+        This sorting is useful for displaying bugreports in a list and sorting
+        them in a useful way.
 
         """
         return self._get_value() < other._get_value()
@@ -210,7 +208,7 @@ def get_status(
 ) -> list[Bugreport]:
     """Returns a list of Bugreport objects.
 
-    Given a list of bugnumbers this method returns a list of Bugreport
+    Given a list of bug numbers this method returns a list of Bugreport
     objects.
 
     Parameters
@@ -309,7 +307,7 @@ def get_bug_log(
     Returns
     -------
     list[dict[str, str | list[Any] | int | email.message.Message]]
-        list of dicts
+        list of buglogs
 
     """
     reply = _soap_client_call("get_bug_log", nr)
@@ -351,8 +349,8 @@ def newest_bugs(amount: int) -> list[int]:
     Parameters
     ----------
     amount
-        the number of desired bugs. E.g. if `amount` is 10 the method
-        will return the 10 latest bugs.
+        the number of desired bugs. E.g. if `amount` is 10 the method will
+        return the 10 latest bugs.
 
     Returns
     -------
@@ -383,14 +381,14 @@ def get_bugs(
             * "severity": bugs with a certain severity
             * "status": can be either "done", "forwarded", or "open"
             * "tag": see http://www.debian.org/Bugs/Developer#tags for
-               available tags
+              available tags
             * "owner": bugs which are assigned to `owner`
             * "bugs": takes single int or list of bugnumbers, filters the list
-               according to given criteria
+              according to given criteria
             * "correspondent": bugs where `correspondent` has sent a mail to
-            * "archive": takes a string: "0" (unarchived), "1"
-              (archived) or "both" (un- and archived). if omitted, only
-              returns un-archived bugs.
+            * "archive": takes a string: "0" (unarchived), "1" (archived) or
+              "both" (un- and archived). if omitted, only returns un-archived
+              bugs.
 
     Returns
     -------
