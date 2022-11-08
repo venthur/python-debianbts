@@ -5,6 +5,7 @@
 * removed support for positional arguments in `get_status`, `get_usertags` and
   `get_bugs` (deprecated since 2.10.0 (2019-11))
 * added type hints and mypy (strict) to test suite
+* updated docstrings to use type hints
 * removed obsolete code to fix issue with pysimplesoap with httplib2 for python
   versions < 3.4
 * removed support for ancient versions of pysimplesoap < 1.16.2

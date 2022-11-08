@@ -215,12 +215,13 @@ def get_status(
 
     Parameters
     ----------
-    nrs :
+    nrs
         The bugnumbers
 
     Returns
     -------
-    bugs : list of Bugreport objects
+    list[Bugreport]
+        list of Bugreport objects
 
     """
     numbers: list[int]
@@ -254,14 +255,14 @@ def get_usertag(
 
     Parameters
     ----------
-    email :
-    tags : list of strings
-        If tags are given the dictionary is limited to the matching
-        tags, if no tags are given all available tags are returned.
+    email
+    tags
+        If tags are given the dictionary is limited to the matching tags, if no
+        tags are given all available tags are returned.
 
     Returns
     -------
-    mapping : dict
+    dict[str, list[int]]
         a mapping of usertag -> buglist
 
     """
@@ -302,12 +303,13 @@ def get_bug_log(
 
     Parameters
     ----------
-    nr :
+    nr
         the bugnumber
 
     Returns
     -------
-    buglogs : list of dicts
+    list[dict[str, str | list[Any] | int | email.message.Message]]
+        list of dicts
 
     """
     reply = _soap_client_call("get_bug_log", nr)
@@ -348,13 +350,13 @@ def newest_bugs(amount: int) -> list[int]:
 
     Parameters
     ----------
-    amount :
+    amount
         the number of desired bugs. E.g. if `amount` is 10 the method
         will return the 10 latest bugs.
 
     Returns
     -------
-    bugs : list of int
+    list[int]
         the bugnumbers
 
     """
@@ -372,7 +374,7 @@ def get_bugs(
 
     Arguments
     ---------
-    kwargs :
+    kwargs
         Possible keywords are:
             * "package": bugs for the given package
             * "submitter": bugs from the submitter
@@ -392,13 +394,13 @@ def get_bugs(
 
     Returns
     -------
-    bugs : list of ints
+    list[int]
         the bugnumbers
 
     Examples
     --------
-    >>> get_bugs(package='gtk-qt-engine', severity='normal')
-    [12345, 23456]
+        >>> get_bugs(package='gtk-qt-engine', severity='normal')
+        [12345, 23456]
 
     """
     # flatten kwargs to list:
@@ -425,7 +427,19 @@ def get_bugs(
 
 
 def _parse_status(bug_el: SimpleXMLElement) -> Bugreport:
-    """Return a bugreport object from a given status xml element"""
+    """Return a bugreport object from a given status xml element
+
+    Parameters
+    ----------
+    bug_el
+        a status XML element
+
+    Returns
+    -------
+    Bugreport
+        a Bugreport object
+
+    """
     bug = Bugreport()
 
     # plain fields
@@ -493,7 +507,7 @@ def set_soap_proxy(proxy_arg: str) -> None:
 
     Parameters
     ----------
-    proxy_arg :
+    proxy_arg
 
     """
     _soap_client_kwargs["proxy"] = proxy_arg
@@ -506,13 +520,22 @@ def set_soap_location(url: str) -> None:
 
     Parameters
     ----------
-    url :
+    url
+        default URL
 
     """
     _soap_client_kwargs["location"] = url
 
 
 def get_soap_client_kwargs() -> dict[str, str]:
+    """Returns SOAP client kwargs.
+
+    Returns
+    -------
+    dict[str, str]
+        the SOAP client kwargs
+
+    """
     return _soap_client_kwargs
 
 
@@ -524,7 +547,8 @@ def _build_soap_client() -> SoapClient:
 
     Returns
     -------
-    sc : SoapClient instance
+    SoapClient
+        a SoapClient instance
 
     """
     return SoapClient(**_soap_client_kwargs)
@@ -533,9 +557,22 @@ def _build_soap_client() -> SoapClient:
 def _convert_soap_method_args(*args: Iterable[Any]) -> list[tuple[str, Any]]:
     """Convert arguments to be consumed by a SoapClient method
 
+    Parameters
+    ----------
+    *args
+        any argument
+
+    Returns
+    -------
+    list[tuple[str, Any]]
+        the converted arguments
+
+    Examples
+    --------
     Soap client required a list of named arguments:
-    >>> _convert_soap_method_args('a', 1)
-    [('arg0', 'a'), ('arg1', 1)]
+
+        >>> _convert_soap_method_args('a', 1)
+        [('arg0', 'a'), ('arg1', 1)]
 
     """
     soap_args = []
@@ -545,7 +582,19 @@ def _convert_soap_method_args(*args: Iterable[Any]) -> list[tuple[str, Any]]:
 
 
 def _soap_client_call(method_name: str, *args: Any) -> Any:
-    """Wrapper to call SoapClient method"""
+    """Wrapper to call SoapClient method
+
+    Parameters
+    ----------
+    method_name
+        the method name
+    *args
+
+    Returns
+    -------
+    Any
+
+    """
     # a new client instance is built for threading issues
     soap_client = _build_soap_client()
     soap_args = _convert_soap_method_args(*args)
@@ -557,8 +606,22 @@ def _build_int_array_el(
     parent: SimpleXMLElement,
     list_: list[Any],
 ) -> SimpleXMLElement:
-    """build a soapenc:Array made of ints called `el_name` as a child
-    of `parent`"""
+    """Build Array as child of parent.
+
+    More specifically: Build a soapenc:Array made of ints called `el_name` as a
+    child of `parent`.
+
+    Parameters
+    ----------
+    el_name
+    parent
+    list
+
+    Returns
+    -------
+    SimpleXMLElement
+
+    """
     el = parent.add_child(el_name)
     el.add_attribute(
         "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/"
@@ -572,13 +635,37 @@ def _build_int_array_el(
 
 
 def _parse_bool(el: SimpleXMLElement) -> bool:
-    """parse a boolean value from a xml element"""
+    """Parse a boolean value from a XML element.
+
+    Parameters
+    ----------
+    el
+        the element to parse
+
+    Returns
+    -------
+    bool
+        the parsed value
+
+    """
     value = str(el)
     return not value.strip() in ("", "0")
 
 
 def _parse_string_el(el: SimpleXMLElement) -> str:
-    """read a string element, maybe encoded in base64"""
+    """Read a string element, maybe encoded in base64.
+
+    Parameters
+    ----------
+    el
+        the element to parse
+
+    Returns
+    -------
+    str
+        the parsed value
+
+    """
     value = str(el)
     el_type = el.attributes().get("xsi:type")
     if el_type and el_type.value == "xsd:base64Binary":
