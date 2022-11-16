@@ -25,20 +25,44 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+        cache: "pip"
 
-    - name: Run mypy
-      run: |
-        make mypy
+    - run: |
+        make venv
+    - run: |
+        make test
 
-    - name: Run linter
-      run: |
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+        cache: "pip"
+
+    - run: |
+        make venv
+    - run: |
         make lint
 
-    - name: Run tests
-      run: |
-        make test
+
+  mypy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+        cache: "pip"
+
+    - run: |
+        make venv
+    - run: |
+        make mypy
