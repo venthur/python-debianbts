@@ -51,6 +51,7 @@ jobs:
     - run: |
         make lint
 
+
   mypy:
     runs-on: ubuntu-latest
 
