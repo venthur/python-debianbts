@@ -6,7 +6,7 @@ import debianbts as bts
 logger = logging.getLogger(__name__)
 
 
-class TestThreading(object):
+class TestThreading:
     """this class tests that the module is thread safe"""
 
     def test_multithreading(self) -> None:

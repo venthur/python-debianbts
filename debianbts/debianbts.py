@@ -147,7 +147,7 @@ class Bugreport:
 
     def __str__(self) -> str:
         s = "\n".join(
-            "{}: {}".format(key, value)
+            f"{key}: {value}"
             for key, value in self.__dict__.items()
         )
         return s + "\n"
@@ -325,7 +325,7 @@ def get_bug_log(
             policy=email.policy.SMTP
         )
         mail_parser.feed(header.encode())
-        mail_parser.feed("\n\n".encode())
+        mail_parser.feed(b"\n\n")
         mail_parser.feed(body.encode())
         message = mail_parser.close()
 
@@ -625,7 +625,7 @@ def _build_int_array_el(
         "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/"
     )
     el.add_attribute("xsi:type", "soapenc:Array")
-    el.add_attribute("soapenc:arrayType", "xsd:int[{:d}]".format(len(list_)))
+    el.add_attribute("soapenc:arrayType", f"xsd:int[{len(list_):d}]")
     for item in list_:
         item_el = el.add_child("item", str(item))
         item_el.add_attribute("xsi:type", "xsd:int")

@@ -276,7 +276,7 @@ def test_comparison_equal(create_bugreport: Callable[..., Bugreport]) -> None:
 def test_get_bugs_int_bugs() -> None:
     """It is possible to pass a list of bug number to get_bugs"""
     bugs = bts.get_bugs(bugs=[400010, 400012], archive="1")
-    assert set(bugs) == set((400010, 400012))
+    assert set(bugs) == {400010, 400012}
 
 
 def test_get_bugs_single_int_bug() -> None:
