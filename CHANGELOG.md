@@ -9,6 +9,7 @@
 * removed obsolete code to fix issue with pysimplesoap with httplib2 for python
   versions < 3.4
 * removed support for ancient versions of pysimplesoap < 1.16.2
+* updated github actions
 
 ## [3.2.4] - 2022-11-02
 
