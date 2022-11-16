@@ -147,8 +147,7 @@ class Bugreport:
 
     def __str__(self) -> str:
         s = "\n".join(
-            f"{key}: {value}"
-            for key, value in self.__dict__.items()
+            f"{key}: {value}" for key, value in self.__dict__.items()
         )
         return s + "\n"
 
@@ -288,7 +287,7 @@ def get_usertag(
 
 
 def get_bug_log(
-    nr: int
+    nr: int,
 ) -> list[dict[str, str | list[Any] | int | email.message.Message]]:
     """Get Buglogs.
 
@@ -330,11 +329,11 @@ def get_bug_log(
         message = mail_parser.close()
 
         buglog = {
-            'header': header,
-            'body': body,
-            'msg_num': msg_num,
-            'attachments': attachments,
-            'message': message,
+            "header": header,
+            "body": body,
+            "msg_num": msg_num,
+            "attachments": attachments,
+            "message": message,
         }
 
         buglogs.append(buglog)
@@ -457,9 +456,7 @@ def _parse_status(bug_el: SimpleXMLElement) -> Bugreport:
         setattr(bug, field, _parse_string_el(bug_el(field)))
 
     bug.date = datetime.utcfromtimestamp(float(bug_el("date")))
-    bug.log_modified = datetime.utcfromtimestamp(
-        float(bug_el("log_modified"))
-    )
+    bug.log_modified = datetime.utcfromtimestamp(float(bug_el("log_modified")))
     bug.tags = [tag for tag in str(bug_el("tags")).split()]
     bug.done = _parse_bool(bug_el("done"))
     bug.done_by = _parse_string_el(bug_el("done")) if bug.done else None
