@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [4.0.0] - 2022-11-19
 
 * removed support for positional arguments in `get_status`, `get_usertags` and
   `get_bugs` (deprecated since 2.10.0 (2019-11))
