@@ -19,11 +19,9 @@ VERSION = $(shell python3 setup.py --version)
 all: lint mypy test
 
 
-$(VENV): requirements.txt requirements-dev.txt setup.py
+$(VENV): pyproject.toml
 	$(PY) -m venv $(VENV)
-	$(BIN)/pip install --upgrade -r requirements.txt
-	$(BIN)/pip install --upgrade -r requirements-dev.txt
-	$(BIN)/pip install -e .
+	$(BIN)/pip install -e .['dev']
 	touch $(VENV)
 
 .PHONY: test
@@ -41,15 +39,12 @@ lint: $(VENV)
 .PHONY: release
 release: $(VENV)
 	rm -rf dist
-	$(BIN)/python setup.py sdist bdist_wheel
+	$(BIN)/python3 -m build
 	$(BIN)/twine upload dist/*
 
 .PHONY: docs
 docs: $(VENV)
 	$(BIN)/sphinx-build $(DOCS_SRC) $(DOCS_OUT)
-
-tarball:
-	git archive --output=../python-debianbts_$(VERSION).orig.tar.gz HEAD
 
 .PHONY: clean
 clean:
