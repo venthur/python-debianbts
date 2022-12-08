@@ -13,10 +13,7 @@ ifeq ($(OS), Windows_NT)
 endif
 
 
-VERSION = $(shell python3 setup.py --version)
-
-
-all: lint mypy test
+all: lint mypy test test-release
 
 
 $(VENV): pyproject.toml
@@ -36,10 +33,17 @@ mypy: $(VENV)
 lint: $(VENV)
 	$(BIN)/flake8
 
-.PHONY: release
-release: $(VENV)
+.PHONY: build
+build: $(VENV)
 	rm -rf dist
 	$(BIN)/python3 -m build
+
+.PHONY: test-release
+test-release: $(VENV) build
+	$(BIN)/twine check dist/*
+
+.PHONY: release
+release: $(VENV) build
 	$(BIN)/twine upload dist/*
 
 .PHONY: docs
