@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.1] - 2022-12-08
+
+* switched from setup.py to pyproject.toml
+* modernized github actions
+* added test for release
+
 ## [4.0.0] - 2022-11-19
 
 * removed support for positional arguments in `get_status`, `get_usertags` and

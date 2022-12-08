@@ -1,3 +1,11 @@
+python-debianbts (4.0.1) unstable; urgency=medium
+
+  * switched from setup.py to pyproject.toml
+  * modernized github actions
+  * added test for release
+
+ -- Bastian Venthur <venthur@debian.org>  Thu, 08 Dec 2022 12:34:45 +0100
+
 python-debianbts (4.0.0) experimental; urgency=medium
 
   * removed support for positional arguments in `get_status`, `get_usertags`
