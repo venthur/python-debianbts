@@ -13,11 +13,13 @@ ifeq ($(OS), Windows_NT)
 endif
 
 
+.PHONY: all
 all: lint mypy test test-release
 
-
-$(VENV): pyproject.toml
+$(VENV): requirements.txt requirements-dev.txt pyproject.toml
 	$(PY) -m venv $(VENV)
+	$(BIN)/pip install --upgrade -r requirements.txt
+	$(BIN)/pip install --upgrade -r requirements-dev.txt
 	$(BIN)/pip install -e .['dev']
 	touch $(VENV)
 
@@ -31,7 +33,7 @@ mypy: $(VENV)
 
 .PHONY: lint
 lint: $(VENV)
-	$(BIN)/flake8
+	$(BIN)/ruff check .
 
 .PHONY: build
 build: $(VENV)

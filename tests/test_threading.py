@@ -1,5 +1,8 @@
-import threading
+"""Test threading behaviour of debianbts."""
+
+
 import logging
+import threading
 
 import debianbts as bts
 
@@ -7,9 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class TestThreading:
-    """this class tests that the module is thread safe"""
+    """Test the module's thread safety."""
 
     def test_multithreading(self) -> None:
+        """Test multithreading."""
         self._thread_failed = False
         threads = [
             threading.Thread(target=self._get_bugs_thread, args=(pkg,))

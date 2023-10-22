@@ -10,7 +10,7 @@ authors = [
 description = "Python interface to Debian's Bug Tracking System"
 readme = "README.md"
 license = { file="LICENSE" }
-requires-python = ">=3.7, <4"
+requires-python = ">=3.8, <4"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -20,7 +20,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-    "pysimplesoap>=1.16.2",
+    "pysimplesoap",
 ]
 
 [project.scripts]
@@ -33,15 +33,15 @@ debianbts = "debianbts.__main__:main"
 
 [project.optional-dependencies]
 dev = [
-    "build==0.9.0",
-    "sphinx==4.3.2",
-    "pytest==7.2.0",
-    "pytest-cov==4.0.0",
-    "pytest-xdist==3.0.2",
-    "flake8==5.0.4",
-    "wheel==0.37.1",
-    "twine==4.0.1",
-    "mypy==0.982",
+    "build",
+    "sphinx",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+    "flake8",
+    "wheel",
+    "twine",
+    "mypy",
 ]
 
 [tool.setuptools.dynamic]
@@ -58,6 +58,21 @@ addopts = """
     --cov-report=term-missing:skip-covered
     --numprocesses=auto
 """
+
+[tool.ruff]
+select = [
+    "F",        # pyflakes
+    "E", "W",   # pycodestyle
+    "C90",      # mccabe
+    "I",        # isort
+    "D",        # pydocstyle
+    "UP"        # pyupgrade
+]
+line-length = 79
+target-version = "py38"
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
 
 [tool.mypy]
 files = "debianbts,tests"

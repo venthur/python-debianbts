@@ -14,14 +14,13 @@ from __future__ import annotations
 import base64
 import email.feedparser
 import email.policy
-from datetime import datetime
-import os
 import logging
+import os
+from datetime import datetime
 from typing import Any, Iterable
 
 from pysimplesoap.client import SoapClient
 from pysimplesoap.simplexml import SimpleXMLElement
-
 
 logger = logging.getLogger(__name__)
 
@@ -146,6 +145,7 @@ class Bugreport:
         # self.id = None
 
     def __str__(self) -> str:
+        """Prepare string representation."""
         s = "\n".join(
             f"{key}: {value}" for key, value in self.__dict__.items()
         )
@@ -170,20 +170,25 @@ class Bugreport:
         return self._get_value() < other._get_value()
 
     def __le__(self, other: Bugreport) -> bool:
+        """Check if object <= other."""
         return not self.__gt__(other)
 
     def __gt__(self, other: Bugreport) -> bool:
+        """Check if object > other."""
         return self._get_value() > other._get_value()
 
     def __ge__(self, other: Bugreport) -> bool:
+        """Check if object >= other."""
         return not self.__lt__(other)
 
     def __eq__(self, other: object) -> bool:
+        """Check if object == other."""
         if not isinstance(other, Bugreport):
             return NotImplemented
         return self._get_value() == other._get_value()
 
     def __ne__(self, other: object) -> bool:
+        """Check if object != other."""
         if not isinstance(other, Bugreport):
             return NotImplemented
         return not self.__eq__(other)
@@ -205,7 +210,7 @@ class Bugreport:
 def get_status(
     nrs: int | list[int] | tuple[int, ...],
 ) -> list[Bugreport]:
-    """Returns a list of Bugreport objects.
+    """Return a list of Bugreport objects.
 
     Given a list of bug numbers this method returns a list of Bugreport
     objects.
@@ -341,7 +346,7 @@ def get_bug_log(
 
 
 def newest_bugs(amount: int) -> list[int]:
-    """Returns the newest bugs.
+    """Return the newest bugs.
 
     This method can be used to query the BTS for the n newest bugs.
 
@@ -424,7 +429,7 @@ def get_bugs(
 
 
 def _parse_status(bug_el: SimpleXMLElement) -> Bugreport:
-    """Return a bugreport object from a given status xml element
+    """Return a bugreport object from a given status xml element.
 
     Parameters
     ----------
@@ -509,7 +514,7 @@ def set_soap_proxy(proxy_arg: str) -> None:
 
 
 def set_soap_location(url: str) -> None:
-    """Set location URL for SOAP client
+    """Set location URL for SOAP client.
 
     You may use this method after import to override the default URL.
 
@@ -523,7 +528,7 @@ def set_soap_location(url: str) -> None:
 
 
 def get_soap_client_kwargs() -> dict[str, str]:
-    """Returns SOAP client kwargs.
+    """Return SOAP client kwargs.
 
     Returns
     -------
@@ -535,7 +540,7 @@ def get_soap_client_kwargs() -> dict[str, str]:
 
 
 def _build_soap_client() -> SoapClient:
-    """Factory method that creates a SoapClient.
+    """Return a SoapClient.
 
     For thread-safety we create SoapClients on demand instead of using a
     module-level one.
@@ -550,7 +555,7 @@ def _build_soap_client() -> SoapClient:
 
 
 def _convert_soap_method_args(*args: Iterable[Any]) -> list[tuple[str, Any]]:
-    """Convert arguments to be consumed by a SoapClient method
+    """Convert arguments to be consumed by a SoapClient method.
 
     Parameters
     ----------
@@ -577,7 +582,7 @@ def _convert_soap_method_args(*args: Iterable[Any]) -> list[tuple[str, Any]]:
 
 
 def _soap_client_call(method_name: str, *args: Any) -> Any:
-    """Wrapper to call SoapClient method
+    """SoapClient method wrapper.
 
     Parameters
     ----------
@@ -644,7 +649,7 @@ def _parse_bool(el: SimpleXMLElement) -> bool:
 
     """
     value = str(el)
-    return not value.strip() in ("", "0")
+    return value.strip() not in ("", "0")
 
 
 def _parse_string_el(el: SimpleXMLElement) -> str:

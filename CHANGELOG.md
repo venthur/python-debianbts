@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.2] - 2023-10-22
+
+* distribute typing information using py.typed
+* replaced flake8 with ruff
+* raised minimum python version to 3.8
+
 ## [4.0.1] - 2022-12-08
 
 * switched from setup.py to pyproject.toml

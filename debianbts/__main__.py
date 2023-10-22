@@ -1,3 +1,6 @@
+"""Entry point for the (not yet implemented cli."""
+
+
 import logging
 
 logger = logging.getLogger("debianbts")
@@ -8,6 +11,7 @@ logging.basicConfig(
 
 
 def main() -> None:
+    """CLI entry point."""
     logger.warning("Not implemented yet, sorry!")
 
 
