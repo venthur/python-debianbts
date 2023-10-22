@@ -1,3 +1,12 @@
+python-debianbts (4.0.2) unstable; urgency=medium
+
+  * distribute typing information using py.typed (Closes: #1054330)
+  * replaced flake8 with ruff
+  * raised minimum python version to 3.8
+  * increased minimum version of pysimplesoap to 1.16.2-5 (Closes: #1032430)
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 22 Oct 2023 15:29:00 +0200
+
 python-debianbts (4.0.1) unstable; urgency=medium
 
   * switched from setup.py to pyproject.toml
