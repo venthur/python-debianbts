@@ -1,5 +1,9 @@
 # Changelog
 
+## [unreleased] - xxxx
+
+* Added Python 3.12 to test suite
+
 ## [4.0.2] - 2023-10-22
 
 * distribute typing information using py.typed
