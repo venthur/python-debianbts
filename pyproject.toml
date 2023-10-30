@@ -38,7 +38,7 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-xdist",
-    "flake8",
+    "ruff",
     "wheel",
     "twine",
     "mypy",
