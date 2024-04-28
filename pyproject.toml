@@ -19,9 +19,7 @@ classifiers = [
     "Topic :: Software Development :: Bug Tracking",
 ]
 dynamic = ["version"]
-dependencies = [
-    "pysimplesoap",
-]
+dependencies = []
 
 [project.scripts]
 debianbts = "debianbts.__main__:main"

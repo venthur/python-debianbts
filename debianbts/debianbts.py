@@ -16,11 +16,11 @@ import email.feedparser
 import email.policy
 import logging
 import os
+import urllib.request
+import xml.etree.ElementTree as ET
+from collections.abc import Iterable, Mapping
 from datetime import datetime
-from typing import Any, Iterable
-
-from pysimplesoap.client import SoapClient
-from pysimplesoap.simplexml import SimpleXMLElement
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -234,18 +234,12 @@ def get_status(
 
     # Process the input in batches to avoid hitting resource limits on
     # the BTS
-    soap_client = _build_soap_client()
     bugs = []
     for i in range(0, len(numbers), BATCH_SIZE):
-        slice_ = numbers[i:i + BATCH_SIZE]
-        # I build body by hand, pysimplesoap doesn't generate soap Arrays
-        # without using wsdl
-        method_el = SimpleXMLElement("<get_status></get_status>")
-        _build_int_array_el("arg0", method_el, slice_)
-        reply = soap_client.call("get_status", method_el)
-        for bug_item_el in reply("s-gensym3").children() or []:
-            bug_el = bug_item_el.children()[1]
-            bugs.append(_parse_status(bug_el))
+        slice_ = numbers[i : i + BATCH_SIZE]
+        result_dict = _soap_client_call(f"{{{NS}}}get_status", slice_)
+        for bug in result_dict.values():
+            bugs.append(_parse_status(bug))
     return bugs
 
 
@@ -271,24 +265,8 @@ def get_usertag(
     if tags is None:
         tags = []
 
-    reply = _soap_client_call("get_usertag", email, *tags)
-    map_el = reply("s-gensym3")
-    mapping = {}
-    # element <s-gensys3> in response can have standard type
-    # xsi:type=apachens:Map (example, for email debian-python@lists.debian.org)
-    # OR no type, in this case keys are the names of child elements and
-    # the array is contained in the child elements
-    type_attr = map_el.attributes().get("xsi:type")
-    if type_attr and type_attr.value == "apachens:Map":
-        for usertag_el in map_el.children() or []:
-            tag = str(usertag_el("key"))
-            buglist_el = usertag_el("value")
-            mapping[tag] = [int(bug) for bug in buglist_el.children() or []]
-    else:
-        for usertag_el in map_el.children() or []:
-            tag = usertag_el.get_name()
-            mapping[tag] = [int(bug) for bug in usertag_el.children() or []]
-    return mapping
+    result = _soap_client_call(f"{{{NS}}}get_usertag", email, *tags)
+    return {k: list(map(int, v)) for k, v in result.items()}
 
 
 def get_bug_log(
@@ -314,14 +292,12 @@ def get_bug_log(
         list of buglogs
 
     """
-    reply = _soap_client_call("get_bug_log", nr)
-    items_el = reply("soapenc:Array")
+    items = _soap_client_call(f"{{{NS}}}get_bug_log", nr)
     buglogs = []
-    for buglog_el in items_el.children():
-        buglog: dict[str, str | list[Any] | int | email.message.Message] = {}
-        header = _parse_string_el(buglog_el("header"))
-        body = _parse_string_el(buglog_el("body"))
-        msg_num = int(buglog_el("msg_num"))
+    for item in items:
+        header = item["header"]
+        body = item["body"]
+        msg_num = int(item["msg_num"])
         # server always returns an empty attachments array ?
         attachments: list[Any] = []
 
@@ -362,9 +338,8 @@ def newest_bugs(amount: int) -> list[int]:
         the bugnumbers
 
     """
-    reply = _soap_client_call("newest_bugs", amount)
-    items_el = reply("soapenc:Array")
-    return [int(item_el) for item_el in items_el.children() or []]
+    result = _soap_client_call(f"{{{NS}}}newest_bugs", amount)
+    return list(map(int, result))
 
 
 def get_bugs(
@@ -405,36 +380,17 @@ def get_bugs(
         [12345, 23456]
 
     """
-    # flatten kwargs to list:
-    # {'foo': 'bar', 'baz': 1} -> ['foo', 'bar','baz', 1]
-    args = []
-    for k, v in kwargs.items():
-        args.extend([k, v])
-
-    # pysimplesoap doesn't generate soap Arrays without using wsdl
-    # I build body by hand, converting list to array and using standard
-    # pysimplesoap marshalling for other types
-    method_el = SimpleXMLElement("<get_bugs></get_bugs>")
-    for arg_n, kv in enumerate(args):
-        arg_name = "arg" + str(arg_n)
-        if isinstance(kv, (list, tuple)):
-            _build_int_array_el(arg_name, method_el, kv)
-        else:
-            method_el.marshall(arg_name, kv)
-
-    soap_client = _build_soap_client()
-    reply = soap_client.call("get_bugs", method_el)
-    items_el = reply("soapenc:Array")
-    return [int(item_el) for item_el in items_el.children() or []]
+    result = _soap_client_call(f"{{{NS}}}get_bugs", kwargs)
+    return list(map(int, result))
 
 
-def _parse_status(bug_el: SimpleXMLElement) -> Bugreport:
+def _parse_status(bug_el: dict[str, Any]) -> Bugreport:
     """Return a bugreport object from a given status xml element.
 
     Parameters
     ----------
     bug_el
-        a status XML element
+        a dict containing a debbugs bug description
 
     Returns
     -------
@@ -457,46 +413,51 @@ def _parse_status(bug_el: SimpleXMLElement) -> Bugreport:
         "source",
         "pending",
         "forwarded",
+        "found_versions",
+        "fixed_versions",
     ):
-        setattr(bug, field, _parse_string_el(bug_el(field)))
+        setattr(bug, field, bug_el[field])
 
-    bug.date = datetime.utcfromtimestamp(float(bug_el("date")))
-    bug.log_modified = datetime.utcfromtimestamp(float(bug_el("log_modified")))
-    bug.tags = [tag for tag in str(bug_el("tags")).split()]
-    bug.done = _parse_bool(bug_el("done"))
-    bug.done_by = _parse_string_el(bug_el("done")) if bug.done else None
-    bug.archived = _parse_bool(bug_el("archived"))
-    bug.unarchived = _parse_bool(bug_el("unarchived"))
-    bug.bug_num = int(bug_el("bug_num"))
-    bug.mergedwith = [int(i) for i in str(bug_el("mergedwith")).split()]
-    bug.blockedby = [int(i) for i in str(bug_el("blockedby")).split()]
-    bug.blocks = [int(i) for i in str(bug_el("blocks")).split()]
+    bug.date = datetime.utcfromtimestamp(float(bug_el["date"]))
+    bug.log_modified = datetime.utcfromtimestamp(float(bug_el["log_modified"]))
+    bug.tags = str(bug_el["tags"]).split()
+    bug.done = _parse_bool(bug_el["done"])
+    bug.done_by = bug_el["done"] if bug.done else None
+    bug.archived = _parse_bool(bug_el["archived"])
+    bug.unarchived = _parse_bool(bug_el["unarchived"])
+    bug.bug_num = int(bug_el["bug_num"])
+    bug.mergedwith = [int(i) for i in str(bug_el["mergedwith"]).split()]
+    bug.blockedby = [int(i) for i in str(bug_el["blockedby"]).split()]
+    bug.blocks = [int(i) for i in str(bug_el["blocks"]).split()]
 
-    bug.found_versions = [
-        str(el) for el in bug_el("found_versions").children() or []
-    ]
-    bug.fixed_versions = [
-        str(el) for el in bug_el("fixed_versions").children() or []
-    ]
-    affects = [_f for _f in str(bug_el("affects")).split(",") if _f]
+    affects = [_f for _f in str(bug_el["affects"]).split(",") if _f]
     bug.affects = [a.strip() for a in affects]
-    # Also available, but unused or broken
-    # bug.keywords = [keyword for keyword in
-    #                 str(bug_el('keywords')).split()]
-    # bug.fixed = _parse_crappy_soap(tmp, "fixed")
-    # bug.found = _parse_crappy_soap(tmp, "found")
-    # bug.found_date = \
-    #     [datetime.utcfromtimestamp(i) for i in tmp["found_date"]]
-    # bug.fixed_date = \
-    #     [datetime.utcfromtimestamp(i) for i in tmp["fixed_date"]]
+
+    # Also available, but unused or broken:
+    # 'keywords', 'found', 'found_date', 'fixed', 'fixed_data'
+
     return bug
+
+
+def _parse_bool(x: str) -> bool:
+    """Parse a boolean value, according to Perl's rules.
+
+    Parameters
+    ----------
+    x
+        the string to parse
+
+    Returns
+    -------
+    bool
+        the parsed value
+
+    """
+    return x not in ("", "0")
 
 
 _soap_client_kwargs = {
     "location": URL,
-    "action": "",
-    "namespace": NS,
-    "soap_ns": "soap",
 }
 
 
@@ -539,50 +500,8 @@ def get_soap_client_kwargs() -> dict[str, str]:
     return _soap_client_kwargs
 
 
-def _build_soap_client() -> SoapClient:
-    """Return a SoapClient.
-
-    For thread-safety we create SoapClients on demand instead of using a
-    module-level one.
-
-    Returns
-    -------
-    SoapClient
-        a SoapClient instance
-
-    """
-    return SoapClient(**_soap_client_kwargs)
-
-
-def _convert_soap_method_args(*args: Iterable[Any]) -> list[tuple[str, Any]]:
-    """Convert arguments to be consumed by a SoapClient method.
-
-    Parameters
-    ----------
-    *args
-        any argument
-
-    Returns
-    -------
-    list[tuple[str, Any]]
-        the converted arguments
-
-    Examples
-    --------
-    Soap client required a list of named arguments:
-
-        >>> _convert_soap_method_args('a', 1)
-        [('arg0', 'a'), ('arg1', 1)]
-
-    """
-    soap_args = []
-    for arg_n, arg in enumerate(args):
-        soap_args.append(("arg" + str(arg_n), arg))
-    return soap_args
-
-
 def _soap_client_call(method_name: str, *args: Any) -> Any:
-    """SoapClient method wrapper.
+    """Perform a SOAP request.
 
     Parameters
     ----------
@@ -595,80 +514,188 @@ def _soap_client_call(method_name: str, *args: Any) -> Any:
     Any
 
     """
-    # a new client instance is built for threading issues
-    soap_client = _build_soap_client()
-    soap_args = _convert_soap_method_args(*args)
-    return getattr(soap_client, method_name)(*soap_args)
+    handlers = []
+    if "proxy" in _soap_client_kwargs:
+        handlers.append(
+            urllib.request.ProxyHandler(
+                proxies={
+                    "http": _soap_client_kwargs["proxy"],
+                    "https": _soap_client_kwargs["proxy"],
+                }
+            )
+        )
+    opener = urllib.request.build_opener(*handlers)
+
+    encoded_request = _encode_soap_request(method_name, args)
+    logger.debug("Request: %s", encoded_request)
+
+    try:
+        with opener.open(
+            urllib.request.Request(
+                url=_soap_client_kwargs["location"],
+                method="POST",
+                headers={
+                    "Content-Type": 'text/xml; charset="utf-8"',
+                    "SOAPAction": "",
+                },
+                data=encoded_request,
+            )
+        ) as f:
+            encoded_response = f.read()
+    except urllib.error.HTTPError as e:
+        if e.headers.get("Content-Type", "").startswith("text/xml"):
+            # It's probably a SOAP Fault response
+            encoded_response = e.fp.read()
+        else:
+            raise
+
+    logger.debug("Response: %s", encoded_response)
+    return _decode_soap_response(encoded_response)
 
 
-def _build_int_array_el(
-    el_name: str,
-    parent: SimpleXMLElement,
-    list_: list[Any],
-) -> SimpleXMLElement:
-    """Build Array as child of parent.
+# XML namespaces
+SOAPENV = "http://schemas.xmlsoap.org/soap/envelope/"
+SOAPENC = "http://schemas.xmlsoap.org/soap/encoding/"
+XSD = "http://www.w3.org/2001/XMLSchema"
+XSI = "http://www.w3.org/2001/XMLSchema-instance"
 
-    More specifically: Build a soapenc:Array made of ints called `el_name` as a
-    child of `parent`.
+
+def _encode_soap_request(method_name: str, args: Iterable[Any]) -> bytes:
+    """Build a SOAP request.
 
     Parameters
     ----------
-    el_name
+    method_name
+        the function to call (including namespace)
+    args
+        the function arguments
+
+    Returns
+    -------
+    bytes
+
+    """
+    root = ET.Element(f"{{{SOAPENV}}}Envelope")
+    root.set(f"{{{SOAPENV}}}encodingStyle", SOAPENC)
+    body = ET.SubElement(root, f"{{{SOAPENV}}}Body")
+    msg = ET.SubElement(body, method_name)
+    for arg in args:
+        _encode_value(msg, "arg", arg)
+    return ET.tostring(root)
+
+
+def _decode_soap_response(response: bytes) -> Any:
+    """Extract the returned value from a SOAP response.
+
+    Parameters
+    ----------
+    response
+        the response from the SOAP service
+
+    Returns
+    -------
+    Any
+        the returned value
+
+    """
+    root = ET.fromstring(response)
+
+    fault = root.find(f"{{{SOAPENV}}}Body/{{{SOAPENV}}}Fault")
+    if fault is not None:
+        message_el = fault.find("faultstring")
+        message = message_el.text if message_el is not None else "Unknown"
+        raise RuntimeError(f"SOAP fault: {message}")
+
+    answer = root.find(f"{{{SOAPENV}}}Body/*[1]/*[1]")
+    if answer is None:
+        return None
+    return _decode_value(answer)
+
+
+def _encode_value(parent: ET.Element, name: str, value: Any) -> None:
+    """Append the encoded representation of a value to the parent element.
+
+    Parameters
+    ----------
     parent
-    list
-
-    Returns
-    -------
-    SimpleXMLElement
+        the parent element
+    name
+        the tag of the new element
+    value
+        the value to be encoded
 
     """
-    el = parent.add_child(el_name)
-    el.add_attribute(
-        "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/"
-    )
-    el.add_attribute("xsi:type", "soapenc:Array")
-    el.add_attribute("soapenc:arrayType", f"xsd:int[{len(list_):d}]")
-    for item in list_:
-        item_el = el.add_child("item", str(item))
-        item_el.add_attribute("xsi:type", "xsd:int")
-    return el
+    if isinstance(value, str):
+        el = ET.SubElement(parent, name)
+        el.set(f"{{{XSI}}}type", ET.QName(XSD, "string"))
+        el.text = str(value)
+    elif isinstance(value, int):
+        # This includes booleans, as bool is a subtype of int
+        el = ET.SubElement(parent, name)
+        el.set(f"{{{XSI}}}type", ET.QName(XSD, "int"))
+        el.text = str(int(value))
+    elif isinstance(value, Iterable):
+        if isinstance(value, Mapping):
+            # Flatten the dictionary
+            value = [x for pair in value.items() for x in pair]
+        el = ET.SubElement(parent, name)
+        el.set(f"{{{XSI}}}type", ET.QName(SOAPENC, "Array"))
+        el.set(
+            f"{{{SOAPENC}}}arrayType",
+            ET.QName(XSD, "anyType[%d]" % len(value)),
+        )
+        for x in value:
+            _encode_value(el, "item", x)
+    else:
+        raise ValueError(f"Can't encode {value!r}")
 
 
-def _parse_bool(el: SimpleXMLElement) -> bool:
-    """Parse a boolean value from a XML element.
+def _decode_value(element: ET.Element) -> Any:
+    """Decode an XML encoded representation.
+
+    Note: Perl does not have separate types for strings and numbers.
+    The server assigns a type based on heuristics. To get consistent
+    behavior, this function returns all numeric values as strings.
 
     Parameters
     ----------
-    el
-        the element to parse
+    element
+        the XML element to decode
 
     Returns
     -------
-    bool
-        the parsed value
+    Any
+        the decoded value
 
     """
-    value = str(el)
-    return value.strip() not in ("", "0")
+    typ = element.get(f"{{{XSI}}}type")
+    if typ:
+        # ElementTree discards the original namespace prefixes, so we
+        # can't decode QName values properly. Luckily this doesn't
+        # cause ambiguities with the debbugs API.
+        typ = typ[typ.find(":") + 1 :]
+
+    text = element.text or ""
+    if typ in ("string", "int", "float"):
+        return text
+    elif typ == "base64Binary":
+        return base64.b64decode(text).decode("utf-8", errors="replace")
+    elif typ == "Array":
+        return [_decode_value(el) for el in element]
+    elif typ == "Map":
+        assert all(len(item) == 2 for item in element)
+        return {
+            _decode_value(item[0]): _decode_value(item[1]) for item in element
+        }
+    elif typ is None:
+        return {
+            _remove_namespace(item.tag): _decode_value(item)
+            for item in element
+        }
+    else:
+        raise ValueError(f"Can't decode {ET.tostring(element).decode()}")
 
 
-def _parse_string_el(el: SimpleXMLElement) -> str:
-    """Read a string element, maybe encoded in base64.
-
-    Parameters
-    ----------
-    el
-        the element to parse
-
-    Returns
-    -------
-    str
-        the parsed value
-
-    """
-    value = str(el)
-    el_type = el.attributes().get("xsi:type")
-    if el_type and el_type.value == "xsd:base64Binary":
-        tmp = base64.b64decode(value)
-        value = tmp.decode("utf-8", errors="replace")
-    return value
+def _remove_namespace(tag: str) -> str:
+    """Remove the namespace from an ElementTree tag."""
+    return tag[tag.find("}") + 1 :]

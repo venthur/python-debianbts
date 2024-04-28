@@ -9,7 +9,6 @@ import unittest.mock as mock
 from typing import Any, Callable
 
 import pytest
-from pysimplesoap.simplexml import SimpleXMLElement
 from pytest import LogCaptureFixture
 
 import debianbts as bts
@@ -224,35 +223,33 @@ def test_get_status_affects() -> None:
     assert bugs[1].affects == ["conkeror"]
 
 
-@mock.patch.object(bts.debianbts, "_build_soap_client")
+@mock.patch.object(bts.debianbts, "_soap_client_call")
 def test_status_batches_large_bug_counts(
-    mock_build_client: Any,
+    mock_client: Any,
 ) -> None:
     """get_status should perform requests in batches to reduce server load."""
-    mock_build_client.return_value = mock_client = mock.Mock()
-    mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
+    mock_client.return_value = {}
     nr = bts.BATCH_SIZE + 10.0
     calls = int(math.ceil(nr / bts.BATCH_SIZE))
     bts.get_status([722226] * int(nr))
-    assert mock_client.call.call_count == calls
+    assert mock_client.call_count == calls
 
 
-@mock.patch.object(bts.debianbts, "_build_soap_client")
+@mock.patch.object(bts.debianbts, "_soap_client_call")
 def test_status_batches_multiple_arguments(
-    mock_build_client: Any,
+    mock_client: Any,
 ) -> None:
     """get_status should batch multiple arguments into one request."""
-    mock_build_client.return_value = mock_client = mock.Mock()
-    mock_client.call.return_value = SimpleXMLElement("<a><s-gensym3/></a>")
+    mock_client.return_value = {}
     batch_size = bts.BATCH_SIZE
 
     calls = 1
     bts.get_status(list(range(batch_size)))
-    assert mock_client.call.call_count == calls
+    assert mock_client.call_count == calls
 
     calls += 2
     bts.get_status(list(range(batch_size + 1)))
-    assert mock_client.call.call_count == calls
+    assert mock_client.call_count == calls
 
 
 def test_comparison(create_bugreport: Callable[..., Bugreport]) -> None:
