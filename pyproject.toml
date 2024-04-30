@@ -60,6 +60,10 @@ addopts = """
 """
 
 [tool.ruff]
+line-length = 79
+target-version = "py38"
+
+[tool.ruff.lint]
 select = [
     "F",        # pyflakes
     "E", "W",   # pycodestyle
@@ -68,11 +72,7 @@ select = [
     "D",        # pydocstyle
     "UP"        # pyupgrade
 ]
-line-length = 79
-target-version = "py38"
-
-[tool.ruff.pydocstyle]
-convention = "numpy"
+pydocstyle.convention = "numpy"
 
 [tool.mypy]
 files = "debianbts,tests"
