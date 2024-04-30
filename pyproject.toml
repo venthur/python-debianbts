@@ -75,7 +75,3 @@ convention = "numpy"
 [tool.mypy]
 files = "debianbts,tests"
 strict = true
-
-[[tool.mypy.overrides]]
-module = "pysimplesoap.*"
-ignore_missing_imports = true
