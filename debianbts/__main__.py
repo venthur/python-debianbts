@@ -1,4 +1,4 @@
-"""Entry point for the (not yet implemented cli."""
+"""Entry point for the (not yet implemented) cli."""
 
 
 import logging
