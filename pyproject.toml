@@ -34,7 +34,9 @@ debianbts = "debianbts.__main__:main"
 [project.optional-dependencies]
 dev = [
     "build",
-    "sphinx",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
     "pytest",
     "pytest-cov",
     "pytest-xdist",

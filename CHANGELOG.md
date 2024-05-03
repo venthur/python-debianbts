@@ -2,6 +2,8 @@
 
 ## [unreleased] - xxxx
 
+* replaced sphinx with mkdocs
+* fixed some documentation issues
 * Added Python 3.12 to test suite
 
 ## [4.0.2] - 2023-10-22

@@ -1,0 +1,24 @@
+site_name: python-debianbts
+site_url: https://python-debianbts.readthedocs.io/
+repo_url: https://github.com/venthur/python-debianbts
+repo_name: venthur/python-debianbts
+
+nav:
+  - Home: index.md
+  - API: api.md
+
+theme:
+  name: material
+  highlightjs: true
+
+markdown_extensions:
+  - pymdownx.superfences
+
+plugins:
+  - search:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_root_heading: true
