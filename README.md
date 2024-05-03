@@ -1,9 +1,13 @@
 # python-debianbts
 
-Python-debianbts is a Python library that allows for querying Debian's [Bug
-Tracking System](https://bugs.debian.org). Since 2011, python-debianbts is used
-by Debian's `reportbug` to query the Bug Tracking System and has currently
-(2017-11) roughly [190.000 installations](https://qa.debian.org/popcon.php?package=python-debianbts).
+python-debianbts is a Python library that allows for querying Debian's [Bug
+Tracking System](https://bugs.debian.org) using its SOAP interface. With this
+package you can query for bugs of a particular package, get the status of a bug
+read the messages of bug reports and more.
+
+Since 2011, python-debianbts is used by Debian's `reportbug` to query the Bug
+Tracking System and has currently (2024) roughly [200.000
+installations](https://qa.debian.org/popcon.php?package=python-debianbts).
 
 Online [documentation][] is available on readthedocs.
 
@@ -12,10 +16,14 @@ Online [documentation][] is available on readthedocs.
 
 ## Installing
 
+python-debianbts is available on [Debian][], on every other platform it can be
+installed via pip:
+
 ```bash
 pip install python-debianbts
 ```
 
+[Debian]: https://debian.org
 
 ## Quickstart
 

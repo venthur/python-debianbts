@@ -297,11 +297,12 @@ def get_bug_log(
     """Get Buglogs.
 
     A buglog is a dictionary with the following mappings:
-        * "header" => string
-        * "body" => string
-        * "attachments" => list
-        * "msg_num" => int
-        * "message" => email.message.Message
+
+    * "header": `string`
+    * "body": `string`
+    * "attachments": `list`
+    * "msg_num": `int`
+    * "message": `email.message.Message`
 
     Parameters
     ----------
@@ -374,25 +375,25 @@ def get_bugs(
 
     The conditions are defined by the keyword arguments.
 
-    Arguments
-    ---------
-    kwargs
+    Parameters
+    ----------
+    **kwargs
         Possible keywords are:
-            * "package": bugs for the given package
-            * "submitter": bugs from the submitter
-            * "maint": bugs belonging to a maintainer
-            * "src": bugs belonging to a source package
-            * "severity": bugs with a certain severity
-            * "status": can be either "done", "forwarded", or "open"
-            * "tag": see http://www.debian.org/Bugs/Developer#tags for
-              available tags
-            * "owner": bugs which are assigned to `owner`
-            * "bugs": takes single int or list of bugnumbers, filters the list
-              according to given criteria
-            * "correspondent": bugs where `correspondent` has sent a mail to
-            * "archive": takes a string: "0" (unarchived), "1" (archived) or
-              "both" (un- and archived). if omitted, only returns un-archived
-              bugs.
+
+        * `package`: bugs for the given package
+        * `submitter`: bugs from the submitter
+        * `maint`: bugs belonging to a maintainer
+        * `src`: bugs belonging to a source package
+        * `severity`: bugs with a certain severity
+        * `status`: can be either "done", "forwarded", or "open"
+        * `tag`: see http://www.debian.org/Bugs/Developer#tags for available
+          tags
+        * `owner`: bugs which are assigned to `owner`
+        * `bugs`: takes single int or list of bugnumbers, filters the list
+          according to given criteria
+        * `correspondent`: bugs where `correspondent` has sent a mail to
+        * `archive`: takes a string: "0" (unarchived), "1" (archived) or "both"
+          (un- and archived). if omitted, only returns un-archived bugs.
 
     Returns
     -------
