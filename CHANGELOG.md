@@ -1,7 +1,8 @@
 # Changelog
 
-## [unreleased] - xxxx
+## [4.1.0] - 2024-05-07
 
+* replaced pysimplesoap with hand-coded SOAP requests and parsing of replies
 * replaced sphinx with mkdocs
 * fixed some documentation issues
 * Added Python 3.12 to test suite
