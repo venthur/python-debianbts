@@ -2,6 +2,7 @@ python-debianbts (4.1.0) experimental; urgency=medium
 
   * replaced pysimplesoap with hand-coded SOAP requests and parsing of
     replies, thanks Peter de Wachter for providing the pull request!
+    Closes: #824111, #971991, #861334, #1026030
   * replaced sphinx with mkdocs
   * fixed some documentation issues
   * Added Python 3.12 to test suite
