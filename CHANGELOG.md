@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.1] - 2024-06-09
+
+* Bump version to upload to Debian/Sid
+
 ## [4.1.0] - 2024-05-07
 
 * replaced pysimplesoap with hand-coded SOAP requests and parsing of replies

@@ -1,3 +1,9 @@
+python-debianbts (4.1.1) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Bastian Venthur <venthur@debian.org>  Sun, 09 Jun 2024 09:36:48 +0200
+
 python-debianbts (4.1.0) experimental; urgency=medium
 
   * replaced pysimplesoap with hand-coded SOAP requests and parsing of
