@@ -626,24 +626,27 @@ def _encode_value(parent: ET.Element, name: str, value: Any) -> None:
         the value to be encoded
 
     """
+    # note: the type: ignore annotations can be removed once
+    # https://github.com/python/typeshed/pull/11841 is merged or the underlying
+    # issue fixed
     if isinstance(value, str):
         el = ET.SubElement(parent, name)
-        el.set(f"{{{XSI}}}type", ET.QName(XSD, "string"))
+        el.set(f"{{{XSI}}}type", ET.QName(XSD, "string"))  # type: ignore
         el.text = str(value)
     elif isinstance(value, int):
         # This includes booleans, as bool is a subtype of int
         el = ET.SubElement(parent, name)
-        el.set(f"{{{XSI}}}type", ET.QName(XSD, "int"))
+        el.set(f"{{{XSI}}}type", ET.QName(XSD, "int"))  # type: ignore
         el.text = str(int(value))
     elif isinstance(value, Iterable):
         if isinstance(value, Mapping):
             # Flatten the dictionary
             value = [x for pair in value.items() for x in pair]
         el = ET.SubElement(parent, name)
-        el.set(f"{{{XSI}}}type", ET.QName(SOAPENC, "Array"))
+        el.set(f"{{{XSI}}}type", ET.QName(SOAPENC, "Array"))  # type: ignore
         el.set(
             f"{{{SOAPENC}}}arrayType",
-            ET.QName(XSD, "anyType[%d]" % len(value)),
+            ET.QName(XSD, "anyType[%d]" % len(value)),  # type: ignore
         )
         for x in value:
             _encode_value(el, "item", x)
