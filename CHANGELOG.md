@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased] -
+
+* Dropped support for Python 3.8
+* silenced mypy warning for this issue:
+  https://github.com/python/typeshed/pull/11841
+
 ## [4.1.1] - 2024-06-09
 
 * Bump version to upload to Debian/Sid
