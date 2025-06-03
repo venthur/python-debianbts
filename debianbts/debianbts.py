@@ -19,7 +19,7 @@ import os
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections.abc import Iterable, Mapping
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -227,7 +227,7 @@ def get_status(
 
     """
     numbers: list[int]
-    if not isinstance(nrs, (list, tuple)):
+    if not isinstance(nrs, list | tuple):
         numbers = [nrs]
     else:
         numbers = list(nrs)
@@ -303,7 +303,7 @@ def get_bug_log(
         attachments: list[Any] = []
 
         mail_parser = email.feedparser.BytesFeedParser(
-            policy=email.policy.SMTP
+            policy=email.policy.SMTP  # type: ignore
         )
         mail_parser.feed(header.encode())
         mail_parser.feed(b"\n\n")
@@ -419,8 +419,10 @@ def _parse_status(bug_el: dict[str, Any]) -> Bugreport:
     ):
         setattr(bug, field, bug_el[field])
 
-    bug.date = datetime.utcfromtimestamp(float(bug_el["date"]))
-    bug.log_modified = datetime.utcfromtimestamp(float(bug_el["log_modified"]))
+    bug.date = datetime.fromtimestamp(float(bug_el["date"]), timezone.utc)
+    bug.log_modified = datetime.fromtimestamp(
+        float(bug_el["log_modified"]), timezone.utc
+    )
     bug.tags = str(bug_el["tags"]).split()
     bug.done = _parse_bool(bug_el["done"])
     bug.done_by = bug_el["done"] if bug.done else None
@@ -646,7 +648,7 @@ def _encode_value(parent: ET.Element, name: str, value: Any) -> None:
         el.set(f"{{{XSI}}}type", ET.QName(SOAPENC, "Array"))  # type: ignore
         el.set(
             f"{{{SOAPENC}}}arrayType",
-            ET.QName(XSD, "anyType[%d]" % len(value)),  # type: ignore
+            ET.QName(XSD, f"anyType[{len(value)}]"),  # type: ignore
         )
         for x in value:
             _encode_value(el, "item", x)
