@@ -6,7 +6,8 @@ import email.message
 import logging
 import math
 import unittest.mock as mock
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import pytest
 from pytest import LogCaptureFixture

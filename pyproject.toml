@@ -9,12 +9,11 @@ authors = [
 ]
 description = "Python interface to Debian's Bug Tracking System"
 readme = "README.md"
-license = { file="LICENSE" }
-requires-python = ">=3.9, <4"
+license-files = ["LICENSE"]
+requires-python = ">=3.10, <4"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Topic :: Software Development :: Bug Tracking",
 ]
@@ -61,7 +60,6 @@ addopts = """
 
 [tool.ruff]
 line-length = 79
-target-version = "py39"
 
 [tool.ruff.lint]
 select = [
