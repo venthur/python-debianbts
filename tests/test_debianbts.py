@@ -174,7 +174,10 @@ def test_sample_get_status() -> None:
     assert len(bugs) == 1
     bug = bugs[0]
     assert bug.bug_num == 486212
-    assert bug.date == datetime.datetime(2008, 6, 14, 10, 30, 2)
+    assert bug.date == datetime.datetime(
+        2008, 6, 14, 10, 30, 2,
+        tzinfo=datetime.timezone.utc
+    )
     assert bug.subject.startswith("[reportbug-ng] segm")
     assert bug.package == "reportbug-ng"
     assert bug.severity == "normal"
@@ -184,7 +187,10 @@ def test_sample_get_status() -> None:
     assert bug.summary == ""
     assert bug.location == "archive"
     assert bug.source == "reportbug-ng"
-    assert bug.log_modified == datetime.datetime(2008, 8, 17, 7, 26, 22)
+    assert bug.log_modified == datetime.datetime(
+        2008, 8, 17, 7, 26, 22,
+        tzinfo=datetime.timezone.utc
+    )
     assert bug.pending == "done"
     assert bug.done
     assert bug.done_by == "Bastian Venthur <venthur@debian.org>"

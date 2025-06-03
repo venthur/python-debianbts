@@ -19,7 +19,7 @@ import os
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections.abc import Iterable, Mapping
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -419,9 +419,9 @@ def _parse_status(bug_el: dict[str, Any]) -> Bugreport:
     ):
         setattr(bug, field, bug_el[field])
 
-    bug.date = datetime.fromtimestamp(float(bug_el["date"]), UTC)
+    bug.date = datetime.fromtimestamp(float(bug_el["date"]), timezone.utc)
     bug.log_modified = datetime.fromtimestamp(
-        float(bug_el["log_modified"]), UTC
+        float(bug_el["log_modified"]), timezone.utc
     )
     bug.tags = str(bug_el["tags"]).split()
     bug.done = _parse_bool(bug_el["done"])
